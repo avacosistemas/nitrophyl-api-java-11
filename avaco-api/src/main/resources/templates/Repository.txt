@@ -1,0 +1,8 @@
+package ar.com.avaco.nitrophyl.repository.{package};
+
+import ar.com.avaco.arc.core.component.bean.repository.NJRepository;
+import ar.com.avaco.nitrophyl.domain.entities.{package}.{entity};
+
+public interface {entity}Repository extends NJRepository<Long, {entity}>, {entity}RepositoryCustom {
+
+}

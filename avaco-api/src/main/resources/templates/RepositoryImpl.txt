@@ -1,0 +1,17 @@
+package ar.com.avaco.nitrophyl.repository.{package};
+
+import javax.persistence.EntityManager;
+
+import org.springframework.stereotype.Repository;
+
+import ar.com.avaco.arc.core.component.bean.repository.NJBaseRepository;
+import ar.com.avaco.nitrophyl.domain.entities.{package}.{entity};
+
+@Repository("{entityMinuscula}Repository")
+public class {entity}RepositoryImpl extends NJBaseRepository<Long, {entity}> implements {entity}RepositoryCustom {
+
+	public {entity}RepositoryImpl(EntityManager entityManager) {
+		super({entity}.class, entityManager);
+	}
+
+}

@@ -1,0 +1,22 @@
+package ar.com.avaco.nitrophyl.service.{package};
+
+import javax.annotation.Resource;
+
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import ar.com.avaco.arc.core.component.bean.service.NJBaseService;
+import ar.com.avaco.nitrophyl.domain.entities.{package}.{entity};
+import ar.com.avaco.nitrophyl.repository.{package}.{entity}Repository;
+
+@Transactional
+@Service("{entityMinuscula}Service")
+public class {entity}ServiceImpl extends NJBaseService<Long, {entity}, {entity}Repository> implements {entity}Service {
+
+	@Resource(name = "{entityMinuscula}Repository")
+	void setRepository({entity}Repository {entityMinuscula}Repository) {
+		this.repository = {entityMinuscula}Repository;
+	}
+
+}
+

@@ -1,0 +1,1 @@
+alter table molderegistro alter column fecha type timestamp without time zone;
