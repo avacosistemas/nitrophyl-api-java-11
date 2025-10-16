@@ -26,7 +26,7 @@ public class MoldeListadoDTO extends DTOEntity<Long> {
 	public MoldeListadoDTO(Integer id, String codigo, String estado, String nombre, String ubicacion, Integer alto,
 			Integer ancho, Integer diametro, Integer profundidad, String piezas, String ultimoRegistro,
 			Integer totalRows) {
-		this.id = new Long(id);
+		this.id = Long.valueOf(id);
 		this.codigo = codigo;
 		this.estado = estado;
 		this.nombre = nombre;

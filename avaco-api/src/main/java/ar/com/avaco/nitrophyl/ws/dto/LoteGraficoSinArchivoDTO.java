@@ -12,7 +12,7 @@ public class LoteGraficoSinArchivoDTO extends DTOEntity<Long> {
 
 	public LoteGraficoSinArchivoDTO(Integer id, Date fecha, String maquina) {
 		super();
-		this.id = new Long(id);
+		this.id = Long.valueOf(id);
 		this.maquina = maquina;
 		this.fecha = fecha;
 	}

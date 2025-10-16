@@ -18,7 +18,7 @@ public class ConfiguracionPruebaFilter extends AbstractFilter {
 	public List<FilterData> getFilterDatas() {
 		List<FilterData> list = new ArrayList<FilterData>();
 		if (StringUtils.isNotBlank(idFormula)) {
-			list.add(new FilterData("idFormula", new Long(idFormula), FilterDataType.EQUALS));
+			list.add(new FilterData("idFormula", Long.valueOf(idFormula), FilterDataType.EQUALS));
 		}
 		return list;
 	}

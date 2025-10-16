@@ -35,10 +35,10 @@ public class PiezaGrillaDTO extends DTOEntity<Long> {
 			String formula, Boolean puedeMarcarVigente) {
 		this.rows = rows;
 		this.denominacion = denominacion;
-		this.id = new Long(idPieza.toString());
+		this.id = Long.valueOf(idPieza);
 		this.codigo = codigo;
 		this.vigente = vigente;
-		this.revision = new Long(revision.toString());
+		this.revision = Long.valueOf(revision);
 		this.fechaRevision = fechaRevision;
 		this.tipo = tipo;
 		this.material = material;
