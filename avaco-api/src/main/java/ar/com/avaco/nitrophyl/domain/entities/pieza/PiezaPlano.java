@@ -7,13 +7,13 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 
 import ar.com.avaco.nitrophyl.domain.entities.AuditableEntity;
@@ -27,14 +27,18 @@ public class PiezaPlano extends AuditableEntity<Long> {
 	private static final long serialVersionUID = 6238103037912066925L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "PIEZA_PLANO_SEQ")
+	@GeneratedValue(generator = "PIEZA_PLANO_SEQ")
+	@GenericGenerator(name = "PIEZA_PLANO_SEQ", strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator", parameters = {
+			@org.hibernate.annotations.Parameter(name = "sequence_name", value = "PIEZA_PLANO_SEQ"),
+			@org.hibernate.annotations.Parameter(name = "initial_value", value = "1"),
+			@org.hibernate.annotations.Parameter(name = "increment_size", value = "1") })
 	@Column(name = "ID_PIEZA_PLANO", unique = true, nullable = false)
 	private Long id;
 
 	@ManyToOne
 	@JoinColumn(name = "ID_PIEZA")
 	private Pieza pieza;
-	
+
 	@Column(name = "ARCHIVO", nullable = true)
 	@Type(type = "org.hibernate.type.BinaryType")
 	private byte[] archivo;
@@ -63,7 +67,7 @@ public class PiezaPlano extends AuditableEntity<Long> {
 		clonada.setRevision(revision);
 		return clonada;
 	}
-	
+
 	public Long getId() {
 		return id;
 	}

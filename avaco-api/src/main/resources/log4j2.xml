@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN" monitorInterval="60">
+	
+	<Appenders>
+		<!-- Salida por consola -->
+		<Console name="Console" target="SYSTEM_OUT">
+			<PatternLayout
+				pattern="[%d{yyyy-MM-dd HH:mm:ss}] [%-5level] [%t] %c{1} - %msg%n%throwable" />
+		</Console>
+
+		<!-- Salida a archivo con rotación diaria -->
+		<RollingFile name="File"
+			fileName="logs/app.log"
+			filePattern="logs/app-%d{yyyy-MM-dd}.log">
+
+			<PatternLayout
+				pattern="[%d{yyyy-MM-dd HH:mm:ss}] [%-5level] [%t] %c - %msg%n%throwable" />
+
+			<Policies>
+				<TimeBasedTriggeringPolicy interval="1" modulate="true" />
+			</Policies>
+		</RollingFile>
+	</Appenders>
+
+	<Loggers>
+
+		<!-- === LOGGERS DE FRAMEWORKS === -->
+
+		<!-- Spring Framework -->
+		<Logger name="org.springframework" level="info" additivity="false">
+			<AppenderRef ref="Console" />
+			<AppenderRef ref="File" />
+		</Logger>
+
+		<!-- Transacciones, AOP y Web de Spring -->
+		<Logger name="org.springframework.transaction" level="debug" additivity="false">
+			<AppenderRef ref="Console" />
+			<AppenderRef ref="File" />
+		</Logger>
+		<Logger name="org.springframework.aop" level="debug" additivity="false">
+			<AppenderRef ref="Console" />
+			<AppenderRef ref="File" />
+		</Logger>
+		<Logger name="org.springframework.web" level="debug" additivity="false">
+			<AppenderRef ref="Console" />
+			<AppenderRef ref="File" />
+		</Logger>
+
+		<!-- Hibernate -->
+		<Logger name="org.hibernate" level="warn" additivity="false">
+			<AppenderRef ref="Console" />
+			<AppenderRef ref="File" />
+		</Logger>
+
+		<!-- Springfox (Swagger) -->
+		<Logger name="springfox.documentation" level="error" additivity="false">
+			<AppenderRef ref="Console" />
+			<AppenderRef ref="File" />
+		</Logger>
+
+		<!-- === LOGGERS DE TU APLICACIÓN === -->
+
+		<!-- Nivel detallado para tus servicios y controladores -->
+		<Logger name="ar.com.avaco" level="debug" additivity="false">
+			<AppenderRef ref="Console" />
+			<AppenderRef ref="File" />
+		</Logger>
+
+		<!-- Logger raíz -->
+		<Root level="info">
+			<AppenderRef ref="Console" />
+			<AppenderRef ref="File" />
+		</Root>
+	</Loggers>
+
+</Configuration>

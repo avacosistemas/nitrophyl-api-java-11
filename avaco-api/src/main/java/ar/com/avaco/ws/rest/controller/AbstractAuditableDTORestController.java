@@ -33,6 +33,13 @@ public abstract class AbstractAuditableDTORestController<RDTO extends DTOAuditab
 	
 	protected T service;
 	
+	 protected ResponseEntity<JSONResponse> OK(Object data) {
+			JSONResponse response = new JSONResponse();
+			response.setData(data);
+			response.setStatus(JSONResponse.OK);
+			return new ResponseEntity<JSONResponse>(response, HttpStatus.OK);
+		}
+	
 	//-------------------Retrieve All Formalities--------------------------------------------------------    
 	//@RequestMapping(value = "/formalities/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<JSONResponse> list() {

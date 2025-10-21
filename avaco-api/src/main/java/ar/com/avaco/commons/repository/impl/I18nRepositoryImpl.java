@@ -5,7 +5,7 @@ package ar.com.avaco.commons.repository.impl;
 
 import javax.persistence.EntityManager;
 
-import org.hibernate.Query;
+import org.hibernate.query.NativeQuery;
 import org.springframework.stereotype.Repository;
 
 import ar.com.avaco.arc.core.component.bean.repository.NJBaseRepository;
@@ -24,12 +24,12 @@ public class I18nRepositoryImpl extends NJBaseRepository<Long, I18n> implements 
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public I18n getByNameAndLang(String name, String lang) {
-		Query query = getCurrentSession().createQuery("from I18n as i18n " +
-		        											"where i18n.name = :name");
+		NativeQuery<I18n> query = getCurrentSession()
+				.createNativeQuery("from I18n as i18n " + "where i18n.name = :name");
 //		query.setParameter("lang", lang);
 		query.setParameter("name", name);
 		return (I18n) query.uniqueResult();
 	}
 }
-

@@ -1,4 +1,4 @@
-package ar.com.avaco.nitrophyl.ws.service.impl;
+package ar.com.avaco.nitrophyl.ws.service;
 
 import javax.annotation.Resource;
 

@@ -5,22 +5,25 @@ import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.GenericGenerator;
 
 import ar.com.avaco.nitrophyl.domain.entities.AuditableEntity;
 
 @Entity
 @Table(name = "PRENSA")
-@SequenceGenerator(name = "PRENSA_SEQ", sequenceName = "PRENSA_SEQ", allocationSize = 1)
 public class Prensa extends AuditableEntity<Long> {
 
 	private static final long serialVersionUID = 2603285910247363629L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "PRENSA_SEQ")
+	@GeneratedValue(generator = "PRENSA_SEQ")
+	@GenericGenerator(name = "PRENSA_SEQ", strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator", parameters = {
+			@org.hibernate.annotations.Parameter(name = "sequence_name", value = "PRENSA_SEQ"),
+			@org.hibernate.annotations.Parameter(name = "initial_value", value = "1"),
+			@org.hibernate.annotations.Parameter(name = "increment_size", value = "1") })
 	@Column(name = "ID_PRENSA", unique = true, nullable = false)
 	private Long id;
 

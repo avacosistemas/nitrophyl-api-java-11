@@ -24,7 +24,9 @@ import ar.com.avaco.ws.rest.service.SupplierBusiness;
 
 /**
  * @author avaco
+   @Deprecated Usar AbstractAuditableDTORestController
  */
+@Deprecated
 public abstract class AbstractDTORestController<RDTO extends DTOEntity<ID>, ID extends Serializable, T extends CRUDEPService<ID,RDTO>> extends AbstractRestBaseController{	
 
 	private static final Logger LOGGER = LogManager.getLogger(AbstractDTORestController.class);
@@ -38,6 +40,13 @@ public abstract class AbstractDTORestController<RDTO extends DTOEntity<ID>, ID e
     public ResponseEntity<JSONResponse> list() {
         return this.list(null);
     }
+    
+    protected ResponseEntity<JSONResponse> OK(Object data) {
+		JSONResponse response = new JSONResponse();
+		response.setData(data);
+		response.setStatus(JSONResponse.OK);
+		return new ResponseEntity<JSONResponse>(response, HttpStatus.OK);
+	}
     
     public <R> ResponseEntity<JSONResponse>  list(Function<RDTO,R> function) {
     	LOGGER.info("Fetching entities list");

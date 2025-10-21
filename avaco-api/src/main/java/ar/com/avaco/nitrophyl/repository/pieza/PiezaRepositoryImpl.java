@@ -5,7 +5,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 
 import org.apache.commons.lang3.StringUtils;
-import org.hibernate.SQLQuery;
+import org.hibernate.query.NativeQuery;
 import org.springframework.stereotype.Repository;
 
 import ar.com.avaco.arc.core.component.bean.repository.NJBaseRepository;
@@ -21,6 +21,7 @@ public class PiezaRepositoryImpl extends NJBaseRepository<Long, Pieza> implement
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public List<PiezaGrillaDTO> listGrilla(PiezaFilterDTO filtro) {
 		
 		if (filtro.getNombre() != null)
@@ -82,7 +83,7 @@ public class PiezaRepositoryImpl extends NJBaseRepository<Long, Pieza> implement
 		}
 		
 		
-		SQLQuery createSQLQuery = getCurrentSession().createSQLQuery(query)
+		NativeQuery<PiezaGrillaDTO> createSQLQuery = getCurrentSession().createNativeQuery(query)
 				.setResultSetMapping("PiezaGrillaDTOMapper");
 
 		return createSQLQuery.list();

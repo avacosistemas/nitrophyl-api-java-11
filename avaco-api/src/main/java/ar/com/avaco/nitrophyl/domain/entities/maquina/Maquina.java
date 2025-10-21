@@ -9,27 +9,27 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @Table(name = "MAQUINA")
 @Inheritance(strategy = InheritanceType.JOINED)
-@SequenceGenerator(name = "MAQUINA_SEQ", sequenceName = "MAQUINA_SEQ", allocationSize = 1)
 public class Maquina extends ar.com.avaco.arc.core.domain.Entity<Long> {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -2296428532611007942L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "MAQUINA_SEQ")
+	@GeneratedValue(generator = "MAQUINA_SEQ")
+	@GenericGenerator(name = "MAQUINA_SEQ", strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator", parameters = {
+			@org.hibernate.annotations.Parameter(name = "sequence_name", value = "MAQUINA_SEQ"),
+			@org.hibernate.annotations.Parameter(name = "initial_value", value = "1"),
+			@org.hibernate.annotations.Parameter(name = "increment_size", value = "1") })
 	@Column(name = "ID_MAQUINA", unique = true, nullable = false)
 	private Long id;
 

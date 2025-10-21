@@ -5,10 +5,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.springframework.security.core.context.SecurityContextHolder;
+
 import ar.com.avaco.arc.core.component.bean.repository.NJRepository;
 import ar.com.avaco.arc.core.domain.Entity;
 import ar.com.avaco.arc.core.domain.filter.AbstractFilter;
 import ar.com.avaco.commons.exception.ErrorValidationException;
+import ar.com.avaco.nitrophyl.domain.entities.AuditableEntity;
+import ar.com.avaco.utils.DateUtils;
 
 /**
  * Default implementation of a {@link NJService} that redirects operations to
@@ -25,7 +29,7 @@ public abstract class NJBaseService<ID extends Serializable, T extends Entity<ID
 	 * @see NJService#save(Entity)
 	 */
 	public T save(T entity) {
-		return getRepository().save(entity);
+		return getRepository().saveAndFlush(entity);
 	}
 
 	/**
@@ -54,7 +58,7 @@ public abstract class NJBaseService<ID extends Serializable, T extends Entity<ID
 	 * @see NJService#get(Serializable)
 	 */
 	public T get(ID id) {
-		return getRepository().findById(id).orElse(null);
+		return getRepository().findById(id).orElseThrow();
 	}
 
 	/**
@@ -98,6 +102,11 @@ public abstract class NJBaseService<ID extends Serializable, T extends Entity<ID
 	 */
 	protected final R getRepository() {
 		return this.repository;
+	}
+	
+	protected final void updateUserDateModificacion(AuditableEntity<ID> entity) {
+		entity.setFechaActualizacion(DateUtils.getFechaYHoraActual());
+		entity.setUsuarioActualizacion(SecurityContextHolder.getContext().getAuthentication().getName());
 	}
 
 }

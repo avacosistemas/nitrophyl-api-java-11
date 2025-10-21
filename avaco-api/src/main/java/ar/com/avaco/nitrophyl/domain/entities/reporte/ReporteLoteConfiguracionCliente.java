@@ -7,17 +7,16 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.GenericGenerator;
 
 import ar.com.avaco.nitrophyl.domain.entities.cliente.Cliente;
 import ar.com.avaco.nitrophyl.domain.entities.formula.Formula;
@@ -26,13 +25,16 @@ import ar.com.avaco.nitrophyl.domain.entities.maquina.MaquinaPrueba;
 
 @Entity
 @Table(name = "REPORTE_LOTE_CONF_CLIENTE")
-@SequenceGenerator(name = "REPORTE_LOTE_CONF_CLIENTE_SEQ", sequenceName = "REPORTE_LOTE_CONF_CLIENTE_SEQ", allocationSize = 1)
 public class ReporteLoteConfiguracionCliente extends ar.com.avaco.arc.core.domain.Entity<Long> {
 
 	private static final long serialVersionUID = -8915059528176139461L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "REPORTE_LOTE_CONF_CLIENTE_SEQ")
+	@GeneratedValue(generator = "REPORTE_LOTE_CONF_CLIENTE_SEQ")
+	@GenericGenerator(name = "REPORTE_LOTE_CONF_CLIENTE_SEQ", strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator", parameters = {
+			@org.hibernate.annotations.Parameter(name = "sequence_name", value = "REPORTE_LOTE_CONF_CLIENTE_SEQ"),
+			@org.hibernate.annotations.Parameter(name = "initial_value", value = "1"),
+			@org.hibernate.annotations.Parameter(name = "increment_size", value = "1") })
 	@Column(name = "ID_REPORTE_LOTE_CONF_CLIENTE")
 	private Long id;
 

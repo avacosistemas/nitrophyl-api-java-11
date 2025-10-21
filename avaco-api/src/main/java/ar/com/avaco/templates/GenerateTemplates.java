@@ -21,8 +21,8 @@ public class GenerateTemplates {
 	public static void main(String[] args) throws IOException {
 
 		Map<String, String> variables = new HashMap<String, String>();
-		variables.put(ENTITY, "Cotizacion");
-		variables.put(ENTITY_MINUSCULA, "cotizacion");
+		variables.put(ENTITY, "InsumoMateriaPrima");
+		variables.put(ENTITY_MINUSCULA, "insumoMateriaPrima");
 		variables.put(PACKAGE, "pieza");
 
 		List<String> archivos = new ArrayList<>();
@@ -53,6 +53,7 @@ public class GenerateTemplates {
 		Files.createDirectories(Paths.get(rutaDestino)); // crear carpeta si no existe
 		String rutaCompleta = (rutaDestino + entidad + archivo).replace("txt", "java");
 		Files.write(Paths.get(rutaCompleta), contenido.getBytes());
+		System.out.println("Archivo generado: " + rutaCompleta);
 	}
 
 	public static String replaceVariables(String contenido, Map<String, String> variables) {

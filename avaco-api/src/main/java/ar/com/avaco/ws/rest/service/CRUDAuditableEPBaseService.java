@@ -38,7 +38,7 @@ public abstract class CRUDAuditableEPBaseService<ID extends Serializable, DTO ex
 	public DTO save(DTO dto) throws BusinessException {
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
 		validationSave(dto);
-		T entity = convertToEntity(dto);
+		T entity = convertToEntityForSave(dto);
 		entity.setUsuarioCreacion(username);
 		entity.setFechaCreacion(DateUtils.getFechaYHoraActual());
 		entity = service.save(entity);
@@ -60,7 +60,7 @@ public abstract class CRUDAuditableEPBaseService<ID extends Serializable, DTO ex
 	@Override
 	public DTO update(DTO dto) throws BusinessException {
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
-		T entity = convertToEntity(dto);
+		T entity = convertToEntityForUpdate(dto);
 		entity.setUsuarioActualizacion(username);
 		entity.setFechaActualizacion(DateUtils.getFechaYHoraActual());
 		entity = service.update(entity);
@@ -115,6 +115,14 @@ public abstract class CRUDAuditableEPBaseService<ID extends Serializable, DTO ex
 		return convertToDtos(this.service.listEqField(field, value));
 	}
 
+	protected T convertToEntityForSave(DTO dto) {
+		return convertToEntity(dto);
+	}
+
+	protected T convertToEntityForUpdate(DTO dto) {
+		return convertToEntity(dto);
+	}
+	
 	protected T convertToEntity(DTO dto) {
 		return modelMapper.map(dto, entityClass);
 	}

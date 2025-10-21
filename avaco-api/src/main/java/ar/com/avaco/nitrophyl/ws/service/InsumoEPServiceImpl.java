@@ -5,6 +5,8 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import ar.com.avaco.nitrophyl.domain.entities.pieza.Insumo;
+import ar.com.avaco.nitrophyl.domain.entities.pieza.InsumoMateriaPrima;
+import ar.com.avaco.nitrophyl.domain.entities.pieza.MateriaPrima;
 import ar.com.avaco.nitrophyl.service.pieza.InsumoService;
 import ar.com.avaco.nitrophyl.service.pieza.TipoInsumoService;
 import ar.com.avaco.nitrophyl.ws.dto.InsumoDTO;
@@ -28,13 +30,22 @@ public class InsumoEPServiceImpl extends CRUDAuditableEPBaseService<Long, Insumo
 
 	@Override
 	protected Insumo convertToEntity(InsumoDTO dto) {
-		Insumo insumo = super.convertToEntity(dto);
+		Insumo insumo = new Insumo();
 		insumo.setId(dto.getId());
 		insumo.setNombre(dto.getNombre());
 		insumo.setTipo(tipoInsumoService.get(dto.getIdTipo()));
+
+		// Si tiene asociada una materia prima
+		if (dto.getIdMateriaPrima() != null) {
+			InsumoMateriaPrima imp = new InsumoMateriaPrima();
+			MateriaPrima mp = MateriaPrima.ofId(dto.getIdMateriaPrima());
+			imp.setMateriaPrima(mp);
+			imp.setCantidad(dto.getCantidadMateriaPrima());
+			insumo.setInsumoMateriaPrima(imp);
+		}
 		return insumo;
 	}
-
+	
 	@Override
 	protected InsumoDTO convertToDto(Insumo entity) {
 		InsumoDTO dto = super.convertToDto(entity);
@@ -42,6 +53,12 @@ public class InsumoEPServiceImpl extends CRUDAuditableEPBaseService<Long, Insumo
 		dto.setNombre(entity.getNombre());
 		dto.setIdTipo(entity.getTipo().getId());
 		dto.setTipoNombre(entity.getTipo().getNombreCompleto());
+		if (entity.getInsumoMateriaPrima() != null) {
+			InsumoMateriaPrima insumoMateriaPrima = entity.getInsumoMateriaPrima();
+			dto.setCantidadMateriaPrima(insumoMateriaPrima.getCantidad());
+			dto.setIdMateriaPrima(insumoMateriaPrima.getMateriaPrima().getId());
+			dto.setMateriaPrimaNombre(insumoMateriaPrima.getMateriaPrima().getNombre());
+		}
 		return dto;
 	}
 

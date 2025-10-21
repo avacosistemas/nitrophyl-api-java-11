@@ -12,18 +12,17 @@ import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.SqlResultSetMapping;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.GenericGenerator;
 
 import ar.com.avaco.nitrophyl.domain.entities.AuditableEntity;
 import ar.com.avaco.nitrophyl.ws.dto.PiezaGrillaDTO;
@@ -45,13 +44,16 @@ import ar.com.avaco.nitrophyl.ws.dto.PiezaGrillaDTO;
 
 @Entity
 @Table(name = "PIEZA")
-@SequenceGenerator(name = "PIEZA_SEQ", sequenceName = "PIEZA_SEQ", allocationSize = 1)
 public class Pieza extends AuditableEntity<Long> {
 
 	private static final long serialVersionUID = 2865115894963877402L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "PIEZA_SEQ")
+	@GeneratedValue(generator = "PIEZA_SEQ")
+	@GenericGenerator(name = "PIEZA_SEQ", strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator", parameters = {
+			@org.hibernate.annotations.Parameter(name = "sequence_name", value = "PIEZA_SEQ"),
+			@org.hibernate.annotations.Parameter(name = "initial_value", value = "1"),
+			@org.hibernate.annotations.Parameter(name = "increment_size", value = "1") })
 	@Column(name = "ID_PIEZA", unique = true, nullable = false)
 	private Long id;
 

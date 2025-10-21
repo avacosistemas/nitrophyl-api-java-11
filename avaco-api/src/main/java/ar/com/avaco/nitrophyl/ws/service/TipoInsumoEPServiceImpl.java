@@ -8,6 +8,7 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import ar.com.avaco.nitrophyl.domain.entities.pieza.TipoInsumo;
+import ar.com.avaco.nitrophyl.domain.entities.pieza.TipoStock;
 import ar.com.avaco.nitrophyl.service.pieza.TipoInsumoService;
 import ar.com.avaco.nitrophyl.ws.dto.ComboDTO;
 import ar.com.avaco.nitrophyl.ws.dto.TipoInsumoDTO;
@@ -33,8 +34,15 @@ public class TipoInsumoEPServiceImpl extends
 	@Override
 	protected TipoInsumo convertToEntity(TipoInsumoDTO dto) {
 		TipoInsumo entity = super.convertToEntity(dto);
+		
+		// Si es una categoria dentro de otra, tomo el tipo del padre.
 		if (dto.getIdPadre() != null) {
+			TipoStock tipoStock = this.service.get(dto.getIdPadre()).getTipoStock();
 			entity.setPadre(TipoInsumo.ofId(dto.getIdPadre()));
+			entity.setTipoStock(tipoStock);
+		} else {
+			// Si es cabecera, deberia venir en el dto.
+			entity.setTipoStock(dto.getTipoStock());
 		}
 		return entity;
 	}
@@ -47,7 +55,7 @@ public class TipoInsumoEPServiceImpl extends
 
 	@Override
 	public List<ComboDTO> listHijos() {
-		List<TipoInsumo> tipos = this.service.listHijos();
+		List<TipoInsumo> tipos = this.service.list();
 		List<ComboDTO> combo = new ArrayList<ComboDTO>();
 		tipos.forEach(tipo -> combo.add(new ComboDTO(tipo.getNombreCompleto(), tipo.getId().toString())));
 		return combo;

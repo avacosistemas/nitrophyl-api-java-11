@@ -10,24 +10,27 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.GenericGenerator;
 
 import ar.com.avaco.nitrophyl.domain.entities.AuditableEntity;
 
 @Entity
 @Table(name = "TIPO_INSUMO")
-@SequenceGenerator(name = "TIPO_INSUMO_SEQ", sequenceName = "TIPO_INSUMO_SEQ", allocationSize = 1)
 public class TipoInsumo extends AuditableEntity<Long> {
 
 	private static final long serialVersionUID = 303448339978364112L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "TIPO_INSUMO_SEQ")
+	@GeneratedValue(generator = "TIPO_INSUMO_SEQ")
+	@GenericGenerator(name = "TIPO_INSUMO_SEQ", strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator", parameters = {
+			@org.hibernate.annotations.Parameter(name = "sequence_name", value = "TIPO_INSUMO_SEQ"),
+			@org.hibernate.annotations.Parameter(name = "initial_value", value = "1"),
+			@org.hibernate.annotations.Parameter(name = "increment_size", value = "1") })
 	@Column(name = "ID_TIPO_INSUMO", unique = true, nullable = false)
 	private Long id;
 
@@ -39,15 +42,15 @@ public class TipoInsumo extends AuditableEntity<Long> {
 	private TipoInsumo padre;
 
 	@Enumerated(EnumType.STRING)
-	@Column(name = "TIPO_CONT")
-	private TipoStock tipoContabilizacion;
+	@Column(name = "TIPO_STOCK")
+	private TipoStock tipoStock;
 
-	public TipoStock getTipoContabilizacion() {
-		return tipoContabilizacion;
+	public TipoStock getTipoStock() {
+		return tipoStock;
 	}
 
-	public void setTipoContabilizacion(TipoStock tipoContabilizacion) {
-		this.tipoContabilizacion = tipoContabilizacion;
+	public void setTipoStock(TipoStock tipoStock) {
+		this.tipoStock = tipoStock;
 	}
 
 	public TipoInsumo getPadre() {

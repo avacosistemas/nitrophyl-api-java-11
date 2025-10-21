@@ -12,6 +12,36 @@ public class InsumoDTO extends DTOAuditableEntity<Long> {
 
 	private String tipoNombre;
 
+	private String materiaPrimaNombre;
+
+	private Long idMateriaPrima;
+
+	private Double cantidadMateriaPrima;
+
+	public String getMateriaPrimaNombre() {
+		return materiaPrimaNombre;
+	}
+
+	public void setMateriaPrimaNombre(String materiaPrimaNombre) {
+		this.materiaPrimaNombre = materiaPrimaNombre;
+	}
+
+	public Long getIdMateriaPrima() {
+		return idMateriaPrima;
+	}
+
+	public void setIdMateriaPrima(Long idMateriaPrima) {
+		this.idMateriaPrima = idMateriaPrima;
+	}
+
+	public Double getCantidadMateriaPrima() {
+		return cantidadMateriaPrima;
+	}
+
+	public void setCantidadMateriaPrima(Double cantidadMateriaPrima) {
+		this.cantidadMateriaPrima = cantidadMateriaPrima;
+	}
+
 	public Long getId() {
 		return id;
 	}

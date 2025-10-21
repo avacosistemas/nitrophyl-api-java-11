@@ -6,25 +6,28 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.GenericGenerator;
 
 import ar.com.avaco.nitrophyl.domain.entities.AuditableEntity;
 import ar.com.avaco.nitrophyl.domain.entities.moldes.Molde;
 
 @Entity
 @Table(name = "PIEZA_MOLDE")
-@SequenceGenerator(name = "PIEZA_MOLDE_SEQ", sequenceName = "PIEZA_MOLDE_SEQ", allocationSize = 1)
 public class PiezaMolde extends AuditableEntity<Long> {
 
 	private static final long serialVersionUID = 8149041860982988369L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "PIEZA_MOLDE_SEQ")
+	@GeneratedValue(generator = "PIEZA_MOLDE_SEQ")
+	@GenericGenerator(name = "PIEZA_MOLDE_SEQ", strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator", parameters = {
+			@org.hibernate.annotations.Parameter(name = "sequence_name", value = "PIEZA_MOLDE_SEQ"),
+			@org.hibernate.annotations.Parameter(name = "initial_value", value = "1"),
+			@org.hibernate.annotations.Parameter(name = "increment_size", value = "1") })
 	@Column(name = "ID_PIEZA_MOLDE", unique = true, nullable = false)
 	private Long id;
 
@@ -48,7 +51,6 @@ public class PiezaMolde extends AuditableEntity<Long> {
 		return clonada;
 	}
 
-	
 	public Long getId() {
 		return id;
 	}
@@ -80,5 +82,5 @@ public class PiezaMolde extends AuditableEntity<Long> {
 	public void setObservaciones(String observaciones) {
 		this.observaciones = observaciones;
 	}
-	
+
 }

@@ -11,7 +11,6 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
@@ -19,12 +18,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.SqlResultSetMapping;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.GenericGenerator;
 
 import ar.com.avaco.nitrophyl.domain.entities.cliente.Cliente;
 import ar.com.avaco.nitrophyl.domain.entities.pieza.PiezaTipo;
@@ -43,20 +42,21 @@ import ar.com.avaco.nitrophyl.ws.dto.MoldeListadoDTO;
 				@ColumnResult(name = "profundidad", type = Integer.class),
 				@ColumnResult(name = "piezas", type = String.class),
 				@ColumnResult(name = "ultimoRegistro", type = String.class),
-				@ColumnResult(name = "totalRows", type = Integer.class)
-			}) 
-		})
+				@ColumnResult(name = "totalRows", type = Integer.class) }) })
 
 @Entity
 @Table(name = "MOLDES")
 @Inheritance(strategy = InheritanceType.JOINED)
-@SequenceGenerator(name = "MOLDES_SEQ", sequenceName = "MOLDES_SEQ", allocationSize = 1)
 public class Molde extends ar.com.avaco.arc.core.domain.Entity<Long> {
 
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "MOLDES_SEQ")
+	@GeneratedValue(generator = "MOLDES_SEQ")
+	@GenericGenerator(name = "MOLDES_SEQ", strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator", parameters = {
+			@org.hibernate.annotations.Parameter(name = "sequence_name", value = "MOLDES_SEQ"),
+			@org.hibernate.annotations.Parameter(name = "initial_value", value = "1"),
+			@org.hibernate.annotations.Parameter(name = "increment_size", value = "1") })
 	@Column(name = "ID_MOLDE", unique = true, nullable = false)
 	private Long id;
 

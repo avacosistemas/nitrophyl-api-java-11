@@ -11,21 +11,24 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 
 @Entity
 @Table(name = "MOLDEFOTO")
 @Inheritance(strategy = InheritanceType.JOINED)
-@SequenceGenerator(name = "MOLDEFOTO_SEQ", sequenceName = "MOLDEFOTO_SEQ", allocationSize = 1)
 public class MoldeFoto extends ar.com.avaco.arc.core.domain.Entity<Long> {
 
 	private static final long serialVersionUID = -1452187713424215163L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "MOLDEFOTO_SEQ")
+	@GeneratedValue(generator = "MOLDEFOTO_SEQ")
+	@GenericGenerator(name = "MOLDEFOTO_SEQ", strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator", parameters = {
+			@org.hibernate.annotations.Parameter(name = "sequence_name", value = "MOLDEFOTO_SEQ"),
+			@org.hibernate.annotations.Parameter(name = "initial_value", value = "1"),
+			@org.hibernate.annotations.Parameter(name = "increment_size", value = "1") })
 	@Column(name = "ID_MOLDE_FOTO", unique = true, nullable = false)
 	private Long id;
 

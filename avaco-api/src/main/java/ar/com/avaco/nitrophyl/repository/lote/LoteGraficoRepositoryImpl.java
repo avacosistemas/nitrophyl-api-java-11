@@ -4,7 +4,7 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 
-import org.hibernate.SQLQuery;
+import org.hibernate.query.NativeQuery;
 import org.springframework.stereotype.Repository;
 
 import ar.com.avaco.arc.core.component.bean.repository.NJBaseRepository;
@@ -19,6 +19,7 @@ public class LoteGraficoRepositoryImpl extends NJBaseRepository<Long, LoteGrafic
 		super(LoteGrafico.class, entityManager);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<LoteGraficoSinArchivoDTO> listGraficoSinArchivo(Long idLote) {
 		String query = " select cast(lg.id_lote_grafico as integer) as id, cast(lg.fecha as date) as fecha, " + 
@@ -26,12 +27,12 @@ public class LoteGraficoRepositoryImpl extends NJBaseRepository<Long, LoteGrafic
 				" left join maquina m on m.id_maquina = lg.id_maquina " + 
 				" where lg.id_lote = :idLote order by lg.fecha desc, m.nombre asc ";
 
-		SQLQuery createSQLQuery = getCurrentSession().createSQLQuery(query)
-				.setResultSetMapping("LoteGraficoSinArchivoDTOMapper");
+		NativeQuery<LoteGraficoSinArchivoDTO> queryNative =
+			    getCurrentSession().createNativeQuery(query).setResultSetMapping("LoteGraficoSinArchivoDTOMapper");
 
-		createSQLQuery.setLong("idLote", idLote);
+		queryNative.setParameter("idLote", idLote);
 
-		List<LoteGraficoSinArchivoDTO> list = createSQLQuery.list();
+		List<LoteGraficoSinArchivoDTO> list = queryNative.list();
 		
 		return list;
 	}

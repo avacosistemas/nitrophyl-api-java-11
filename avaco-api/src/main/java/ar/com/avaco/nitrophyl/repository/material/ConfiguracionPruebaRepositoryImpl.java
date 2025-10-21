@@ -24,8 +24,8 @@ public class ConfiguracionPruebaRepositoryImpl extends NJBaseRepository<Long, Co
 				+ " )  t on t.id_maquina = cp.id_maquina and t.max_value = cp.version "
 				+ " and cp.id_formula = :idFormula ";
 
-		List<ConfiguracionPrueba> list = this.getCurrentSession().createSQLQuery(query)
-				.addEntity(ConfiguracionPrueba.class).setLong("idFormula", idFormula).list();
+		List<ConfiguracionPrueba> list = this.getCurrentSession().createNativeQuery(query, ConfiguracionPrueba.class)
+				.setParameter("idFormula", idFormula).getResultList();
 
 		return list;
 	}
@@ -33,10 +33,10 @@ public class ConfiguracionPruebaRepositoryImpl extends NJBaseRepository<Long, Co
 	@Override
 	public void actualizarConfiguracionesVigentes(List<Long> ids, Long idFormula) {
 
-		this.getCurrentSession().createSQLQuery("update conf_prueba set vigente = false where id_formula = :idFormula")
-			.setLong("idFormula", idFormula).executeUpdate();
+		this.getCurrentSession().createNativeQuery("update conf_prueba set vigente = false where id_formula = :idFormula")
+			.setParameter("idFormula", idFormula).executeUpdate();
 		
-		this.getCurrentSession().createSQLQuery("update conf_prueba set vigente = true where id_conf_prueba in (:ids)")
+		this.getCurrentSession().createNativeQuery("update conf_prueba set vigente = true where id_conf_prueba in (:ids)")
 				.setParameterList("ids", ids).executeUpdate();
 
 	}

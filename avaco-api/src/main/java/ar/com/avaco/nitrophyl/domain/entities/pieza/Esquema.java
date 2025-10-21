@@ -17,19 +17,23 @@ import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 
 import ar.com.avaco.nitrophyl.domain.entities.AuditableEntity;
 
 @Entity
 @Table(name = "ESQUEMA")
-@SequenceGenerator(name = "ESQUEMA_SEQ", sequenceName = "ESQUEMA_SEQ", allocationSize = 1)
 public class Esquema extends AuditableEntity<Long> {
 
 	private static final long serialVersionUID = 4586583639462393466L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ESQUEMA_SEQ")
+	@GeneratedValue(generator = "ESQUEMA_SEQ")
+	@GenericGenerator(name = "ESQUEMA_SEQ", strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator", parameters = {
+			@org.hibernate.annotations.Parameter(name = "sequence_name", value = "ESQUEMA_SEQ"),
+			@org.hibernate.annotations.Parameter(name = "initial_value", value = "1"),
+			@org.hibernate.annotations.Parameter(name = "increment_size", value = "1") })
 	@Column(name = "ID_ESQUEMA", unique = true, nullable = false)
 	private Long id;
 

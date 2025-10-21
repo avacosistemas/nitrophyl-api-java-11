@@ -1,5 +1,6 @@
 package ar.com.avaco.nitrophyl.ws.dto;
 
+import ar.com.avaco.nitrophyl.domain.entities.pieza.TipoStock;
 import ar.com.avaco.ws.rest.dto.DTOAuditableEntity;
 
 public class TipoInsumoDTO extends DTOAuditableEntity<Long> {
@@ -8,6 +9,15 @@ public class TipoInsumoDTO extends DTOAuditableEntity<Long> {
 	private String nombre;
 	private TipoInsumoDTO padre;
 	private Long idPadre;
+	private TipoStock tipoStock;
+
+	public TipoStock getTipoStock() {
+		return tipoStock;
+	}
+
+	public void setTipoStock(TipoStock tipoStock) {
+		this.tipoStock = tipoStock;
+	}
 
 	public Long getId() {
 		return id;

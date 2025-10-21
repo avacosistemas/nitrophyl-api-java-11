@@ -3,19 +3,18 @@ package ar.com.avaco.nitrophyl.domain.entities.cliente;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.GenericGenerator;
 
 /**
  * @author el betazo
@@ -24,13 +23,16 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "CLIENTE")
 @Inheritance(strategy = InheritanceType.JOINED)
-@SequenceGenerator(name = "CLIENTE_SEQ", sequenceName = "CLIENTE_SEQ", allocationSize = 1)
 public class Cliente extends ar.com.avaco.arc.core.domain.Entity<Long> {
 
 	private static final long serialVersionUID = 2843597480559139677L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "CLIENTE_SEQ")
+	@GeneratedValue(generator = "CLIENTE_SEQ")
+	@GenericGenerator(name = "CLIENTE_SEQ", strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator", parameters = {
+			@org.hibernate.annotations.Parameter(name = "sequence_name", value = "CLIENTE_SEQ"),
+			@org.hibernate.annotations.Parameter(name = "initial_value", value = "1"),
+			@org.hibernate.annotations.Parameter(name = "increment_size", value = "1") })
 	@Column(name = "ID_CLIENTE")
 	private Long id;
 
@@ -111,7 +113,7 @@ public class Cliente extends ar.com.avaco.arc.core.domain.Entity<Long> {
 
 	@Column(name = "ACTIVO")
 	private Boolean activo;
-	
+
 	@Column(name = "EMPRESA")
 	@Enumerated(EnumType.STRING)
 	private EmpresaCliente empresa;

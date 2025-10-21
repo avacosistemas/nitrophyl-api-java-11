@@ -41,10 +41,7 @@ public class LoteRestController extends AbstractDTORestController<LoteDTO, Long,
 	@RequestMapping(value = "/lote", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<JSONResponse> list(LoteFilterDTO filter) {
 		List<LoteDTO> listFilter = super.service.listFilter(new LoteFilter(filter));
-		JSONResponse response = new JSONResponse();
-		response.setData(listFilter);
-		response.setStatus(JSONResponse.OK);
-		return new ResponseEntity<JSONResponse>(response, HttpStatus.OK);
+		return OK(listFilter);
 	}
 
 	@RequestMapping(value = "/lotes/autocomplete", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -75,10 +72,7 @@ public class LoteRestController extends AbstractDTORestController<LoteDTO, Long,
 		filter.setIdx("fechaEstado");
 		filter.setExcluirPendientes(false);
 		List<LoteDTO> listFilter = super.service.listFilter(new LoteFilter(filter));
-		JSONResponse response = new JSONResponse();
-		response.setData(listFilter);
-		response.setStatus(JSONResponse.OK);
-		return new ResponseEntity<JSONResponse>(response, HttpStatus.OK);
+		return OK(listFilter);
 	}
 
 	@RequestMapping(value = "/lote/monitor/count", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)

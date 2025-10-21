@@ -6,31 +6,35 @@ import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.GenericGenerator;
 
 import ar.com.avaco.nitrophyl.domain.entities.AuditableEntity;
 
 @Entity
 @Table(name = "INSUMO_TRATADO")
-@SequenceGenerator(name = "INSUMO_TRATADO_SEQ", sequenceName = "INSUMO_TRATADO_SEQ", allocationSize = 1)
 public class InsumoTratado extends AuditableEntity<Long> {
 
 	private static final long serialVersionUID = 797497464400538571L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "INSUMO_TRATADO_SEQ")
+	@GeneratedValue(generator = "INSUMO_TRATADO_SEQ")
+	@GenericGenerator(name = "INSUMO_TRATADO_SEQ", strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator", parameters = {
+			@org.hibernate.annotations.Parameter(name = "sequence_name", value = "INSUMO_TRATADO_SEQ"),
+			@org.hibernate.annotations.Parameter(name = "initial_value", value = "1"),
+			@org.hibernate.annotations.Parameter(name = "increment_size", value = "1") })
 	@Column(name = "ID_INSUMO_TRATADO", unique = true, nullable = false)
 	private Long id;
 
@@ -55,19 +59,91 @@ public class InsumoTratado extends AuditableEntity<Long> {
 	@Column(name = "OBSERVACIONES")
 	private String observaciones;
 
-	@Column(name = "MEDIDA_VALOR")
-	private String medidaValor;
+	/**
+	 * La cantidad de insumos.
+	 */
+	@Column(name = "UNIDADES")
+	private Integer unidades;
 
-	@Column(name = "MEDIDA_OBSERVACIONES")
-	private String medidaObservaciones;
+	/**
+	 * La unidad en que se miden los insumos tratados. DIAMETRO, SUPERFICIE O
+	 * LONGITUD
+	 */
+	@Column(name = "UNIDAD_MEDIDA_INSUMIDA")
+	@Enumerated(EnumType.STRING)
+	private UnidadMedidaInsumida unidadMedida;
+
+	/**
+	 * MM, CM o M
+	 */
+	@Column(name = "UNIDAD_MEDIDA_LONGITUD")
+	@Enumerated(EnumType.STRING)
+	private UnidadMedidaLongitud unidadMedidaLongitud;
+
+	/**
+	 * Puede indicar superficie, metros lineales o diametro.
+	 */
+	@Column(name = "MEDIDA1")
+	private Double medida1;
+
+	/**
+	 * Depende de medida 1 para calcular superficie o algun otro tipo de medida que
+	 * requiera 2 valores. Tendra valor dependiendo de la unidad de medida. Se
+	 * empleara solo para superfiecie
+	 */
+	@Column(name = "MEDIDA2")
+	private Double medida2;
+
+	public Integer getUnidades() {
+		return unidades;
+	}
+
+	public void setUnidades(Integer unidades) {
+		this.unidades = unidades;
+	}
+
+	public Double getMedida1() {
+		return medida1;
+	}
+
+	public void setMedida1(Double medida1) {
+		this.medida1 = medida1;
+	}
+
+	public Double getMedida2() {
+		return medida2;
+	}
+
+	public void setMedida2(Double medida2) {
+		this.medida2 = medida2;
+	}
+
+	public UnidadMedidaInsumida getUnidadMedida() {
+		return unidadMedida;
+	}
+
+	public void setUnidadMedida(UnidadMedidaInsumida unidadMedida) {
+		this.unidadMedida = unidadMedida;
+	}
+
+	public UnidadMedidaLongitud getUnidadMedidaLongitud() {
+		return unidadMedidaLongitud;
+	}
+
+	public void setUnidadMedidaLongitud(UnidadMedidaLongitud unidadMedidaLongitud) {
+		this.unidadMedidaLongitud = unidadMedidaLongitud;
+	}
 
 	public InsumoTratado clonar(String username, Date fechaHora, Pieza pieza) {
 		InsumoTratado clonada = new InsumoTratado();
 		clonada.resetearCreacion(username, fechaHora);
 		clonada.getAdhesivos().addAll(this.adhesivos);
 		clonada.setInsumo(this.insumo);
-		clonada.setMedidaObservaciones(this.medidaObservaciones);
-		clonada.setMedidaValor(this.medidaValor);
+		clonada.setUnidades(this.unidades);
+		clonada.setUnidadMedida(this.unidadMedida);
+		clonada.setUnidadMedidaLongitud(this.unidadMedidaLongitud);
+		clonada.setMedida1(this.medida1);
+		clonada.setMedida2(this.medida2);
 		clonada.setObservaciones(this.observaciones);
 		clonada.setPieza(pieza);
 		clonada.getTratamientos().addAll(this.tratamientos);
@@ -120,22 +196,6 @@ public class InsumoTratado extends AuditableEntity<Long> {
 
 	public void setObservaciones(String observaciones) {
 		this.observaciones = observaciones;
-	}
-
-	public String getMedidaValor() {
-		return medidaValor;
-	}
-
-	public void setMedidaValor(String medidaValor) {
-		this.medidaValor = medidaValor;
-	}
-
-	public String getMedidaObservaciones() {
-		return medidaObservaciones;
-	}
-
-	public void setMedidaObservaciones(String medidaObservaciones) {
-		this.medidaObservaciones = medidaObservaciones;
 	}
 
 }

@@ -11,14 +11,13 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -27,13 +26,16 @@ import ar.com.avaco.nitrophyl.domain.entities.formula.ConfiguracionPrueba;
 
 @Entity
 @Table(name = "ENSAYO")
-@SequenceGenerator(name = "ENSAYO_SEQ", sequenceName = "ENSAYO_SEQ", allocationSize = 1)
 public class Ensayo extends AuditableEntity<Long> {
 
 	private static final long serialVersionUID = 3379140593827986759L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "ENSAYO_SEQ")
+	@GeneratedValue(generator = "ENSAYO_SEQ")
+	@GenericGenerator(name = "ENSAYO_SEQ", strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator", parameters = {
+			@org.hibernate.annotations.Parameter(name = "sequence_name", value = "ENSAYO_SEQ"),
+			@org.hibernate.annotations.Parameter(name = "initial_value", value = "1"),
+			@org.hibernate.annotations.Parameter(name = "increment_size", value = "1") })
 	@Column(name = "ID_ENSAYO", unique = true, nullable = false)
 	private Long id;
 

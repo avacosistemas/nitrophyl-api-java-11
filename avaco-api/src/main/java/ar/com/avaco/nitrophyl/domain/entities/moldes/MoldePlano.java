@@ -7,27 +7,29 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 
 @Entity
 @Table(name = "MOLDEPLANO")
 @Inheritance(strategy = InheritanceType.JOINED)
-@SequenceGenerator(name = "MOLDEPLANO_SEQ", sequenceName = "MOLDEPLANO_SEQ", allocationSize = 1)
 public class MoldePlano extends ar.com.avaco.arc.core.domain.Entity<Long> {
 
 	private static final long serialVersionUID = 1176263407598988058L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "MOLDEPLANO_SEQ")
+	@GeneratedValue(generator = "MOLDEPLANO_SEQ")
+	@GenericGenerator(name = "MOLDEPLANO_SEQ", strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator", parameters = {
+			@org.hibernate.annotations.Parameter(name = "sequence_name", value = "MOLDEPLANO_SEQ"),
+			@org.hibernate.annotations.Parameter(name = "initial_value", value = "1"),
+			@org.hibernate.annotations.Parameter(name = "increment_size", value = "1") })
 	@Column(name = "ID_MOLDE_PLANO", unique = true, nullable = false)
 	private Long id;
 
