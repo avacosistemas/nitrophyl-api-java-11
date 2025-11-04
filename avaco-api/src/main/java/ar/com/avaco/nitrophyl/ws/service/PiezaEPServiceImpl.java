@@ -210,13 +210,17 @@ public class PiezaEPServiceImpl extends CRUDAuditableEPBaseService<Long, PiezaDT
 
 		pieza.setVigente(false);
 
-		Pieza saved = this.service.save(pieza);
+		this.service.save(pieza);
 		
 		if (dto.getCotizacionCliente() != null && dto.getCotizacionFecha() != null) {
 			Cotizacion c = new Cotizacion();
 			c.setFecha(dto.getCotizacionFecha());
 			c.setFechaCreacion(DateUtils.getFechaYHoraActual());
-			c.setObservaciones(dto.getob);t
+			c.setObservaciones(dto.getObservacionesCotizacionCliente());
+			c.setPiezaCliente(piezaCliente);
+			c.setUsuarioCreacion(SecurityContextHolder.getContext().getAuthentication().getName());
+			c.setValor(dto.getCotizacionCliente());
+			this.cotizacionService.save(c);
 		}
 	}
 
