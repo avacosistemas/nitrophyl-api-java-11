@@ -47,7 +47,7 @@ public class PiezaPlano extends AuditableEntity<Long> {
 	private String codigo;
 
 	@Column(name = "REVISION")
-	private Integer revision;
+	private String revision;
 
 	@Column(name = "CLASIFICACION")
 	@Enumerated(EnumType.STRING)
@@ -92,11 +92,11 @@ public class PiezaPlano extends AuditableEntity<Long> {
 		this.codigo = codigo;
 	}
 
-	public Integer getRevision() {
+	public String getRevision() {
 		return revision;
 	}
 
-	public void setRevision(Integer revision) {
+	public void setRevision(String revision) {
 		this.revision = revision;
 	}
 

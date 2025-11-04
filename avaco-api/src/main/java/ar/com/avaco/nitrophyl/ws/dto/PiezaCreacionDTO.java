@@ -44,7 +44,7 @@ public class PiezaCreacionDTO extends DTOEntity<Long> {
 
 	private String planoCodigo;
 
-	private Integer planoRevision;
+	private String planoRevision;
 
 	private String planoClasificacion;
 
@@ -180,11 +180,11 @@ public class PiezaCreacionDTO extends DTOEntity<Long> {
 		this.planoCodigo = planoCodigo;
 	}
 
-	public Integer getPlanoRevision() {
+	public String getPlanoRevision() {
 		return planoRevision;
 	}
 
-	public void setPlanoRevision(Integer planoRevision) {
+	public void setPlanoRevision(String planoRevision) {
 		this.planoRevision = planoRevision;
 	}
 
