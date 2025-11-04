@@ -71,7 +71,6 @@ public class UserRestController extends AbsctractRestController<User, Long, User
 		super.service = userService;
 	}
 
-    @SuppressWarnings("deprecation")
 	@RequestMapping(value = "/users/update/validation/", method = RequestMethod.POST)
     public ResponseEntity<JSONResponse> updateValidation(@RequestBody User user) throws Exception {
     	return super.executeProcess("update-validation", Void -> { this.service.updateValidation(user); return null;});

@@ -29,12 +29,20 @@ public class InsumoEPServiceImpl extends CRUDAuditableEPBaseService<Long, Insumo
 	}
 
 	@Override
+	protected Insumo convertToEntityForSave(InsumoDTO dto) {
+		Insumo entity = this.convertToEntity(dto);
+		entity.setCantidadStock(0D);
+		entity.setUnidadMedidaStock(entity.getTipo().getTipoStock().getUnidadMedida());
+		return entity;
+	}
+	
+	@Override
 	protected Insumo convertToEntity(InsumoDTO dto) {
 		Insumo insumo = new Insumo();
 		insumo.setId(dto.getId());
 		insumo.setNombre(dto.getNombre());
 		insumo.setTipo(tipoInsumoService.get(dto.getIdTipo()));
-
+		
 		// Si tiene asociada una materia prima
 		if (dto.getIdMateriaPrima() != null) {
 			InsumoMateriaPrima imp = new InsumoMateriaPrima();

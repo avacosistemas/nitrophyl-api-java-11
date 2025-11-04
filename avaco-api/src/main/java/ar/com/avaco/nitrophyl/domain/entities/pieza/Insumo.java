@@ -115,4 +115,10 @@ public class Insumo extends AuditableEntity<Long> {
 		this.cantidadStock = cantidadStock;
 	}
 
+	public static Insumo ofId(Long id) {
+		Insumo insumo = new Insumo();
+		insumo.setId(id);
+		return insumo;
+	}
+	
 }

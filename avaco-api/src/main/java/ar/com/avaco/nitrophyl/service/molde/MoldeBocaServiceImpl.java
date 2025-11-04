@@ -4,8 +4,6 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,8 +15,6 @@ import ar.com.avaco.nitrophyl.repository.molde.MoldeBocaRepository;
 @Service("moldeBocaService")
 public class MoldeBocaServiceImpl extends NJBaseService<Long, MoldeBoca, MoldeBocaRepository>
 		implements MoldeBocaService {
-
-	private Logger logger = LogManager.getLogger(getClass());		
 
 	@Resource(name = "moldeBocaRepository")
 	void setClienteRepository(MoldeBocaRepository moldeBocaRepository) {

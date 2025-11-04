@@ -23,18 +23,13 @@ public class MateriaPrimaStockHistorialServiceImpl extends NJBaseService<Long, M
 	public MateriaPrimaStockHistorial save(MateriaPrimaStockHistorial entity) {
 		MateriaPrima materiaPrima = materiaPrimaService.get(entity.getMateriaPrima().getId());
 		Double stockActual = materiaPrima.getCantidadStock();
-		Double nuevoStock = calcularStock(stockActual, entity.getTipo(), entity.getCantidad());
+		Double nuevoStock = TipoMovimientoStock.calcularStock(stockActual, entity.getTipo(), entity.getCantidad());
 		materiaPrima.setCantidadStock(nuevoStock);
-		materiaPrima.setUnidadMedidaStock(entity.getUnidadMedida());
 		super.updateUserDateModificacion(materiaPrima);
 		entity.setMateriaPrima(materiaPrima);
+		entity.setUnidadMedida(materiaPrima.getUnidadMedidaStock());
 		return super.save(entity);
 	}
-	
-	private Double calcularStock(Double stockActual, TipoMovimientoStock tipo, Double cantidad) {
-		return stockActual + (cantidad * tipo.getMultiplicador());
-	}
-	
 	
 	@Resource(name = "materiaPrimaStockHistorialRepository")
 	void setRepository(MateriaPrimaStockHistorialRepository materiaPrimaStockHistorialRepository) {

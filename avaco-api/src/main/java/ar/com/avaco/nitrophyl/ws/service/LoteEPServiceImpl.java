@@ -199,7 +199,7 @@ public class LoteEPServiceImpl extends CRUDEPBaseService<Long, LoteDTO, Lote, Lo
 		}
 
 		PageDTO<ReporteEnsayoLotePorMaquinaDTO> page = new PageDTO<ReporteEnsayoLotePorMaquinaDTO>();
-		List<ReporteEnsayoLotePorMaquinaDTO> values = new ArrayList(map.values());
+		List<ReporteEnsayoLotePorMaquinaDTO> values = new ArrayList<ReporteEnsayoLotePorMaquinaDTO>(map.values());
 
 		values.sort(ReporteEnsayoLotePorMaquinaDTO.getComparator(filtro.getIdx(), filtro.getAsc()));
 

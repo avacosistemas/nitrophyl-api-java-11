@@ -2,6 +2,10 @@ package ar.com.avaco.nitrophyl.ws.dto;
 
 import java.util.Date;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import ar.com.avaco.nitrophyl.domain.entities.pieza.TipoMovimientoStock;
 import ar.com.avaco.nitrophyl.domain.entities.pieza.UnidadMedidaMateriaPrima;
 import ar.com.avaco.ws.rest.dto.DTOAuditableEntity;
@@ -20,6 +24,8 @@ public class MateriaPrimaStockHistorialDTO extends DTOAuditableEntity<Long> {
 
 	private UnidadMedidaMateriaPrima unidadMedida;
 
+	@DateTimeFormat(pattern = "dd/MM/yyyy")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
 	private Date fecha;
 
 	public Long getId() {

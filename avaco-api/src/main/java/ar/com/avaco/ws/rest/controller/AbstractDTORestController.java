@@ -26,7 +26,6 @@ import ar.com.avaco.ws.rest.service.SupplierBusiness;
  * @author avaco
    @Deprecated Usar AbstractAuditableDTORestController
  */
-@Deprecated
 public abstract class AbstractDTORestController<RDTO extends DTOEntity<ID>, ID extends Serializable, T extends CRUDEPService<ID,RDTO>> extends AbstractRestBaseController{	
 
 	private static final Logger LOGGER = LogManager.getLogger(AbstractDTORestController.class);

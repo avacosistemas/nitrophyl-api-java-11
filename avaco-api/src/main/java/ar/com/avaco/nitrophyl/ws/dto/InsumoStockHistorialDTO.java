@@ -2,26 +2,39 @@ package ar.com.avaco.nitrophyl.ws.dto;
 
 import java.util.Date;
 
-import ar.com.avaco.nitrophyl.domain.entities.pieza.Insumo;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import ar.com.avaco.nitrophyl.domain.entities.pieza.TipoMovimientoStock;
+import ar.com.avaco.nitrophyl.domain.entities.pieza.UnidadMedida;
 import ar.com.avaco.ws.rest.dto.DTOAuditableEntity;
 
 public class InsumoStockHistorialDTO extends DTOAuditableEntity<Long> {
 
 	private Long id;
 
-	private Insumo insumo;
+	private Long idInsumo;
 
+	@DateTimeFormat(pattern = "dd/MM/yyyy")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
 	private Date fecha;
 
 	private Double cantidad;
 
 	private TipoMovimientoStock tipo;
 
-	/**
-	 * Campo en el cual se describira como se consumieron o ingresaron los items.
-	 */
 	private String observaciones;
+
+	private UnidadMedida unidadMedida;
+
+	public UnidadMedida getUnidadMedida() {
+		return unidadMedida;
+	}
+
+	public void setUnidadMedida(UnidadMedida unidadMedida) {
+		this.unidadMedida = unidadMedida;
+	}
 
 	public Long getId() {
 		return id;
@@ -31,12 +44,12 @@ public class InsumoStockHistorialDTO extends DTOAuditableEntity<Long> {
 		this.id = id;
 	}
 
-	public Insumo getInsumo() {
-		return insumo;
+	public Long getIdInsumo() {
+		return idInsumo;
 	}
 
-	public void setInsumo(Insumo insumo) {
-		this.insumo = insumo;
+	public void setIdInsumo(Long idInsumo) {
+		this.idInsumo = idInsumo;
 	}
 
 	public Date getFecha() {

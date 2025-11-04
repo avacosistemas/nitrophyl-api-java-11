@@ -47,6 +47,7 @@ public class ReporteLoteConfiguracionClienteRepositoryImpl
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public List<ReporteLoteConfiguracionCliente> findConfiguracionesByClienteIdFormulaId(Long idFormula,
 			Long idCliente) {
 		Criteria criteria = getCurrentSession().createCriteria(ReporteLoteConfiguracionCliente.class);
@@ -55,7 +56,7 @@ public class ReporteLoteConfiguracionClienteRepositoryImpl
 		disjunction.add(Restrictions.eqOrIsNull("cliente.id", idCliente));
 		disjunction.add(Restrictions.isNull("cliente"));
 		criteria.add(disjunction);
-		return criteria.list();
+		return (List<ReporteLoteConfiguracionCliente>) criteria.list();
 	}
 
 }

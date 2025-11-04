@@ -18,4 +18,8 @@ public enum TipoMovimientoStock {
 		return multiplicador;
 	}
 	
+	public static Double calcularStock(Double stockActual, TipoMovimientoStock tipo, Double cantidad) {
+		return (stockActual != null ? stockActual : 0) + (cantidad * tipo.getMultiplicador());
+	}
+	
 }

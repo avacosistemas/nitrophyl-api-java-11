@@ -1,6 +1,6 @@
 package ar.com.avaco.nitrophyl.ws.dto;
 
-public abstract class SortPageDTO {
+public class SortPageDTO {
 
 	private Integer rows;
 

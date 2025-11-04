@@ -36,9 +36,9 @@ public class TipoInsumoEPServiceImpl extends
 		TipoInsumo entity = super.convertToEntity(dto);
 		
 		// Si es una categoria dentro de otra, tomo el tipo del padre.
-		if (dto.getIdPadre() != null) {
-			TipoStock tipoStock = this.service.get(dto.getIdPadre()).getTipoStock();
-			entity.setPadre(TipoInsumo.ofId(dto.getIdPadre()));
+		if (dto.getPadre() != null) {
+			TipoStock tipoStock = this.service.get(dto.getPadre().getId()).getTipoStock();
+			entity.setPadre(TipoInsumo.ofId(dto.getPadre().getId()));
 			entity.setTipoStock(tipoStock);
 		} else {
 			// Si es cabecera, deberia venir en el dto.

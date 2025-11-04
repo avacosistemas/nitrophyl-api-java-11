@@ -32,7 +32,7 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
 	@ExceptionHandler({ DataIntegrityViolationException.class })
 	public ResponseEntity<Object> handleBadRequest(final DataIntegrityViolationException ex, final WebRequest request) {
 		logger.warn("Data integrity violation at {}: {}", request.getDescription(false), ex.getMessage(), ex);
-		final String bodyOfResponse = "This should be application specific";
+		final String bodyOfResponse = ex.getMessage();
 		return handleExceptionInternal(ex, bodyOfResponse, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
 	}
 
@@ -40,7 +40,7 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
 	protected ResponseEntity<Object> handleHttpMessageNotReadable(final HttpMessageNotReadableException ex,
 			final HttpHeaders headers, final HttpStatus status, final WebRequest request) {
 		logger.warn("Malformed JSON request at {}: {}", request.getDescription(false), ex.getMessage(), ex);
-		final String bodyOfResponse = "Invalid or unreadable JSON in request body";
+		final String bodyOfResponse = ex.getMessage();
 		return handleExceptionInternal(ex, bodyOfResponse, headers, HttpStatus.BAD_REQUEST, request);
 	}
 
@@ -48,7 +48,7 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
 	protected ResponseEntity<Object> handleMethodArgumentNotValid(final MethodArgumentNotValidException ex,
 			final HttpHeaders headers, final HttpStatus status, final WebRequest request) {
 		logger.warn("Validation failed for request {}: {}", request.getDescription(false), ex.getMessage(), ex);
-		final String bodyOfResponse = "Validation failed for request parameters";
+		final String bodyOfResponse = ex.getMessage();
 		return handleExceptionInternal(ex, bodyOfResponse, headers, HttpStatus.BAD_REQUEST, request);
 	}
 
@@ -76,7 +76,7 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
 	@ExceptionHandler({ InvalidDataAccessApiUsageException.class, DataAccessException.class })
 	protected ResponseEntity<Object> handleConflict(final RuntimeException ex, final WebRequest request) {
 		logger.error("Data access conflict at {}: {}", request.getDescription(false), ex.getMessage(), ex);
-		final String bodyOfResponse = "This should be application specific";
+		final String bodyOfResponse = ex.getMessage();
 		return handleExceptionInternal(ex, bodyOfResponse, new HttpHeaders(), HttpStatus.CONFLICT, request);
 	}
 
@@ -87,7 +87,7 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
 	public ResponseEntity<Object> handleInternal(final RuntimeException ex, final WebRequest request) {
 		// 🔴 Log completo con stacktrace y detalle del request
 		logger.error("Internal server error at {}: {}", request.getDescription(false), ex.getMessage(), ex);
-		final String bodyOfResponse = "This should be application specific";
+		final String bodyOfResponse = ex.getMessage();
 		return handleExceptionInternal(ex, bodyOfResponse, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR,
 				request);
 	}

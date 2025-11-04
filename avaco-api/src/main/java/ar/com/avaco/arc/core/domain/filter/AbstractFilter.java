@@ -5,6 +5,10 @@ import java.util.List;
 
 public abstract class AbstractFilter {
 
+	protected List<List<FilterData>> orFilterData = new ArrayList<List<FilterData>>();
+
+	protected List<FilterData> filterData = new ArrayList<FilterData>();
+
 	protected Integer rows;
 
 	protected Integer first;
@@ -27,11 +31,11 @@ public abstract class AbstractFilter {
 	}
 
 	public List<FilterData> getFilterDatas() {
-		return new ArrayList<FilterData>();
+		return filterData;
 	}
 
 	public List<List<FilterData>> getOrFilterDatas() {
-		return new ArrayList<List<FilterData>>();
+		return orFilterData;
 	}
 
 	public Integer getRows() {
