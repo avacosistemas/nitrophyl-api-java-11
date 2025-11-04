@@ -8,6 +8,7 @@ import java.util.Set;
 
 import javax.annotation.Resource;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,6 +20,7 @@ import ar.com.avaco.nitrophyl.domain.entities.formula.Formula;
 import ar.com.avaco.nitrophyl.domain.entities.moldes.Molde;
 import ar.com.avaco.nitrophyl.domain.entities.moldes.PlanoClasificacion;
 import ar.com.avaco.nitrophyl.domain.entities.pieza.Bombeo;
+import ar.com.avaco.nitrophyl.domain.entities.pieza.Cotizacion;
 import ar.com.avaco.nitrophyl.domain.entities.pieza.Pieza;
 import ar.com.avaco.nitrophyl.domain.entities.pieza.PiezaCliente;
 import ar.com.avaco.nitrophyl.domain.entities.pieza.PiezaEspesor;
@@ -34,6 +36,7 @@ import ar.com.avaco.nitrophyl.domain.entities.pieza.Vulcanizacion;
 import ar.com.avaco.nitrophyl.service.cliente.ClienteService;
 import ar.com.avaco.nitrophyl.service.formula.FormulaService;
 import ar.com.avaco.nitrophyl.service.molde.MoldeService;
+import ar.com.avaco.nitrophyl.service.pieza.CotizacionService;
 import ar.com.avaco.nitrophyl.service.pieza.PiezaService;
 import ar.com.avaco.nitrophyl.service.pieza.PiezaTipoService;
 import ar.com.avaco.nitrophyl.ws.dto.BombeoDTO;
@@ -58,14 +61,21 @@ public class PiezaEPServiceImpl extends CRUDAuditableEPBaseService<Long, PiezaDT
 		super(Pieza.class, PiezaDTO.class);
 	}
 
+	@Autowired
 	private ClienteService clienteService;
 
+	@Autowired
 	private FormulaService formulaService;
 
+	@Autowired
 	private MoldeService moldeService;
 
+	@Autowired
 	private PiezaTipoService piezaTipoService;
 
+	@Autowired
+	private CotizacionService cotizacionService;
+	
 	@Override
 	public PageDTO<PiezaGrillaDTO> listGrilla(PiezaFilterDTO filter) {
 		List<PiezaGrillaDTO> listGrilla = this.service.listGrilla(filter);
@@ -200,7 +210,14 @@ public class PiezaEPServiceImpl extends CRUDAuditableEPBaseService<Long, PiezaDT
 
 		pieza.setVigente(false);
 
-		this.service.save(pieza);
+		Pieza saved = this.service.save(pieza);
+		
+		if (dto.getCotizacionCliente() != null && dto.getCotizacionFecha() != null) {
+			Cotizacion c = new Cotizacion();
+			c.setFecha(dto.getCotizacionFecha());
+			c.setFechaCreacion(DateUtils.getFechaYHoraActual());
+			c.setObservaciones(dto.getob);t
+		}
 	}
 
 	@Override
@@ -217,26 +234,6 @@ public class PiezaEPServiceImpl extends CRUDAuditableEPBaseService<Long, PiezaDT
 	@Resource(name = "piezaService")
 	protected void setService(PiezaService service) {
 		this.service = service;
-	}
-
-	@Resource(name = "formulaService")
-	public void setFormulaService(FormulaService formulaService) {
-		this.formulaService = formulaService;
-	}
-
-	@Resource(name = "moldeService")
-	public void setMoldeService(MoldeService moldeService) {
-		this.moldeService = moldeService;
-	}
-
-	@Resource(name = "piezaTipoService")
-	public void setPiezaTipoService(PiezaTipoService piezaTipoService) {
-		this.piezaTipoService = piezaTipoService;
-	}
-
-	@Resource(name = "clienteService")
-	public void setClienteService(ClienteService clienteService) {
-		this.clienteService = clienteService;
 	}
 
 	@Override

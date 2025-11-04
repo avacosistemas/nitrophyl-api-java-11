@@ -4,7 +4,12 @@
 package ar.com.avaco.nitrophyl.ws.dto;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+
+import org.springframework.format.annotation.DateTimeFormat;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import ar.com.avaco.ws.rest.dto.DTOEntity;
 
@@ -51,6 +56,14 @@ public class PiezaCreacionDTO extends DTOEntity<Long> {
 	private String planoObservaciones;
 
 	private List<EspesorDTO> espesores = new ArrayList<>();
+
+	private Double cotizacionCliente;
+
+	@DateTimeFormat(pattern = "dd/MM/yyyy")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
+	private Date cotizacionFecha;
+
+	private String cotizacionObservaciones;
 
 	public List<EspesorDTO> getEspesores() {
 		return espesores;
@@ -218,6 +231,30 @@ public class PiezaCreacionDTO extends DTOEntity<Long> {
 
 	public void setObservacionesMolde(String observacionesMolde) {
 		this.observacionesMolde = observacionesMolde;
+	}
+
+	public Double getCotizacionCliente() {
+		return cotizacionCliente;
+	}
+
+	public void setCotizacionCliente(Double cotizacionCliente) {
+		this.cotizacionCliente = cotizacionCliente;
+	}
+
+	public Date getCotizacionFecha() {
+		return cotizacionFecha;
+	}
+
+	public void setCotizacionFecha(Date cotizacionFecha) {
+		this.cotizacionFecha = cotizacionFecha;
+	}
+
+	public String getCotizacionObservaciones() {
+		return cotizacionObservaciones;
+	}
+
+	public void setCotizacionObservaciones(String cotizacionObservaciones) {
+		this.cotizacionObservaciones = cotizacionObservaciones;
 	}
 
 }
