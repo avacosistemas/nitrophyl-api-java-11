@@ -41,6 +41,9 @@ public class FormulaEPServiceImpl extends CRUDEPBaseService<Long, FormulaDTO, Fo
 		formula.setNombre(dto.getNombre());
 		formula.setNorma(dto.getNorma());
 		formula.setObservaciones(dto.getObservaciones());
+		formula.setDurezaMinima(dto.getDurezaMinima());
+		formula.setDurezaMaxima(dto.getDurezaMaxima());
+		formula.setUnidadDureza(dto.getUnidadDureza());
 		return formula;
 	}
 
@@ -55,6 +58,9 @@ public class FormulaEPServiceImpl extends CRUDEPBaseService<Long, FormulaDTO, Fo
 		dto.setFecha(DateUtils.toStringFecha(entity.getFecha()));
 		dto.setNorma(entity.getNorma());
 		dto.setObservaciones(entity.getObservaciones());
+		dto.setDurezaMinima(entity.getDurezaMinima());
+		dto.setDurezaMaxima(entity.getDurezaMaxima());
+		dto.setUnidadDureza(entity.getUnidadDureza());
 		RevisionParametros revision = entity.getRevision();
 		if (revision != null) {
 			RevisionParametrosDTO rpdto = new RevisionParametrosDTO();

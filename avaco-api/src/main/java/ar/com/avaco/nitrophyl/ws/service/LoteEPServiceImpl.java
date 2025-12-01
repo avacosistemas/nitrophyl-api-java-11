@@ -14,6 +14,7 @@ import javax.annotation.Resource;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.itextpdf.text.DocumentException;
@@ -27,11 +28,13 @@ import ar.com.avaco.nitrophyl.domain.entities.formula.Formula;
 import ar.com.avaco.nitrophyl.domain.entities.lote.EstadoLote;
 import ar.com.avaco.nitrophyl.domain.entities.lote.Lote;
 import ar.com.avaco.nitrophyl.domain.entities.moldes.LoteGrafico;
+import ar.com.avaco.nitrophyl.domain.entities.reporte.RegistroEnvioInformeCalidad;
 import ar.com.avaco.nitrophyl.domain.entities.reporte.ReporteLoteConfiguracionCliente;
 import ar.com.avaco.nitrophyl.service.cliente.ClienteService;
 import ar.com.avaco.nitrophyl.service.formula.FormulaService;
 import ar.com.avaco.nitrophyl.service.lote.LoteGraficoService;
 import ar.com.avaco.nitrophyl.service.lote.LoteService;
+import ar.com.avaco.nitrophyl.service.lote.RegistroEnvioInformeCalidadService;
 import ar.com.avaco.nitrophyl.service.reporte.ReporteLoteConfiguracionClienteService;
 import ar.com.avaco.nitrophyl.ws.dto.ArchivoDTO;
 import ar.com.avaco.nitrophyl.ws.dto.LoteDTO;
@@ -60,6 +63,9 @@ public class LoteEPServiceImpl extends CRUDEPBaseService<Long, LoteDTO, Lote, Lo
 
 	private ReporteLoteConfiguracionClienteService reporteConfiguracionService;
 
+	@Autowired
+	private RegistroEnvioInformeCalidadService registroEnvioService;
+	
 	@Override
 	public List<LoteDTO> listFilter(AbstractFilter abstractFilter) {
 		List<LoteDTO> lotes = super.listFilter(abstractFilter);
@@ -310,8 +316,20 @@ public class LoteEPServiceImpl extends CRUDEPBaseService<Long, LoteDTO, Lote, Lo
 			}
 
 			this.mailSenderSMTPService.sendMail("informes@nitrophyl.com.ar", correos.toArray(new String[0]), null, subject, msg, archivos);  
-//			this.mailSenderSMTPService.sendMail("informes@nitrophyl.com.ar", correos.toArray(), subject, msg, archivos);
 
+			RegistroEnvioInformeCalidad registro = new RegistroEnvioInformeCalidad();
+			registro.setCliente(cliente);
+			registro.setEmailEnviado(String.join(" ,", correos));
+			registro.setFechaActualizacion(DateUtils.getFechaYHoraActual());
+			registro.setFechaCreacion(DateUtils.getFechaYHoraActual());
+			registro.setLote(lote);
+			registro.setObservacionesInforme(observacionesInforme);
+			registro.setObservacionesMail(observaciones);
+			registro.setUsuarioActualizacion(SecurityContextHolder.getContext().getAuthentication().getName());
+			registro.setUsuarioCreacion(SecurityContextHolder.getContext().getAuthentication().getName());
+			
+			this.registroEnvioService.save(registro);
+			
 			fosReporte.close();
 
 			if (fosGrafico != null)

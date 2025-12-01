@@ -1,5 +1,6 @@
 package ar.com.avaco.nitrophyl.ws.dto;
 
+import ar.com.avaco.nitrophyl.domain.entities.pieza.UnidadDureza;
 import ar.com.avaco.ws.rest.dto.DTOEntity;
 
 public class FormulaDTO extends DTOEntity<Long> {
@@ -13,6 +14,33 @@ public class FormulaDTO extends DTOEntity<Long> {
 	private String norma;
 	private String observaciones;
 	private RevisionParametrosDTO rpdto;
+	private Double durezaMinima;
+	private Double durezaMaxima;
+	private UnidadDureza unidadDureza;
+
+	public Double getDurezaMinima() {
+		return durezaMinima;
+	}
+
+	public void setDurezaMinima(Double durezaMinima) {
+		this.durezaMinima = durezaMinima;
+	}
+
+	public Double getDurezaMaxima() {
+		return durezaMaxima;
+	}
+
+	public void setDurezaMaxima(Double durezaMaxima) {
+		this.durezaMaxima = durezaMaxima;
+	}
+
+	public UnidadDureza getUnidadDureza() {
+		return unidadDureza;
+	}
+
+	public void setUnidadDureza(UnidadDureza unidadDureza) {
+		this.unidadDureza = unidadDureza;
+	}
 
 	public String getNorma() {
 		return norma;

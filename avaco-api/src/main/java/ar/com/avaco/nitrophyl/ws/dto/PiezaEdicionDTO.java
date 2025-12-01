@@ -7,7 +7,6 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import ar.com.avaco.nitrophyl.domain.entities.pieza.UnidadDureza;
 import ar.com.avaco.ws.rest.dto.DTOEntity;
 
 public class PiezaEdicionDTO extends DTOEntity<Long> {
@@ -21,12 +20,6 @@ public class PiezaEdicionDTO extends DTOEntity<Long> {
 	private String codigo;
 
 	private String nombreFormula;
-
-	private Double durezaMinima;
-
-	private Double durezaMaxima;
-
-	private UnidadDureza unidadDureza;
 
 	private Double pesoCrudo;
 
@@ -61,6 +54,16 @@ public class PiezaEdicionDTO extends DTOEntity<Long> {
 	private String desmoldante;
 
 	private String postCura;
+
+	private String hojaProceso;
+
+	public String getHojaProceso() {
+		return hojaProceso;
+	}
+
+	public void setHojaProceso(String hojaProceso) {
+		this.hojaProceso = hojaProceso;
+	}
 
 	public Long getId() {
 		return id;
@@ -100,30 +103,6 @@ public class PiezaEdicionDTO extends DTOEntity<Long> {
 
 	public void setNombreFormula(String nombreFormula) {
 		this.nombreFormula = nombreFormula;
-	}
-
-	public Double getDurezaMinima() {
-		return durezaMinima;
-	}
-
-	public void setDurezaMinima(Double durezaMinima) {
-		this.durezaMinima = durezaMinima;
-	}
-
-	public Double getDurezaMaxima() {
-		return durezaMaxima;
-	}
-
-	public void setDurezaMaxima(Double durezaMaxima) {
-		this.durezaMaxima = durezaMaxima;
-	}
-
-	public UnidadDureza getUnidadDureza() {
-		return unidadDureza;
-	}
-
-	public void setUnidadDureza(UnidadDureza unidadDureza) {
-		this.unidadDureza = unidadDureza;
 	}
 
 	public Double getPesoCrudo() {

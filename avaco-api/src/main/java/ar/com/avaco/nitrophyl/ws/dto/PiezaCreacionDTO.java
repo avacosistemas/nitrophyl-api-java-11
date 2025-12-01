@@ -31,12 +31,6 @@ public class PiezaCreacionDTO extends DTOEntity<Long> {
 
 	private Long idFormula;//
 
-	private Double durezaMinima; //
-
-	private Double durezaMaxima; //
-
-	private String unidadDureza; //
-
 	private Double pesoCrudo;//
 
 	private String observacionesPesoCrudo;//
@@ -64,6 +58,16 @@ public class PiezaCreacionDTO extends DTOEntity<Long> {
 	private Date cotizacionFecha;
 
 	private String observacionesCotizacionCliente;
+
+	private String hojaProceso;
+
+	public String getHojaProceso() {
+		return hojaProceso;
+	}
+
+	public void setHojaProceso(String hojaProceso) {
+		this.hojaProceso = hojaProceso;
+	}
 
 	public List<EspesorDTO> getEspesores() {
 		return espesores;
@@ -135,30 +139,6 @@ public class PiezaCreacionDTO extends DTOEntity<Long> {
 
 	public void setCodigo(String codigo) {
 		this.codigo = codigo;
-	}
-
-	public Double getDurezaMinima() {
-		return durezaMinima;
-	}
-
-	public void setDurezaMinima(Double durezaMinima) {
-		this.durezaMinima = durezaMinima;
-	}
-
-	public Double getDurezaMaxima() {
-		return durezaMaxima;
-	}
-
-	public void setDurezaMaxima(Double durezaMaxima) {
-		this.durezaMaxima = durezaMaxima;
-	}
-
-	public String getUnidadDureza() {
-		return unidadDureza;
-	}
-
-	public void setUnidadDureza(String unidadDureza) {
-		this.unidadDureza = unidadDureza;
 	}
 
 	public Double getPesoCrudo() {

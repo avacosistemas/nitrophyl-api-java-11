@@ -4,6 +4,8 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -16,6 +18,8 @@ import javax.persistence.Table;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.GenericGenerator;
+
+import ar.com.avaco.nitrophyl.domain.entities.pieza.UnidadDureza;
 
 @Entity
 @Table(name = "FORMULA")
@@ -63,6 +67,40 @@ public class Formula extends ar.com.avaco.arc.core.domain.Entity<Long> {
 	@JoinColumn(name = "ID_REV_PARAM")
 	@Fetch(FetchMode.JOIN)
 	private RevisionParametros revision;
+
+	@Column(name = "DUREZA_MIN")
+	private Double durezaMinima;
+
+	@Column(name = "DUREZA_MAX")
+	private Double durezaMaxima;
+
+	@Column(name = "DUREZA_UNIDAD")
+	@Enumerated(EnumType.STRING)
+	private UnidadDureza unidadDureza;
+
+	public Double getDurezaMinima() {
+		return durezaMinima;
+	}
+
+	public void setDurezaMinima(Double durezaMinima) {
+		this.durezaMinima = durezaMinima;
+	}
+
+	public Double getDurezaMaxima() {
+		return durezaMaxima;
+	}
+
+	public void setDurezaMaxima(Double durezaMaxima) {
+		this.durezaMaxima = durezaMaxima;
+	}
+
+	public UnidadDureza getUnidadDureza() {
+		return unidadDureza;
+	}
+
+	public void setUnidadDureza(UnidadDureza unidadDureza) {
+		this.unidadDureza = unidadDureza;
+	}
 
 	public Long getId() {
 		return id;

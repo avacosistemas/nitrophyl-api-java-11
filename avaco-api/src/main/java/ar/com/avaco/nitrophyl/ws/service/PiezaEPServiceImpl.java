@@ -31,7 +31,6 @@ import ar.com.avaco.nitrophyl.domain.entities.pieza.PiezaTipo;
 import ar.com.avaco.nitrophyl.domain.entities.pieza.Precalentamiento;
 import ar.com.avaco.nitrophyl.domain.entities.pieza.Proceso;
 import ar.com.avaco.nitrophyl.domain.entities.pieza.Terminacion;
-import ar.com.avaco.nitrophyl.domain.entities.pieza.UnidadDureza;
 import ar.com.avaco.nitrophyl.domain.entities.pieza.Vulcanizacion;
 import ar.com.avaco.nitrophyl.service.cliente.ClienteService;
 import ar.com.avaco.nitrophyl.service.formula.FormulaService;
@@ -141,10 +140,6 @@ public class PiezaEPServiceImpl extends CRUDAuditableEPBaseService<Long, PiezaDT
 		PiezaFormula detalle = new PiezaFormula();
 		detalle.setFormula(formula);
 
-		detalle.setDurezaMinima(dto.getDurezaMinima());
-		detalle.setDurezaMaxima(dto.getDurezaMaxima());
-		detalle.setUnidadDureza(UnidadDureza.valueOf(dto.getUnidadDureza()));
-
 		if (dto.getEspesores().size() > 0) {
 			dto.getEspesores().forEach(espesor -> {
 				PiezaEspesor e = new PiezaEspesor();
@@ -173,17 +168,20 @@ public class PiezaEPServiceImpl extends CRUDAuditableEPBaseService<Long, PiezaDT
 		pm.setPieza(pieza);
 		pieza.getMoldes().add(pm);
 
-		PiezaPlano plano = new PiezaPlano();
-		plano.setArchivo(dto.getPlanoArchivo());
-		plano.setClasificacion(PlanoClasificacion.valueOf(dto.getPlanoClasificacion()));
-		plano.setCodigo(dto.getPlanoCodigo());
-		plano.setFechaCreacion(fechaYHoraActual);
-		plano.setObservaciones(dto.getPlanoObservaciones());
-		plano.setRevision(dto.getPlanoRevision());
-		plano.setUsuarioCreacion(username);
-		plano.setPieza(pieza);
-		pieza.getPlanos().add(plano);
-
+		
+		if (dto.getPlanoArchivo() != null) {
+			PiezaPlano plano = new PiezaPlano();
+			plano.setArchivo(dto.getPlanoArchivo());
+			plano.setClasificacion(PlanoClasificacion.valueOf(dto.getPlanoClasificacion()));
+			plano.setCodigo(dto.getPlanoCodigo());
+			plano.setFechaCreacion(fechaYHoraActual);
+			plano.setObservaciones(dto.getPlanoObservaciones());
+			plano.setRevision(dto.getPlanoRevision());
+			plano.setUsuarioCreacion(username);
+			plano.setPieza(pieza);
+			pieza.getPlanos().add(plano);
+		}
+		
 		Cliente cliente = this.clienteService.get(dto.getIdCliente());
 
 		PiezaCliente piezaCliente = new PiezaCliente();
@@ -198,6 +196,8 @@ public class PiezaEPServiceImpl extends CRUDAuditableEPBaseService<Long, PiezaDT
 		Terminacion terminacion = new Terminacion();
 		Proceso proceso = new Proceso();
 
+		proceso.setHojaProceso(dto.getHojaProceso());
+		
 		terminacion.setProceso(proceso);
 		proceso.setTerminacion(terminacion);
 		pieza.setProceso(proceso);
@@ -250,9 +250,6 @@ public class PiezaEPServiceImpl extends CRUDAuditableEPBaseService<Long, PiezaDT
 		dto.setTipo(pieza.getTipo().getNombre());
 		dto.setCodigo(pieza.getCodigo());
 		dto.setNombreFormula(pieza.getDetalleFormula().getFormula().getNombre());
-		dto.setDurezaMinima(pieza.getDetalleFormula().getDurezaMinima());
-		dto.setDurezaMaxima(pieza.getDetalleFormula().getDurezaMaxima());
-		dto.setUnidadDureza(pieza.getDetalleFormula().getUnidadDureza());
 
 		pieza.getEspesores().forEach(espesor -> {
 			EspesorDTO e = new EspesorDTO();
@@ -294,6 +291,8 @@ public class PiezaEPServiceImpl extends CRUDAuditableEPBaseService<Long, PiezaDT
 		dto.setDesmoldante(pieza.getProceso().getDesmoldante());
 		dto.setPostCura(pieza.getProceso().getPostCura());
 
+		dto.setHojaProceso(pieza.getProceso().getHojaProceso());
+		
 		return dto;
 
 	}
@@ -305,8 +304,6 @@ public class PiezaEPServiceImpl extends CRUDAuditableEPBaseService<Long, PiezaDT
 		Date fechaYHoraActual = DateUtils.getFechaYHoraActual();
 
 		Pieza pieza = this.service.get(idPieza);
-		pieza.getDetalleFormula().setDurezaMaxima(piezaFormula.getDurezaMaxima());
-		pieza.getDetalleFormula().setDurezaMinima(piezaFormula.getDurezaMinima());
 
 		Set<PiezaEspesor> espesoresActualizado = new HashSet<>();
 
@@ -334,10 +331,10 @@ public class PiezaEPServiceImpl extends CRUDAuditableEPBaseService<Long, PiezaDT
 
 		pieza.getDetalleFormula().setObservacionesPesoCrudo(piezaFormula.getObservacionesPesoCrudo());
 		pieza.getDetalleFormula().setPesoCrudo(piezaFormula.getPesoCrudo());
-		pieza.getDetalleFormula().setUnidadDureza(piezaFormula.getUnidadDureza());
 		pieza.setObservacionesRevision(piezaFormula.getObservacionesRevision());
 		pieza.setUsuarioActualizacion(usuario);
 		pieza.setFechaActualizacion(fechaYHoraActual);
+		pieza.getProceso().setHojaProceso(piezaFormula.getHojaProceso());
 		this.service.update(pieza);
 	}
 

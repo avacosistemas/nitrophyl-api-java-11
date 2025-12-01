@@ -17,6 +17,16 @@ public class ProcesoDTO extends DTOAuditableEntity<Long> {
 
 	private String postCura;
 
+	private String hojaProceso;
+	
+	public String getHojaProceso() {
+		return hojaProceso;
+	}
+
+	public void setHojaProceso(String hojaProceso) {
+		this.hojaProceso = hojaProceso;
+	}
+
 	public Long getId() {
 		return id;
 	}

@@ -39,6 +39,12 @@ public class Proceso extends AuditableEntity<Long> {
 	@JoinColumn(name = "ID_PROCESO")
 	private Pieza pieza;
 
+	/**
+	 * Codigo de hoja de proceso.
+	 */
+	@Column(name = "HOJA_PROCESO", nullable = false)
+	private String hojaProceso;
+
 	@Embedded
 	private Precalentamiento precalentamiento = new Precalentamiento();
 
@@ -158,6 +164,14 @@ public class Proceso extends AuditableEntity<Long> {
 
 	public void setPieza(Pieza pieza) {
 		this.pieza = pieza;
+	}
+
+	public String getHojaProceso() {
+		return hojaProceso;
+	}
+
+	public void setHojaProceso(String hojaProceso) {
+		this.hojaProceso = hojaProceso;
 	}
 
 	public static Proceso ofId(Long id) {

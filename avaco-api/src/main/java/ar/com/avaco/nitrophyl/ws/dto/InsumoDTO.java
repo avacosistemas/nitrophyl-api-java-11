@@ -18,6 +18,16 @@ public class InsumoDTO extends DTOAuditableEntity<Long> {
 
 	private Double cantidadMateriaPrima;
 
+	private String observaciones;
+
+	public String getObservaciones() {
+		return observaciones;
+	}
+
+	public void setObservaciones(String observaciones) {
+		this.observaciones = observaciones;
+	}
+
 	public String getMateriaPrimaNombre() {
 		return materiaPrimaNombre;
 	}

@@ -72,11 +72,22 @@ public class FormulaRestController extends AbstractDTORestController<FormulaDTO,
 		return new ResponseEntity<JSONResponse>(response, HttpStatus.OK);
 	}
 
+	@RequestMapping(value = "/formula/clonar/{idFormula}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<JSONResponse> clonar(@PathVariable("idFormula") Long idFormula,
+			@RequestBody FormulaDTO formulaDTO) throws BusinessException {
+		formulaDTO.setId(idFormula);
+		FormulaDTO cloned = this.service.clone(formulaDTO);
+		JSONResponse response = new JSONResponse();
+		response.setData(cloned);
+		response.setStatus(JSONResponse.OK);
+		return new ResponseEntity<JSONResponse>(response, HttpStatus.OK);
+	}
+	
 	@RequestMapping(value = "/formula/{idFormula}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<JSONResponse> update(@PathVariable("idFormula") Long idFormula,
 			@RequestBody FormulaDTO formulaDTO) throws BusinessException {
 		formulaDTO.setId(idFormula);
-		FormulaDTO cloned = this.service.clone(formulaDTO);
+		FormulaDTO cloned = this.service.update(formulaDTO);
 		JSONResponse response = new JSONResponse();
 		response.setData(cloned);
 		response.setStatus(JSONResponse.OK);

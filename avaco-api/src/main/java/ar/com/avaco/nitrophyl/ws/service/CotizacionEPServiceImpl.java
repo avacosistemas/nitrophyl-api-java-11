@@ -65,6 +65,7 @@ public class CotizacionEPServiceImpl extends
 		Cotizacion cotizacion = new Cotizacion();
 		cotizacion.setFecha(dto.getFecha());
 		cotizacion.setObservaciones(dto.getObservaciones());
+		cotizacion.setValor(dto.getValor());
 
 		PiezaCliente piezaCliente = pcService.getByPiezaCliente(dto.getIdCliente(), dto.getIdPieza());
 		if (piezaCliente == null) {
@@ -77,7 +78,6 @@ public class CotizacionEPServiceImpl extends
 		}
 		cotizacion.setPiezaCliente(piezaCliente);
 
-		cotizacion.setValor(dto.getValor());
 		return cotizacion;
 	}
 
