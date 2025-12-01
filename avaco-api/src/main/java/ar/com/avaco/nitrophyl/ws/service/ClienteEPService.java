@@ -26,4 +26,6 @@ public interface ClienteEPService extends CRUDEPService<Long, ClienteDTO> {
 
 	String getCorreoInformes(Long idCliente);
 
+	void deleteContacto(Long idContactoCliente);
+
 }

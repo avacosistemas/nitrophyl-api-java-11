@@ -212,4 +212,9 @@ public class ClienteServiceImpl extends NJBaseService<Long, Cliente, ClienteRepo
 		this.repository = clienteRepository;
 	}
 
+	@Override
+	public void deleteContacto(Long idContactoCliente) {
+		this.contactoRepository.deleteById(idContactoCliente);
+	}
+
 }

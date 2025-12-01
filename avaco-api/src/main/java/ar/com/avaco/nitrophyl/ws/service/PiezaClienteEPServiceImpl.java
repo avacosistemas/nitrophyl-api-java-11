@@ -30,6 +30,8 @@ public class PiezaClienteEPServiceImpl
 		dto.setIdCliente(entity.getCliente().getId());
 		dto.setIdPieza(entity.getPieza().getId());
 		dto.setNombreCliente(entity.getCliente().getNombre());
+		dto.setDenominacion(entity.getPieza().getDenominacion());
+		dto.setCodigo(entity.getPieza().getCodigo());
 		CotizacionDTO cotizacionVigente = this.cotizacionEPService.getCotizacionVigente(dto.getId());
 		if (cotizacionVigente != null) {
 			dto.setCotizacion(cotizacionVigente.getValor());

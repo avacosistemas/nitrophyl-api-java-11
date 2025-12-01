@@ -309,7 +309,7 @@ public class LoteEPServiceImpl extends CRUDEPBaseService<Long, LoteDTO, Lote, Lo
 
 			FileOutputStream fosAdjunto = null;
 			if (adjuntoextra != null) {
-				File tempFileAdjunto = File.createTempFile(nombreAdjunto, ".pdf");
+				File tempFileAdjunto = File.createTempFile("Informe Calidad - Adjunto - " + lote.getNroLote(), ".pdf");
 				fosAdjunto = new FileOutputStream(tempFileAdjunto);
 				fosAdjunto.write(adjuntoextra);
 				archivos.add(tempFileAdjunto);

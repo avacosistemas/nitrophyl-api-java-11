@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import ar.com.avaco.commons.exception.BusinessException;
@@ -21,6 +22,15 @@ import ar.com.avaco.ws.rest.dto.JSONResponse;
 @RestController
 public class PiezaClienteRestController
 		extends AbstractAuditableDTORestController<PiezaClienteDTO, Long, PiezaClienteEPService> {
+
+	@RequestMapping(value = "/piezaCliente", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<JSONResponse> listCliente(@RequestParam Long idCliente) {
+		List<PiezaClienteDTO> list = this.service.listEq("cliente.id", idCliente);
+		JSONResponse response = new JSONResponse();
+		response.setData(list);
+		response.setStatus(JSONResponse.OK);
+		return new ResponseEntity<JSONResponse>(response, HttpStatus.OK);
+	}
 
 	@RequestMapping(value = "/piezaCliente/{idPieza}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<JSONResponse> list(@PathVariable Long idPieza) {

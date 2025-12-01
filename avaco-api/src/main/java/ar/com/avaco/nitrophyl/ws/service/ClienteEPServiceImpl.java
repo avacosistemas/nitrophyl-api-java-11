@@ -183,9 +183,16 @@ public class ClienteEPServiceImpl extends CRUDEPBaseService<Long, ClienteDTO, Cl
 	}
 	
 	@Override
+	public void deleteContacto(Long idContactoCliente) {
+		this.service.deleteContacto(idContactoCliente);
+	}
+	
+	@Override
 	@Resource(name = "clienteService")
 	protected void setService(ClienteService service) {
 		this.service = service;
 	}
+
+
 
 }

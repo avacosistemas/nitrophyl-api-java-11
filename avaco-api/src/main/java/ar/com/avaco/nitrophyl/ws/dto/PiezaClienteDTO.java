@@ -22,6 +22,26 @@ public class PiezaClienteDTO extends DTOAuditableEntity<Long> {
 
 	private String observacionesCotizacion;
 
+	private String denominacion;
+
+	private String codigo;
+
+	public String getDenominacion() {
+		return denominacion;
+	}
+
+	public void setDenominacion(String denominacion) {
+		this.denominacion = denominacion;
+	}
+
+	public String getCodigo() {
+		return codigo;
+	}
+
+	public void setCodigo(String codigo) {
+		this.codigo = codigo;
+	}
+
 	public Double getCotizacion() {
 		return cotizacion;
 	}

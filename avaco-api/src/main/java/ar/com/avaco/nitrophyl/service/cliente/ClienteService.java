@@ -31,4 +31,6 @@ public interface ClienteService extends NJService<Long, Cliente> {
 
 	List<String> getCorreoInformesList(Long idCliente);
 
+	void deleteContacto(Long idContactoCliente);
+
 }

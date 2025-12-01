@@ -59,6 +59,7 @@ public class ReporteLoteRestController extends AbstractDTORestController<LoteDTO
 			eresp.setStatus(JSONResponse.ERROR);
 			eresp.setError(e.getMessage());
 			response = eresp;
+			e.printStackTrace();
 		}
 		return new ResponseEntity<JSONResponse>(response, HttpStatus.OK);
 	}

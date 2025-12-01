@@ -59,11 +59,11 @@ public class RegistroEnvioInformeCalidadFilter extends AbstractFilter {
 		}
 
 		if (email != null && !email.isEmpty()) {
-			list.add(new FilterData("emailEnviado", fechaHasta, FilterDataType.LIKE));
+			list.add(new FilterData("emailEnviado", email, FilterDataType.LIKE));
 		}
 		
 		if (idCliente != null && idCliente > 0) {
-			list.add(new FilterData("cliente.id", fechaHasta, FilterDataType.EQUALS));
+			list.add(new FilterData("cliente.id", idCliente, FilterDataType.EQUALS));
 		}
 		
 		return list;

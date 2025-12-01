@@ -147,6 +147,15 @@ public class ClienteRestController extends AbstractDTORestController<ClienteDTO,
 		return new ResponseEntity<JSONResponse>(response, HttpStatus.OK);
 	}
 
+	@RequestMapping(value = "/cliente/contacto/{idContactoCliente}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<JSONResponse> deleteContactoCliente(@PathVariable("idContactoCliente") Long idContactoCliente) throws Exception {
+		this.service.deleteContacto(idContactoCliente);
+		JSONResponse response = new JSONResponse();
+		response.setData(true);
+		response.setStatus(JSONResponse.OK);
+		return new ResponseEntity<JSONResponse>(response, HttpStatus.OK);
+	}
+
 	@RequestMapping(value = "/provincias", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<JSONResponse> listProvincias() throws Exception {
 		List<ComboDTO> provincias = new ArrayList<ComboDTO>();
