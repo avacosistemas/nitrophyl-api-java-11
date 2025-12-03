@@ -81,13 +81,6 @@ public class CotizacionEPServiceImpl extends
 		return cotizacion;
 	}
 
-//	@Override
-//	public CotizacionDTO save(CotizacionDTO dto) throws BusinessException {
-//		Cotizacion convertToEntity = this.convertToEntity(dto);
-//		this.service.save(convertToEntity);
-//		return dto;
-//	}
-
 	@Override
 	public PageDTO<CotizacionDTO> list(CotizacionFilterDTO filterDTO) {
 		return this.service.listCotizaciones(filterDTO);

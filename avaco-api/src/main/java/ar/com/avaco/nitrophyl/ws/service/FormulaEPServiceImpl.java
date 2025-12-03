@@ -34,11 +34,16 @@ public class FormulaEPServiceImpl extends CRUDEPBaseService<Long, FormulaDTO, Fo
 
 	@Override
 	protected Formula convertToEntity(FormulaDTO dto) {
-		Formula formula = new Formula();
-		formula.setId(dto.getId());
-		Material material = materialService.get(dto.getIdMaterial());
-		formula.setMaterial(material);
-		formula.setNombre(dto.getNombre());
+		Formula formula;
+		if (dto.getId() == null) {
+			formula = new Formula();
+			formula.setId(dto.getId());
+			Material material = materialService.get(dto.getIdMaterial());
+			formula.setMaterial(material);
+			formula.setNombre(dto.getNombre());
+		} else {
+			formula = this.service.get(dto.getId());
+		}
 		formula.setNorma(dto.getNorma());
 		formula.setObservaciones(dto.getObservaciones());
 		formula.setDurezaMinima(dto.getDurezaMinima());

@@ -5,6 +5,7 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import ar.com.avaco.commons.exception.BusinessException;
+import ar.com.avaco.commons.exception.ErrorValidationException;
 import ar.com.avaco.nitrophyl.domain.entities.cliente.Cliente;
 import ar.com.avaco.nitrophyl.domain.entities.pieza.Pieza;
 import ar.com.avaco.nitrophyl.domain.entities.pieza.PiezaCliente;
@@ -52,6 +53,11 @@ public class PiezaClienteEPServiceImpl
 
 	@Override
 	public PiezaClienteDTO save(PiezaClienteDTO dto) throws BusinessException {
+		PiezaCliente current = this.service.getByPiezaCliente(dto.getIdCliente(), dto.getIdPieza());
+		if (current != null) {
+			throw new ErrorValidationException("Ya existe este cliente asignado a la pieza. Para agregar una nueva cotización ingresa en el menú de cotizaciones.");
+		}
+		
 		PiezaClienteDTO save = super.save(dto);
 		if (dto.getCotizacion() != null) {
 			CotizacionDTO cdto = new CotizacionDTO();

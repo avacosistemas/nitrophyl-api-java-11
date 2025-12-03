@@ -43,7 +43,7 @@ public class FormulaServiceImpl extends NJBaseService<Long, Formula, FormulaRepo
 
 	@Override
 	public Formula clone(Formula entity) {
-		Formula one = this.repository.getOne(entity.getId());
+		Formula one = this.repository.getDetachedById(entity.getId());
 		entity.setId(null);
 		entity.setVersion(one.getVersion() + 1);
 		entity.setFecha(DateUtils.getFechaYHoraActual());

@@ -2,6 +2,8 @@ package ar.com.avaco.nitrophyl.ws.dto;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import ar.com.avaco.ws.rest.dto.DTOAuditableEntity;
 
 public class PiezaClienteDTO extends DTOAuditableEntity<Long> {
@@ -18,6 +20,7 @@ public class PiezaClienteDTO extends DTOAuditableEntity<Long> {
 
 	private Double cotizacion;
 
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
 	private Date fechaCotizacion;
 
 	private String observacionesCotizacion;

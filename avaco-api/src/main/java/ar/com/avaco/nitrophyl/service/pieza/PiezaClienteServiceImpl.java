@@ -1,5 +1,7 @@
 package ar.com.avaco.nitrophyl.service.pieza;
 
+import java.util.Optional;
+
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
@@ -11,7 +13,8 @@ import ar.com.avaco.nitrophyl.repository.pieza.PiezaClienteRepository;
 
 @Transactional
 @Service("piezaClienteService")
-public class PiezaClienteServiceImpl extends NJBaseService<Long, PiezaCliente, PiezaClienteRepository> implements PiezaClienteService {
+public class PiezaClienteServiceImpl extends NJBaseService<Long, PiezaCliente, PiezaClienteRepository>
+		implements PiezaClienteService {
 
 	@Resource(name = "piezaClienteRepository")
 	void setRepository(PiezaClienteRepository piezaClienteRepository) {
@@ -20,7 +23,11 @@ public class PiezaClienteServiceImpl extends NJBaseService<Long, PiezaCliente, P
 
 	@Override
 	public PiezaCliente getByPiezaCliente(Long idCliente, Long idPieza) {
-		return this.repository.findByClienteIdAndPiezaId(idCliente, idPieza);
+		Optional<PiezaCliente> byPiezaAndCliente = repository.findByPiezaAndCliente(idPieza, idCliente);
+		if (!byPiezaAndCliente.isEmpty())
+			return byPiezaAndCliente.get();
+		return null;
+				
 	}
 
 }

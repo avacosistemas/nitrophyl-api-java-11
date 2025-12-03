@@ -20,4 +20,6 @@ public interface NJRepository<ID extends Serializable, E extends Entity<ID>> ext
 
 	List<E> listEqField(String field, Object pattern);
 	
+	E getDetachedById(ID id);
+	
 }
