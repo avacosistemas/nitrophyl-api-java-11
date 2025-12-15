@@ -43,6 +43,7 @@ public class InsumoEPServiceImpl extends CRUDAuditableEPBaseService<Long, Insumo
 		insumo.setNombre(dto.getNombre());
 		insumo.setTipo(tipoInsumoService.get(dto.getIdTipo()));
 		insumo.setObservaciones(dto.getObservaciones());
+		insumo.setOrigen(dto.getOrigen());
 		
 		// Si tiene asociada una materia prima
 		if (dto.getIdMateriaPrima() != null) {
@@ -63,6 +64,8 @@ public class InsumoEPServiceImpl extends CRUDAuditableEPBaseService<Long, Insumo
 		dto.setIdTipo(entity.getTipo().getId());
 		dto.setTipoNombre(entity.getTipo().getNombreCompleto());
 		dto.setObservaciones(entity.getObservaciones());
+		dto.setOrigen(entity.getOrigen());
+		
 		if (entity.getInsumoMateriaPrima() != null) {
 			InsumoMateriaPrima insumoMateriaPrima = entity.getInsumoMateriaPrima();
 			dto.setCantidadMateriaPrima(insumoMateriaPrima.getCantidad());

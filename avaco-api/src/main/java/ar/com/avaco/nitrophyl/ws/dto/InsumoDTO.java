@@ -1,5 +1,6 @@
 package ar.com.avaco.nitrophyl.ws.dto;
 
+import ar.com.avaco.nitrophyl.domain.entities.pieza.Origen;
 import ar.com.avaco.ws.rest.dto.DTOAuditableEntity;
 
 public class InsumoDTO extends DTOAuditableEntity<Long> {
@@ -19,6 +20,16 @@ public class InsumoDTO extends DTOAuditableEntity<Long> {
 	private Double cantidadMateriaPrima;
 
 	private String observaciones;
+
+	private Origen origen;
+	
+	public Origen getOrigen() {
+		return origen;
+	}
+
+	public void setOrigen(Origen origen) {
+		this.origen = origen;
+	}
 
 	public String getObservaciones() {
 		return observaciones;

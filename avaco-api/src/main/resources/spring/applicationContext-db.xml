@@ -27,9 +27,8 @@
 		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
 		<beans:property name="locations">
 			<beans:list>
-<!-- 				<beans:value>file:${catalina.home}/conf/connection-nitro.properties -->
-				<beans:value>file:${catalina.home}/conf/connection-nitro-test.properties
-				</beans:value>
+				<beans:value>file:${catalina.home}/conf/connection-nitro.properties</beans:value>
+<!-- 				<beans:value>file:${catalina.home}/conf/connection-nitro-test.properties -->
 			</beans:list>
 		</beans:property>
 	</beans:bean>

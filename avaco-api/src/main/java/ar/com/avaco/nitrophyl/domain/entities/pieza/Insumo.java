@@ -53,6 +53,13 @@ public class Insumo extends AuditableEntity<Long> {
 	private UnidadMedida unidadMedidaStock;
 
 	/**
+	 * Origen del insumo: comprado, provisto o fabricado.
+	 */
+	@Column(name = "ORIGEN")
+	@Enumerated(EnumType.STRING)
+	private Origen origen;
+
+	/**
 	 * El insumo puede fabricarse usando materia prima. Por ejemplo algunas partes
 	 * de las piezas se fabrica con resina. Puede tener como no. Depende del tipo de
 	 * insumo. Se usa para saber cuanta materia prima se necesita para fabricar el
@@ -119,6 +126,14 @@ public class Insumo extends AuditableEntity<Long> {
 
 	public void setCantidadStock(Double cantidadStock) {
 		this.cantidadStock = cantidadStock;
+	}
+
+	public Origen getOrigen() {
+		return origen;
+	}
+
+	public void setOrigen(Origen origen) {
+		this.origen = origen;
 	}
 
 	public static Insumo ofId(Long id) {

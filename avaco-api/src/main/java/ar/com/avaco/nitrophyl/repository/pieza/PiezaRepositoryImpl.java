@@ -39,7 +39,9 @@ public class PiezaRepositoryImpl extends NJBaseRepository<Long, Pieza> implement
 				"  CASE" + 
 				"    WHEN p.vigente = false AND p.revision = v.max_revision THEN true " + 
 				"    ELSE false " + 
-				"  END AS puedeMarcarVigente " + 
+				"  END AS puedeMarcarVigente, " +
+				" pc.nombre_pieza_personalizado as piezaPersonalizada, " +
+				" cli.nombre as cliente " +
 				" FROM pieza p " + 
 				" LEFT JOIN ( " + 
 				"    SELECT codigo, MAX(revision) AS max_revision " + 
@@ -49,14 +51,21 @@ public class PiezaRepositoryImpl extends NJBaseRepository<Long, Pieza> implement
 				" left join formula f on f.id_formula = p.id_formula " + 
 				" left join material m on m.id_material = f.id_material " + 
 				" left join pieza_tipo pt on pt.id_pieza_tipo = p.id_tipo " + 
+				" LEFT JOIN pieza_cliente pc ON pc.id_pieza = p.id_pieza " +
+				" left join cliente cli on cli.id_cliente = pc.id_cliente " +
 				" where 1 = 1 ";
 		
 		if (filtro.getSoloVigentes() != null && filtro.getSoloVigentes().booleanValue())
 			query += " and p.vigente = true ";
 		
 		if (StringUtils.isNotBlank(filtro.getNombre()))
-			query += " and (upper(p.denominacion) like '%" + filtro.getNombre() + "%' or upper(p.codigo) like '%" + filtro.getNombre() + "%') ";
+			query += " and ( upper(p.denominacion) like '%" + filtro.getNombre() 
+				  + "%'   or upper(p.codigo) like '%" + filtro.getNombre() 
+				  + "%'   or upper(pc.nombre_pieza_personalizado) like  '%" + filtro.getNombre() + "%' )";
 		
+		if (filtro.getIdCliente() != null) 
+			query += " and pc.id_cliente = " + filtro.getIdCliente();
+			
 		if (filtro.getIdFormula() != null)
 			query += " and f.id_formula = " + filtro.getIdFormula();
 			

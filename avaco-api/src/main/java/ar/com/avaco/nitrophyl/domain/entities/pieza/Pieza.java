@@ -40,7 +40,11 @@ import ar.com.avaco.nitrophyl.ws.dto.PiezaGrillaDTO;
 				@ColumnResult(name = "material", type = String.class),
 				@ColumnResult(name = "puedeGenerarRevision", type = Boolean.class),
 				@ColumnResult(name = "formula", type = String.class),
-				@ColumnResult(name = "puedeMarcarVigente", type = Boolean.class) }) })
+				@ColumnResult(name = "puedeMarcarVigente", type = Boolean.class), 
+				@ColumnResult(name = "piezaPersonalizada", type = String.class),
+				@ColumnResult(name = "cliente", type = String.class) 
+			}) 
+		})
 
 @Entity
 @Table(name = "PIEZA")

@@ -30,9 +30,13 @@ public class PiezaGrillaDTO extends DTOEntity<Long> {
 
 	private Boolean puedeGenerarRevision;
 
+	private String piezaPersonalizada;
+
+	private String cliente;
+
 	public PiezaGrillaDTO(Integer rows, String denominacion, Integer idPieza, String codigo, Boolean vigente,
 			Integer revision, Date fechaRevision, String tipo, String material, Boolean puedeGenerarRevision,
-			String formula, Boolean puedeMarcarVigente) {
+			String formula, Boolean puedeMarcarVigente, String piezaPersonalizada, String cliente) {
 		this.rows = rows;
 		this.denominacion = denominacion;
 		this.id = Long.valueOf(idPieza);
@@ -45,6 +49,8 @@ public class PiezaGrillaDTO extends DTOEntity<Long> {
 		this.formula = formula;
 		this.puedeMarcarVigente = puedeMarcarVigente;
 		this.puedeGenerarRevision = puedeGenerarRevision;
+		this.piezaPersonalizada = piezaPersonalizada;
+		this.cliente = cliente;
 	}
 
 	public Long getId() {
@@ -141,6 +147,22 @@ public class PiezaGrillaDTO extends DTOEntity<Long> {
 
 	public void setPuedeGenerarRevision(Boolean puedeGenerarRevision) {
 		this.puedeGenerarRevision = puedeGenerarRevision;
+	}
+
+	public String getPiezaPersonalizada() {
+		return piezaPersonalizada;
+	}
+
+	public void setPiezaPersonalizada(String piezaPersonalizada) {
+		this.piezaPersonalizada = piezaPersonalizada;
+	}
+
+	public String getCliente() {
+		return cliente;
+	}
+
+	public void setCliente(String cliente) {
+		this.cliente = cliente;
 	}
 
 }

@@ -38,7 +38,7 @@ public class PiezaCliente extends AuditableEntity<Long> {
 	@JoinColumn(name = "ID_CLIENTE")
 	private Cliente cliente;
 
-	@Column(name = "NOMBRE_PIEZA_PESONALIZADO")
+	@Column(name = "NOMBRE_PIEZA_PERSONALIZADO")
 	private String nombrePiezaPersonalizado;
 
 	public PiezaCliente clonar(String username, Date fechaHora, Pieza pieza) {

@@ -12,6 +12,16 @@ public class PiezaFilterDTO extends SortPageDTO {
 
 	private String idTipoPieza;
 
+	private Long idCliente;
+
+	public Long getIdCliente() {
+		return idCliente;
+	}
+
+	public void setIdCliente(Long idCliente) {
+		this.idCliente = idCliente;
+	}
+
 	public String getIdTipoPieza() {
 		return idTipoPieza;
 	}

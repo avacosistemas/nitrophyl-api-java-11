@@ -23,6 +23,8 @@ public class PiezaFilter extends AbstractFilter {
 	private Boolean soloVigentes;
 
 	private String idsTipoPieza;
+	
+	private Long idCliente;
 
 	public PiezaFilter() {
 	}
@@ -34,6 +36,7 @@ public class PiezaFilter extends AbstractFilter {
 		this.idMaterial = filter.getIdMaterial();
 		this.soloVigentes = filter.getSoloVigentes();
 		this.idsTipoPieza = filter.getIdTipoPieza();
+		this.idCliente = filter.getIdCliente();
 	}
 
 	@Override
@@ -48,6 +51,9 @@ public class PiezaFilter extends AbstractFilter {
 
 		if (idMaterial != null)
 			filters.add(new FilterData("detalleFormula.formula.material.id", idMaterial, FilterDataType.EQUALS));
+
+		if (idCliente != null)
+			filters.add(new FilterData("piezaCliente.cliente.id", idCliente, FilterDataType.EQUALS));
 
 		if (soloVigentes != null && soloVigentes.booleanValue())
 			filters.add(new FilterData("vigente", true, FilterDataType.EQUALS));
