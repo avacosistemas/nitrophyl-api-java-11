@@ -63,7 +63,7 @@ public class Lote extends ar.com.avaco.arc.core.domain.Entity<Long> {
 	@Column(name = "ESTADO")
 	private EstadoLote estado;
 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "lote")
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "lote", orphanRemoval = true)
 	private Set<Ensayo> ensayos = new HashSet<Ensayo>();
 
 	// FIXME CAMBIAR optional a false luego de setear todos los valores

@@ -38,6 +38,11 @@ public class LoteRestController extends AbstractDTORestController<LoteDTO, Long,
 		return super.get(idLote);
 	}
 
+	@RequestMapping(value = "/lote/{idLote}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<JSONResponse> delete(@PathVariable("idLote") Long idLote) throws BusinessException {
+		return super.delete(idLote);
+	}
+
 	@RequestMapping(value = "/lote", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<JSONResponse> list(LoteFilterDTO filter) {
 		List<LoteDTO> listFilter = super.service.listFilter(new LoteFilter(filter));
