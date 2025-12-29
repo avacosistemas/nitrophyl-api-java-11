@@ -57,10 +57,10 @@ public class ConfiguracionPrueba extends ar.com.avaco.arc.core.domain.Entity<Lon
 	@Column(name = "OBSERVACIONES_REPORTE")
 	private String observacionesReporte;
 
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "configuracionPrueba")
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "configuracionPrueba", orphanRemoval = true)
 	private Set<ConfiguracionPruebaParametro> parametros = new HashSet<>();
 
-	@OneToMany(fetch = FetchType.LAZY, orphanRemoval = true, cascade = CascadeType.ALL, mappedBy = "configuracionPrueba")
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "configuracionPrueba", orphanRemoval = true)
 	private Set<ConfiguracionPruebaCondicion> condiciones = new HashSet<>();
 
 	public Long getId() {

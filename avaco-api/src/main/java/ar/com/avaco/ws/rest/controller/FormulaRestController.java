@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +22,7 @@ import ar.com.avaco.nitrophyl.ws.dto.FormulaFilterDTO;
 import ar.com.avaco.nitrophyl.ws.dto.RevisionParametrosDTO;
 import ar.com.avaco.nitrophyl.ws.service.FormulaEPService;
 import ar.com.avaco.nitrophyl.ws.service.filter.FormulaFilter;
+import ar.com.avaco.ws.rest.dto.ErrorResponse;
 import ar.com.avaco.ws.rest.dto.JSONResponse;
 
 @RestController
@@ -109,6 +111,22 @@ public class FormulaRestController extends AbstractDTORestController<FormulaDTO,
 		JSONResponse response = new JSONResponse();
 		response.setData(formulaDTO);
 		response.setStatus(JSONResponse.OK);
+		return new ResponseEntity<JSONResponse>(response, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/formula/{idFormula}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<JSONResponse> updatePruebas(@PathVariable("idFormula") Long idFormula)
+			throws Exception {
+		JSONResponse response = new JSONResponse();
+		response.setStatus(JSONResponse.OK);
+		try {
+			this.service.remove(idFormula);
+			response.setData(true);
+		} catch (DataIntegrityViolationException e) {
+			String message = "Error al borrar la formula. Es probable que haya intentado borrar una que este asociada a un lote.";
+			response = new ErrorResponse(JSONResponse.ERROR, null, message,
+					e.getCause().getCause().getLocalizedMessage());
+		}
 		return new ResponseEntity<JSONResponse>(response, HttpStatus.OK);
 	}
 

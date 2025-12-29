@@ -15,5 +15,6 @@ public interface ConfiguracionPruebaRepository
 
 	List<ConfiguracionPrueba> findByFormulaIdAndVigenteOrderByMaquinaNombre(Long idFormula, boolean b);
 
+	void deleteByFormulaId(Long idFormula);
 	
 }

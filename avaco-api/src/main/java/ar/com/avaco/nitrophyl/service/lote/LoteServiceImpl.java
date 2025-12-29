@@ -106,6 +106,10 @@ public class LoteServiceImpl extends NJBaseService<Long, Lote, LoteRepository> i
 			}
 		});
 	}
-	
+
+	@Override
+	public boolean existsByFormula(Long idFormula) {
+		return this.repository.existsByFormulaId(idFormula);
+	}
 
 }

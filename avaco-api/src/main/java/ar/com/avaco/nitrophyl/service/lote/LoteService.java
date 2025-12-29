@@ -23,4 +23,6 @@ public interface LoteService extends NJService<Long, Lote> {
 
 	List<RegistroEnsayoLotePorMaquinaDTO> getRegistrosEnsayosLotePorMaquina(ReporteEnsayoLotePorMaquinaFilterDTO filtro);
 
+	boolean existsByFormula(Long idFormula);
+
 }

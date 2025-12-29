@@ -91,4 +91,9 @@ public class ReporteLoteConfiguracionClienteServiceImpl
 		this.repository = reporteLoteConfiguracionClienteRepository;
 	}
 
+	@Override
+	public boolean existsByFormula(Long idFormula) {
+		return this.repository.existsByFormulaId(idFormula);
+	}
+	
 }

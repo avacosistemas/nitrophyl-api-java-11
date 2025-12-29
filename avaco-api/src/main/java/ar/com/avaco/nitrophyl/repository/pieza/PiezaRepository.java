@@ -7,4 +7,6 @@ public interface PiezaRepository extends NJRepository<Long, Pieza>, PiezaReposit
 
 	Pieza findByCodigoAndVigente(String codigoInterno, boolean b);
 
+	boolean existsByDetalleFormulaFormulaId(Long idFormula);
+	
 }
