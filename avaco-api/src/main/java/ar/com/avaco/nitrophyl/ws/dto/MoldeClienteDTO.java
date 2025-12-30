@@ -1,7 +1,7 @@
 package ar.com.avaco.nitrophyl.ws.dto;
 
 import ar.com.avaco.nitrophyl.domain.entities.cliente.Cliente;
-import ar.com.avaco.nitrophyl.domain.entities.moldes.Molde;
+import ar.com.avaco.nitrophyl.domain.entities.molde.Molde;
 
 public class MoldeClienteDTO {
 

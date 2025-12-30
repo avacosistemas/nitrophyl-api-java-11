@@ -1,6 +1,6 @@
 package ar.com.avaco.nitrophyl.ws.dto;
 
-import ar.com.avaco.nitrophyl.domain.entities.moldes.MoldePlano;
+import ar.com.avaco.nitrophyl.domain.entities.molde.MoldePlano;
 
 public class MoldePlanoDTO {
 

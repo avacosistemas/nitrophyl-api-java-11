@@ -15,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ar.com.avaco.arc.core.component.bean.service.NJBaseService;
 import ar.com.avaco.commons.exception.BusinessException;
 import ar.com.avaco.commons.exception.ErrorValidationException;
-import ar.com.avaco.nitrophyl.domain.entities.moldes.MoldePlano;
+import ar.com.avaco.nitrophyl.domain.entities.molde.MoldePlano;
 import ar.com.avaco.nitrophyl.repository.molde.MoldePlanoRepository;
 
 @Transactional

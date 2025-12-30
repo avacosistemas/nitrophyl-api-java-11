@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import ar.com.avaco.arc.core.component.bean.service.NJBaseService;
-import ar.com.avaco.nitrophyl.domain.entities.moldes.MoldeBoca;
+import ar.com.avaco.nitrophyl.domain.entities.molde.MoldeBoca;
 import ar.com.avaco.nitrophyl.repository.molde.MoldeBocaRepository;
 
 @Transactional
@@ -23,13 +23,12 @@ public class MoldeBocaServiceImpl extends NJBaseService<Long, MoldeBoca, MoldeBo
 
 	@Override
 	public List<MoldeBoca> getByMolde(Long idMolde) {
-		return this.repository.findByIdMolde(idMolde);
+		return this.repository.findByIdMoldeOrderByNroBoca(idMolde);
 	}
 
 	@Override
-	public void removeByMolde(Long idMolde) {
-		this.repository.deleteByIdMolde(idMolde);
-		
+	public void reacomodarNumerosBoca(Long idMolde, Integer numeroBocaEliminado) {
+		this.repository.reacomodarNumerosBoca(idMolde, numeroBocaEliminado);
 	}
-
+	
 }

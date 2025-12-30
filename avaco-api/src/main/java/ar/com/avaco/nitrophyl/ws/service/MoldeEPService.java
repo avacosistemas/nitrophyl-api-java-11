@@ -18,17 +18,10 @@ import ar.com.avaco.nitrophyl.ws.dto.MoldePlanoDTO;
 import ar.com.avaco.nitrophyl.ws.dto.MoldePlanoListadoDTO;
 import ar.com.avaco.nitrophyl.ws.dto.MoldeRegistroDTO;
 import ar.com.avaco.nitrophyl.ws.dto.PageDTO;
+import ar.com.avaco.ws.rest.service.CRUDAuditableEPService;
 import ar.com.avaco.ws.rest.service.CRUDEPService;
 
-public interface MoldeEPService extends CRUDEPService<Long, MoldeDTO> {
-
-	List<MoldeDTO> listMoldes();
-
-	List<MoldeListadoDTO> listado();
-
-	List<MoldeBocaListadoDTO> getMoldesBoca(Long idMolde);
-
-	List<MoldeBocaListadoDTO> updateMoldesBoca(Long idMolde, List<MoldeBocaListadoDTO> moldeBocaListadoDTO);
+public interface MoldeEPService extends CRUDAuditableEPService<Long, MoldeDTO> {
 
 	List<MoldeDimensionListadoDTO> getMoldesDimension(Long idMolde);
 
@@ -40,7 +33,7 @@ public interface MoldeEPService extends CRUDEPService<Long, MoldeDTO> {
 	MoldeRegistroDTO saveMoldeRegistro(MoldeRegistroDTO moldeRegistroDTO);
 
 	List<MoldePlanoListadoDTO> getMoldesPlano(Long idMolde);
-	
+
 	MoldePlanoDTO addMoldePlano(MoldePlanoDTO moldePlanoDTO) throws ErrorValidationException, BusinessException;
 
 	List<MoldeFotoListadoDTO> getMoldesFoto(Long idMolde);

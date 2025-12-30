@@ -15,7 +15,7 @@ import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 
 import ar.com.avaco.nitrophyl.domain.entities.AuditableEntity;
-import ar.com.avaco.nitrophyl.domain.entities.moldes.TipoDimension;
+import ar.com.avaco.nitrophyl.domain.entities.molde.TipoDimension;
 
 @Entity
 @Table(name = "PIEZA_DIMENSION")

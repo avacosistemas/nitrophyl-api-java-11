@@ -13,17 +13,17 @@ import org.springframework.transaction.annotation.Transactional;
 import ar.com.avaco.commons.exception.BusinessException;
 import ar.com.avaco.commons.exception.ErrorValidationException;
 import ar.com.avaco.nitrophyl.domain.entities.cliente.Cliente;
-import ar.com.avaco.nitrophyl.domain.entities.moldes.EstadoBoca;
-import ar.com.avaco.nitrophyl.domain.entities.moldes.EstadoMolde;
-import ar.com.avaco.nitrophyl.domain.entities.moldes.Molde;
-import ar.com.avaco.nitrophyl.domain.entities.moldes.MoldeBoca;
-import ar.com.avaco.nitrophyl.domain.entities.moldes.MoldeDimension;
-import ar.com.avaco.nitrophyl.domain.entities.moldes.MoldeFoto;
-import ar.com.avaco.nitrophyl.domain.entities.moldes.MoldeObservacion;
-import ar.com.avaco.nitrophyl.domain.entities.moldes.MoldePlano;
-import ar.com.avaco.nitrophyl.domain.entities.moldes.MoldeRegistro;
-import ar.com.avaco.nitrophyl.domain.entities.moldes.PlanoClasificacion;
-import ar.com.avaco.nitrophyl.domain.entities.moldes.TipoRegistroMolde;
+import ar.com.avaco.nitrophyl.domain.entities.molde.EstadoBoca;
+import ar.com.avaco.nitrophyl.domain.entities.molde.EstadoMolde;
+import ar.com.avaco.nitrophyl.domain.entities.molde.Molde;
+import ar.com.avaco.nitrophyl.domain.entities.molde.MoldeBoca;
+import ar.com.avaco.nitrophyl.domain.entities.molde.MoldeDimension;
+import ar.com.avaco.nitrophyl.domain.entities.molde.MoldeFoto;
+import ar.com.avaco.nitrophyl.domain.entities.molde.MoldeObservacion;
+import ar.com.avaco.nitrophyl.domain.entities.molde.MoldePlano;
+import ar.com.avaco.nitrophyl.domain.entities.molde.MoldeRegistro;
+import ar.com.avaco.nitrophyl.domain.entities.molde.PlanoClasificacion;
+import ar.com.avaco.nitrophyl.domain.entities.molde.TipoRegistroMolde;
 import ar.com.avaco.nitrophyl.service.cliente.ClienteService;
 import ar.com.avaco.nitrophyl.service.molde.MoldeBocaService;
 import ar.com.avaco.nitrophyl.service.molde.MoldeDimensionService;
@@ -48,12 +48,17 @@ import ar.com.avaco.nitrophyl.ws.dto.MoldeRegistroDTO;
 import ar.com.avaco.nitrophyl.ws.dto.PageDTO;
 import ar.com.avaco.nitrophyl.ws.dto.PiezaTipoDTO;
 import ar.com.avaco.utils.DateUtils;
+import ar.com.avaco.ws.rest.service.CRUDAuditableEPBaseService;
 import ar.com.avaco.ws.rest.service.CRUDEPBaseService;
 
 @Transactional
 @Service("moldeEPService")
-public class MoldeEPServiceImpl extends CRUDEPBaseService<Long, MoldeDTO, Molde, MoldeService>
+public class MoldeEPServiceImpl extends CRUDAuditableEPBaseService<Long, MoldeDTO, Molde, MoldeService>
 		implements MoldeEPService {
+
+	public MoldeEPServiceImpl() {
+		super(Molde.class, MoldeDTO.class);
+	}
 
 	@Resource(name = "moldeDimensionService")
 	private MoldeDimensionService moldeDimensionService;
@@ -89,17 +94,17 @@ public class MoldeEPServiceImpl extends CRUDEPBaseService<Long, MoldeDTO, Molde,
 			observacion.setFechaActualizacion(DateUtils.getFechaYHoraActual());
 			observacion.setFechaCreacion(DateUtils.getFechaYHoraActual());
 			observacion.setIdMolde(dto.getId());
-			observacion.setObservacion(estadoAnterior + " -> "  + update.getEstado() + ": "  + observacionesEstado);
+			observacion.setObservacion(estadoAnterior + " -> " + update.getEstado() + ": " + observacionesEstado);
 			observacion.setUsuarioActualizacion(SecurityContextHolder.getContext().getAuthentication().getName());
 			observacion.setUsuarioCreacion(SecurityContextHolder.getContext().getAuthentication().getName());
 			moldeObservacionService.save(observacion);
 		}
 		return update;
 	}
-	
+
 	@Override
 	protected Molde convertToEntity(MoldeDTO dto) {
-		Molde molde = new Molde();
+		Molde molde = super.convertToEntity(dto);
 		molde.setCodigo(dto.getCodigo());
 		molde.setPropio(dto.isPropio());
 		molde.setEstado(EstadoMolde.valueOf(dto.getEstado()));
@@ -107,6 +112,7 @@ public class MoldeEPServiceImpl extends CRUDEPBaseService<Long, MoldeDTO, Molde,
 		molde.setNombre(dto.getNombre());
 		molde.setObservaciones(dto.getObservaciones());
 		molde.setUbicacion(dto.getUbicacion());
+		molde.setCantidadBocas(dto.getCantidadBocas());
 		if (!dto.isPropio()) {
 			Cliente duenio = clienteService.get(dto.getIdClienteDuenio());
 			molde.setDuenio(duenio);
@@ -120,7 +126,7 @@ public class MoldeEPServiceImpl extends CRUDEPBaseService<Long, MoldeDTO, Molde,
 
 	@Override
 	protected MoldeDTO convertToDto(Molde entity) {
-		MoldeDTO moldeDto = new MoldeDTO();
+		MoldeDTO moldeDto = super.convertToDto(entity);
 		moldeDto.setCodigo(entity.getCodigo());
 		moldeDto.setEstado(entity.getEstado().toString());
 		moldeDto.setPropio(entity.isPropio());
@@ -128,6 +134,7 @@ public class MoldeEPServiceImpl extends CRUDEPBaseService<Long, MoldeDTO, Molde,
 		moldeDto.setNombre(entity.getNombre());
 		moldeDto.setObservaciones(entity.getObservaciones());
 		moldeDto.setUbicacion(entity.getUbicacion());
+		moldeDto.setCantidadBocas(entity.getCantidadBocas());
 		if (!entity.isPropio()) {
 			moldeDto.setClienteDuenio(entity.getDuenio().getNombre());
 			moldeDto.setIdClienteDuenio(entity.getDuenio().getId());
@@ -142,91 +149,51 @@ public class MoldeEPServiceImpl extends CRUDEPBaseService<Long, MoldeDTO, Molde,
 		this.service = service;
 	}
 
-	@Override
-	public List<MoldeDTO> listMoldes() {
-		return convertToDtos(this.service.list());
-	}
-
-	@Override
-	public List<MoldeListadoDTO> listado() {
-		List<Molde> listado = this.service.list();
-		if (listado != null) {
-			List<MoldeListadoDTO> returnedList = new ArrayList<MoldeListadoDTO>();
-			for (Molde molde : listado) {
-				MoldeListadoDTO dto = new MoldeListadoDTO();
-				dto.setCodigo(molde.getCodigo());
-				dto.setEstado(molde.getEstado().toString());
-				dto.setNombre(molde.getNombre());
-				dto.setUbicacion(molde.getUbicacion());
-				dto.setId(molde.getId());
-				returnedList.add(dto);
-			}
-			return returnedList;
-		}
-		return null;
-
-	}
-
-	@Override
-	public List<MoldeBocaListadoDTO> getMoldesBoca(Long idMolde) {
-		List<MoldeBoca> listado = moldeBocaService.getByMolde(idMolde);
-		if (listado != null) {
-			List<MoldeBocaListadoDTO> returnedListado = new ArrayList<MoldeBocaListadoDTO>();
-			for (MoldeBoca moldeBoca : listado) {
-				MoldeBocaListadoDTO moldeBocaListadoDTO = new MoldeBocaListadoDTO();
-				moldeBocaListadoDTO.setEstado(moldeBoca.getEstado().toString());
-				moldeBocaListadoDTO.setNroBoca(moldeBoca.getNroBoca());
-				moldeBocaListadoDTO.setDescripcion(moldeBoca.getDescripcion());
-				returnedListado.add(moldeBocaListadoDTO);
-			}
-			return returnedListado;
-		}
-		return null;
-	}
-
-	@Override
-	public List<MoldeBocaListadoDTO> updateMoldesBoca(Long idMolde, List<MoldeBocaListadoDTO> moldeBocaListadoDTO) {
-		
-		List<MoldeBocaListadoDTO> moldesActuales = this.getMoldesBoca(idMolde);
-		
-		if (moldeBocaListadoDTO != null) {
-			List<MoldeBoca> listado = new ArrayList<MoldeBoca>();
-
-			Molde molde = service.get(idMolde);
-
-			for (MoldeBocaListadoDTO dto : moldeBocaListadoDTO) {
-				MoldeBoca nuevoMoldeBoca = new MoldeBoca();
-				nuevoMoldeBoca.setEstado(EstadoBoca.valueOf(dto.getEstado()));
-				nuevoMoldeBoca.setNroBoca(dto.getNroBoca());
-				nuevoMoldeBoca.setIdMolde(idMolde);
-				nuevoMoldeBoca.setDescripcion(dto.getDescripcion());
-				listado.add(nuevoMoldeBoca);
-				
-				
-				MoldeBocaListadoDTO modeActual = moldesActuales.stream().filter(x -> x.getNroBoca().equals(nuevoMoldeBoca.getNroBoca())).findFirst().get();
-				if (!nuevoMoldeBoca.getEstado().toString().equals(modeActual.getEstado())) {
-					MoldeObservacion observacion = new MoldeObservacion();
-					observacion.setFechaActualizacion(DateUtils.getFechaYHoraActual());
-					observacion.setFechaCreacion(DateUtils.getFechaYHoraActual());
-					observacion.setIdMolde(idMolde);
-					observacion.setObservacion("Boca " + nuevoMoldeBoca.getNroBoca() + " " + modeActual.getEstado() + " -> "  + nuevoMoldeBoca.getEstado().toString() + ": "  + dto.getObservacionesEstado());
-					observacion.setUsuarioActualizacion(SecurityContextHolder.getContext().getAuthentication().getName());
-					observacion.setUsuarioCreacion(SecurityContextHolder.getContext().getAuthentication().getName());
-					moldeObservacionService.save(observacion);
-				}
-				
-			}
-
-			moldeBocaService.removeByMolde(idMolde);
-			moldeBocaService.save(listado);
-
-			molde.setBocas(listado.size());
-			service.save(molde);
-
-			return moldeBocaListadoDTO;
-		}
-		return null;
-	}
+//	@Override
+//	public List<MoldeBocaListadoDTO> updateMoldesBoca(Long idMolde, List<MoldeBocaListadoDTO> moldeBocaListadoDTO) {
+//
+//		List<MoldeBocaListadoDTO> moldesActuales = this.getMoldesBoca(idMolde);
+//
+//		if (moldeBocaListadoDTO != null) {
+//			List<MoldeBoca> listado = new ArrayList<MoldeBoca>();
+//
+//			Molde molde = service.get(idMolde);
+//
+//			for (MoldeBocaListadoDTO dto : moldeBocaListadoDTO) {
+//				MoldeBoca nuevoMoldeBoca = new MoldeBoca();
+//				nuevoMoldeBoca.setEstado(EstadoBoca.valueOf(dto.getEstado()));
+//				nuevoMoldeBoca.setNroBoca(dto.getNroBoca());
+//				nuevoMoldeBoca.setIdMolde(idMolde);
+//				nuevoMoldeBoca.setDescripcion(dto.getDescripcion());
+//				listado.add(nuevoMoldeBoca);
+//
+//				MoldeBocaListadoDTO modeActual = moldesActuales.stream()
+//						.filter(x -> x.getNroBoca().equals(nuevoMoldeBoca.getNroBoca())).findFirst().get();
+//				if (!nuevoMoldeBoca.getEstado().toString().equals(modeActual.getEstado())) {
+//					MoldeObservacion observacion = new MoldeObservacion();
+//					observacion.setFechaActualizacion(DateUtils.getFechaYHoraActual());
+//					observacion.setFechaCreacion(DateUtils.getFechaYHoraActual());
+//					observacion.setIdMolde(idMolde);
+//					observacion.setObservacion("Boca " + nuevoMoldeBoca.getNroBoca() + " " + modeActual.getEstado()
+//							+ " -> " + nuevoMoldeBoca.getEstado().toString() + ": " + dto.getObservacionesEstado());
+//					observacion
+//							.setUsuarioActualizacion(SecurityContextHolder.getContext().getAuthentication().getName());
+//					observacion.setUsuarioCreacion(SecurityContextHolder.getContext().getAuthentication().getName());
+//					moldeObservacionService.save(observacion);
+//				}
+//
+//			}
+//
+//			moldeBocaService.removeByMolde(idMolde);
+//			moldeBocaService.save(listado);
+//
+//			molde.setBocas(listado.size());
+//			service.save(molde);
+//
+//			return moldeBocaListadoDTO;
+//		}
+//		return null;
+//	}
 
 	@Override
 	public List<MoldeDimensionListadoDTO> getMoldesDimension(Long idMolde) {
@@ -424,14 +391,32 @@ public class MoldeEPServiceImpl extends CRUDEPBaseService<Long, MoldeDTO, Molde,
 	@Override
 	public MoldeDTO save(MoldeDTO dto) throws BusinessException {
 		MoldeDTO save = super.save(dto);
+
+		// Genero las bocas
+		List<MoldeBoca> bocas = new ArrayList<MoldeBoca>();
+		for (int i = 1; i <= save.getCantidadBocas(); i++) {
+			MoldeBoca mb = new MoldeBoca();
+			mb.setEstado(EstadoBoca.ACTIVO);
+			mb.setIdMolde(save.getId());
+			mb.setMolde(Molde.ofId(save.getId()));
+			mb.setNroBoca(i);
+			mb.setUsuarioCreacion(SecurityContextHolder.getContext().getAuthentication().getName());
+			mb.setFechaCreacion(DateUtils.getFechaYHoraActual());
+			bocas.add(mb);
+		}
+
+		this.moldeBocaService.save(bocas);
+
+		// Registro el ingreso
 		MoldeRegistro registro = new MoldeRegistro();
 		registro.setFecha(DateUtils.getFechaYHoraActual());
 		registro.setIdMolde(save.getId());
 		registro.setTipoRegistro(TipoRegistroMolde.INGRESO);
-		moldeRegistroService.save(registro );
+		moldeRegistroService.save(registro);
+
 		return save;
 	}
-	
+
 	
 	
 }

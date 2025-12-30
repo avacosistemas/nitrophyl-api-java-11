@@ -3,7 +3,7 @@
  */
 package ar.com.avaco.nitrophyl.ws.dto;
 
-import ar.com.avaco.nitrophyl.domain.entities.moldes.MoldeRegistro;
+import ar.com.avaco.nitrophyl.domain.entities.molde.MoldeRegistro;
 import ar.com.avaco.utils.DateUtils;
 import ar.com.avaco.ws.rest.dto.DTOEntity;
 

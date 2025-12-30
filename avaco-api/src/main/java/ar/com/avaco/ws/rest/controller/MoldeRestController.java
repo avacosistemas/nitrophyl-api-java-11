@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import ar.com.avaco.nitrophyl.ws.dto.ComboDTO;
-import ar.com.avaco.nitrophyl.ws.dto.MoldeBocaListadoDTO;
 import ar.com.avaco.nitrophyl.ws.dto.MoldeClienteDTO;
 import ar.com.avaco.nitrophyl.ws.dto.MoldeDTO;
 import ar.com.avaco.nitrophyl.ws.dto.MoldeDimensionListadoDTO;
@@ -33,7 +32,7 @@ import ar.com.avaco.nitrophyl.ws.service.MoldeEPService;
 import ar.com.avaco.ws.rest.dto.JSONResponse;
 
 @RestController
-public class MoldeRestController extends AbstractDTORestController<MoldeDTO, Long, MoldeEPService> {
+public class MoldeRestController extends AbstractAuditableDTORestController<MoldeDTO, Long, MoldeEPService> {
 
 	@Resource(name = "moldeEPService")
 	public void setService(MoldeEPService moldeEPService) {
@@ -50,7 +49,7 @@ public class MoldeRestController extends AbstractDTORestController<MoldeDTO, Lon
 		response.setStatus(JSONResponse.OK);
 		return new ResponseEntity<JSONResponse>(response, HttpStatus.OK);
 	}
-	
+
 	@RequestMapping(value = "/molde/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<JSONResponse> getMolde(@PathVariable("id") Long id) throws Exception {
 		MoldeDTO moldeDto = this.service.get(id);
@@ -71,7 +70,7 @@ public class MoldeRestController extends AbstractDTORestController<MoldeDTO, Lon
 			return new ResponseEntity<JSONResponse>(response, HttpStatus.OK);
 		} catch (DataIntegrityViolationException e) {
 			throw new IllegalArgumentException(
-					"Violacion de integridad, verifique que no exista un Molde con el mismo Codigo",e);
+					"Violacion de integridad, verifique que no exista un Molde con el mismo Codigo", e);
 		}
 	}
 
@@ -82,26 +81,6 @@ public class MoldeRestController extends AbstractDTORestController<MoldeDTO, Lon
 		MoldeDTO moldeDto = this.service.update(moldeDTO);
 		JSONResponse response = new JSONResponse();
 		response.setData(moldeDto);
-		response.setStatus(JSONResponse.OK);
-		return new ResponseEntity<JSONResponse>(response, HttpStatus.OK);
-	}
-
-	/* EP Molde Boca */
-	@RequestMapping(value = "/molde/boca/{idMolde}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<JSONResponse> getMoldeBocas(@PathVariable("idMolde") Long idMolde) throws Exception {
-		List<MoldeBocaListadoDTO> listMoldeBocaListado = this.service.getMoldesBoca(idMolde);
-		JSONResponse response = new JSONResponse();
-		response.setData(listMoldeBocaListado);
-		response.setStatus(JSONResponse.OK);
-		return new ResponseEntity<JSONResponse>(response, HttpStatus.OK);
-	}
-
-	@RequestMapping(value = "/molde/boca/{idMolde}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<JSONResponse> updateMoldeBocas(@PathVariable("idMolde") Long idMolde,
-			@RequestBody List<MoldeBocaListadoDTO> moldeBocaListadoDTO) throws Exception {
-		List<MoldeBocaListadoDTO> moldesBocaDto = this.service.updateMoldesBoca(idMolde, moldeBocaListadoDTO);
-		JSONResponse response = new JSONResponse();
-		response.setData(moldesBocaDto);
 		response.setStatus(JSONResponse.OK);
 		return new ResponseEntity<JSONResponse>(response, HttpStatus.OK);
 	}
@@ -125,7 +104,7 @@ public class MoldeRestController extends AbstractDTORestController<MoldeDTO, Lon
 		response.setStatus(JSONResponse.OK);
 		return new ResponseEntity<JSONResponse>(response, HttpStatus.OK);
 	}
-	
+
 	@RequestMapping(value = "/molde/registro/{idMolde}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<JSONResponse> getMoldeRegistro(@PathVariable("idMolde") Long idMolde) throws Exception {
 		List<MoldeRegistroDTO> moldeRegistroDTOs = this.service.getMoldesRegistro(idMolde);
@@ -134,16 +113,17 @@ public class MoldeRestController extends AbstractDTORestController<MoldeDTO, Lon
 		response.setStatus(JSONResponse.OK);
 		return new ResponseEntity<JSONResponse>(response, HttpStatus.OK);
 	}
-	
+
 	@RequestMapping(value = "/molde/registro/{idMolde}", method = RequestMethod.POST)
-	public ResponseEntity<JSONResponse> addMoldeRegistro(@RequestBody MoldeRegistroDTO moldeRegistroDTO) throws Exception {
+	public ResponseEntity<JSONResponse> addMoldeRegistro(@RequestBody MoldeRegistroDTO moldeRegistroDTO)
+			throws Exception {
 		MoldeRegistroDTO saved = this.service.saveMoldeRegistro(moldeRegistroDTO);
 		JSONResponse response = new JSONResponse();
 		response.setData(saved);
 		response.setStatus(JSONResponse.OK);
 		return new ResponseEntity<JSONResponse>(response, HttpStatus.OK);
 	}
-	
+
 	@RequestMapping(value = "/molde/plano/{idMolde}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<JSONResponse> getMoldePlano(@PathVariable("idMolde") Long idMolde) throws Exception {
 		List<MoldePlanoListadoDTO> moldePlanoDTOs = this.service.getMoldesPlano(idMolde);
@@ -161,16 +141,17 @@ public class MoldeRestController extends AbstractDTORestController<MoldeDTO, Lon
 		response.setStatus(JSONResponse.OK);
 		return new ResponseEntity<JSONResponse>(response, HttpStatus.OK);
 	}
-	
+
 	@RequestMapping(value = "/molde/plano/descargar/{idMoldePlano}", method = RequestMethod.POST)
-	public ResponseEntity<JSONResponse> downloadMoldePlano(@PathVariable("idMoldePlano") Long idMoldePlano) throws Exception {
+	public ResponseEntity<JSONResponse> downloadMoldePlano(@PathVariable("idMoldePlano") Long idMoldePlano)
+			throws Exception {
 		MoldePlanoDTO saved = this.service.downloadMoldePlano(idMoldePlano);
 		JSONResponse response = new JSONResponse();
 		response.setData(saved);
 		response.setStatus(JSONResponse.OK);
 		return new ResponseEntity<JSONResponse>(response, HttpStatus.OK);
 	}
-		
+
 	@RequestMapping(value = "/molde/foto/{idMolde}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<JSONResponse> getMoldeFoto(@PathVariable("idMolde") Long idMolde) throws Exception {
 		List<MoldeFotoListadoDTO> moldeFotoDTOs = this.service.getMoldesFoto(idMolde);
@@ -179,7 +160,7 @@ public class MoldeRestController extends AbstractDTORestController<MoldeDTO, Lon
 		response.setStatus(JSONResponse.OK);
 		return new ResponseEntity<JSONResponse>(response, HttpStatus.OK);
 	}
-	
+
 	@RequestMapping(value = "/molde/foto/", method = RequestMethod.POST)
 	public ResponseEntity<JSONResponse> addMoldeFoto(@RequestBody MoldeFotoDTO moldeFotoDTO) throws Exception {
 		MoldeFotoDTO saved = this.service.addMoldeFoto(moldeFotoDTO);
@@ -188,9 +169,10 @@ public class MoldeRestController extends AbstractDTORestController<MoldeDTO, Lon
 		response.setStatus(JSONResponse.OK);
 		return new ResponseEntity<JSONResponse>(response, HttpStatus.OK);
 	}
-	
+
 	@RequestMapping(value = "/molde/foto/descargar/{idMoldeFoto}", method = RequestMethod.POST)
-	public ResponseEntity<JSONResponse> downloadMoldeFoto(@PathVariable("idMoldeFoto") Long idMoldeFoto) throws Exception {
+	public ResponseEntity<JSONResponse> downloadMoldeFoto(@PathVariable("idMoldeFoto") Long idMoldeFoto)
+			throws Exception {
 		MoldeFotoDTO saved = this.service.downloadMoldeFoto(idMoldeFoto);
 		JSONResponse response = new JSONResponse();
 		response.setData(saved);
@@ -216,7 +198,7 @@ public class MoldeRestController extends AbstractDTORestController<MoldeDTO, Lon
 		response.setStatus(JSONResponse.OK);
 		return new ResponseEntity<JSONResponse>(response, HttpStatus.OK);
 	}
-	
+
 	/* EP Molde Observaciones */
 	@RequestMapping(value = "/molde/observacion/{idMolde}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<JSONResponse> getObservaciones(@PathVariable("idMolde") Long idMolde) throws Exception {
@@ -226,7 +208,7 @@ public class MoldeRestController extends AbstractDTORestController<MoldeDTO, Lon
 		response.setStatus(JSONResponse.OK);
 		return new ResponseEntity<JSONResponse>(response, HttpStatus.OK);
 	}
-	
+
 	@RequestMapping(value = "/molde/observacion/", method = RequestMethod.POST)
 	public ResponseEntity<JSONResponse> addMoldeFoto(@RequestBody MoldeObservacionDTO dto) throws Exception {
 		MoldeObservacionDTO saved = this.service.addMoldeObservacion(dto);
@@ -235,7 +217,7 @@ public class MoldeRestController extends AbstractDTORestController<MoldeDTO, Lon
 		response.setStatus(JSONResponse.OK);
 		return new ResponseEntity<JSONResponse>(response, HttpStatus.OK);
 	}
-	
+
 	@RequestMapping(value = "/molde/combo", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<JSONResponse> getCombo(MoldeFilterDTO filter) throws Exception {
 		filter.setAsc(true);
@@ -245,12 +227,12 @@ public class MoldeRestController extends AbstractDTORestController<MoldeDTO, Lon
 		PageDTO<MoldeListadoDTO> page = this.service.list(filter);
 		List<ComboDTO> combo = new ArrayList<ComboDTO>();
 		if (page.getPage() != null && !page.getPage().isEmpty())
-			page.getPage().stream().forEach(molde -> combo.add(new ComboDTO(molde.getCodigo(), molde.getId().toString())));
+			page.getPage().stream()
+					.forEach(molde -> combo.add(new ComboDTO(molde.getCodigo(), molde.getId().toString())));
 		JSONResponse response = new JSONResponse();
 		response.setData(combo);
 		response.setStatus(JSONResponse.OK);
 		return new ResponseEntity<JSONResponse>(response, HttpStatus.OK);
 	}
-	
-	
+
 }

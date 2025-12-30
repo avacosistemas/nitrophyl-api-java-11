@@ -9,7 +9,7 @@ import org.hibernate.query.NativeQuery;
 import org.springframework.stereotype.Repository;
 
 import ar.com.avaco.arc.core.component.bean.repository.NJBaseRepository;
-import ar.com.avaco.nitrophyl.domain.entities.moldes.Molde;
+import ar.com.avaco.nitrophyl.domain.entities.molde.Molde;
 import ar.com.avaco.nitrophyl.ws.dto.MoldeFilterDTO;
 import ar.com.avaco.nitrophyl.ws.dto.MoldeListadoDTO;
 
@@ -39,7 +39,7 @@ public class MoldeRepositoryImpl extends NJBaseRepository<Long, Molde> implement
 				+ " cast(SUM(CASE WHEN md.tipodimension = 'ANCHO' THEN md.valordimension ELSE NULL END) as integer) AS ANCHO, "
 				+ " cast(SUM(CASE WHEN md.tipodimension  = 'DIAMETRO' THEN md.valordimension ELSE NULL END) as integer)AS DIAMETRO, "
 				+ " cast(SUM(CASE WHEN md.tipodimension = 'PROFUNDIDAD' THEN md.valordimension ELSE NULL END) as integer) AS PROFUNDIDAD, "
-				+ " ult.tiporegistro as ultimoRegistro " + " FROM moldes m "
+				+ " ult.tiporegistro as ultimoRegistro " + " FROM molde m "
 				+ " left join moldedimension md on m.id_molde = md.id_molde "
 				+ " left join pieza_molde pm on m.id_molde  = pm.id_molde "
 				+ " left join pieza pi on pi.id_pieza = pm.id_pieza "
@@ -91,7 +91,8 @@ public class MoldeRepositoryImpl extends NJBaseRepository<Long, Molde> implement
 			query += " order by molde." + filtro.getIdx();
 
 		query += " limit " + filtro.getRows();
-		query += " offset " + (filtro.getFirst() - 1);
+		Integer first = filtro.getFirst() != null ? filtro.getFirst() : 1;
+		query += " offset " + (first - 1);
 		return query;
 	}
 

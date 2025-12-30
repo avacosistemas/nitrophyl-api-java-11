@@ -5,7 +5,7 @@ import javax.persistence.EntityManager;
 import org.springframework.stereotype.Repository;
 
 import ar.com.avaco.arc.core.component.bean.repository.NJBaseRepository;
-import ar.com.avaco.nitrophyl.domain.entities.moldes.MoldeFoto;
+import ar.com.avaco.nitrophyl.domain.entities.molde.MoldeFoto;
 
 @Repository("moldeFotoRepository")
 public class MoldeFotoRepositoryImpl extends NJBaseRepository<Long, MoldeFoto> implements MoldeFotoRepositoryCustom {

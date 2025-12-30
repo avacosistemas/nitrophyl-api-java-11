@@ -1,4 +1,4 @@
-package ar.com.avaco.nitrophyl.domain.entities.moldes;
+package ar.com.avaco.nitrophyl.domain.entities.molde;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,39 +15,37 @@ import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
-@Table(name = "MOLDEBOCA")
+@Table(name = "MOLDEDIMENSION")
 @Inheritance(strategy = InheritanceType.JOINED)
-public class MoldeBoca extends ar.com.avaco.arc.core.domain.Entity<Long> {
+public class MoldeDimension extends ar.com.avaco.arc.core.domain.Entity<Long> {
 
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(generator = "MOLDEBOCA_SEQ")
-	@GenericGenerator(name = "MOLDEBOCA_SEQ", strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator", parameters = {
-			@org.hibernate.annotations.Parameter(name = "sequence_name", value = "MOLDEBOCA_SEQ"),
+	@GeneratedValue(generator = "MOLDEDIMENSION_SEQ")
+	@GenericGenerator(name = "MOLDEDIMENSION_SEQ", strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator", parameters = {
+			@org.hibernate.annotations.Parameter(name = "sequence_name", value = "MOLDEDIMENSION_SEQ"),
 			@org.hibernate.annotations.Parameter(name = "initial_value", value = "1"),
 			@org.hibernate.annotations.Parameter(name = "increment_size", value = "1") })
-	@Column(name = "ID_MOLDE_BOCA", unique = true, nullable = false)
+	@Column(name = "ID_MOLDE_DIMENSION", unique = true, nullable = false)
 	private Long id;
 
 	@ManyToOne
 	@JoinColumn(name = "ID_MOLDE", insertable = false, updatable = false)
 	private Molde molde;
-
+	
 	@Column(name = "ID_MOLDE")
 	private Long idMolde;
+	
 
-	@Column(name = "NROBOCA", unique = false, nullable = false)
-	private Integer nroBoca;
-
-	@Column(name = "DESCRIPCION", unique = false, nullable = false)
-	private String descripcion;
-
-	@Column(name = "ESTADO", unique = false, nullable = false)
+	@Column(name = "TIPODIMENSION")
 	@Enumerated(EnumType.STRING)
-	private EstadoBoca estado;
+	private TipoDimension tipodimension;
 
-	public MoldeBoca() {
+	@Column(name = "VALORDIMENSION")
+	private Integer valordimension;
+
+	public MoldeDimension() {
 		super();
 	}
 
@@ -67,20 +65,20 @@ public class MoldeBoca extends ar.com.avaco.arc.core.domain.Entity<Long> {
 		this.molde = molde;
 	}
 
-	public Integer getNroBoca() {
-		return nroBoca;
+	public TipoDimension getTipodimension() {
+		return tipodimension;
 	}
 
-	public void setNroBoca(Integer nroBoca) {
-		this.nroBoca = nroBoca;
+	public void setTipodimension(TipoDimension tipodimension) {
+		this.tipodimension = tipodimension;
 	}
 
-	public EstadoBoca getEstado() {
-		return estado;
+	public Integer getValordimension() {
+		return valordimension;
 	}
 
-	public void setEstado(EstadoBoca estado) {
-		this.estado = estado;
+	public void setValordimension(Integer valordimension) {
+		this.valordimension = valordimension;
 	}
 
 	public Long getIdMolde() {
@@ -89,14 +87,6 @@ public class MoldeBoca extends ar.com.avaco.arc.core.domain.Entity<Long> {
 
 	public void setIdMolde(Long idMolde) {
 		this.idMolde = idMolde;
-	}
-
-	public String getDescripcion() {
-		return descripcion;
-	}
-
-	public void setDescripcion(String descripcion) {
-		this.descripcion = descripcion;
 	}
 
 }

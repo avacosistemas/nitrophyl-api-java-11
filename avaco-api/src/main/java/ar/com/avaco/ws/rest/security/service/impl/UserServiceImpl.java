@@ -19,6 +19,7 @@ import ar.com.avaco.arc.sec.domain.Perfil;
 import ar.com.avaco.arc.sec.domain.Usuario;
 import ar.com.avaco.arc.sec.service.UsuarioService;
 import ar.com.avaco.commons.exception.ErrorValidationException;
+import ar.com.avaco.nitrophyl.domain.entities.AuditableEntity;
 import ar.com.avaco.ws.rest.security.dto.Profile;
 import ar.com.avaco.ws.rest.security.dto.UpdatePasswordDTO;
 import ar.com.avaco.ws.rest.security.dto.User;
@@ -128,5 +129,12 @@ public class UserServiceImpl extends AbstractConvertService<User, Long, Usuario>
 	public User getByUsername(String username) {
 		return convertToDto(getService().findByUsername(username));
 	}
+
+	@Override
+	public void updateUserDateModificacion(AuditableEntity<Long> entity) {
+		throw new RuntimeException("Not implemented");
+	}
+	
+	
 
 }

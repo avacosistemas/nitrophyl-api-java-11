@@ -1,4 +1,4 @@
-package ar.com.avaco.nitrophyl.domain.entities.moldes;
+package ar.com.avaco.nitrophyl.domain.entities.molde;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

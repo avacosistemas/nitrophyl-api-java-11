@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import ar.com.avaco.arc.sec.domain.Permiso;
 import ar.com.avaco.arc.sec.service.PermisoService;
+import ar.com.avaco.nitrophyl.domain.entities.AuditableEntity;
 import ar.com.avaco.ws.rest.security.dto.Permission;
 import ar.com.avaco.ws.rest.security.service.PermissionService;
 import ar.com.avaco.ws.rest.service.AbstractConvertService;
@@ -50,6 +51,11 @@ public class PermissionServiceImpl extends AbstractConvertService<Permission, Lo
 	public List<Permission> listEqField(String field, Object pattern) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public void updateUserDateModificacion(AuditableEntity<Long> entity) {
+		throw new RuntimeException("Not implemented");
 	}
 	
 }

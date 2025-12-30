@@ -14,7 +14,7 @@ import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 
 import ar.com.avaco.nitrophyl.domain.entities.AuditableEntity;
-import ar.com.avaco.nitrophyl.domain.entities.moldes.Molde;
+import ar.com.avaco.nitrophyl.domain.entities.molde.Molde;
 
 @Entity
 @Table(name = "PIEZA_MOLDE")

@@ -6,9 +6,9 @@ package ar.com.avaco.nitrophyl.ws.dto;
 import java.util.ArrayList;
 import java.util.List;
 
-import ar.com.avaco.ws.rest.dto.DTOEntity;
+import ar.com.avaco.ws.rest.dto.DTOAuditableEntity;
 
-public class MoldeDTO extends DTOEntity<Long> {
+public class MoldeDTO extends DTOAuditableEntity<Long> {
 
 	private Long id;
 	private String codigo;
@@ -21,6 +21,15 @@ public class MoldeDTO extends DTOEntity<Long> {
 	private Long idClienteDuenio;
 	private String observacionesEstado;
 	private List<PiezaTipoDTO> piezaTipos = new ArrayList<PiezaTipoDTO>();
+	private Integer cantidadBocas;
+
+	public Integer getCantidadBocas() {
+		return cantidadBocas;
+	}
+
+	public void setCantidadBocas(Integer cantidadBocas) {
+		this.cantidadBocas = cantidadBocas;
+	}
 
 	public String getObservacionesEstado() {
 		return observacionesEstado;

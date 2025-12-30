@@ -104,9 +104,15 @@ public abstract class NJBaseService<ID extends Serializable, T extends Entity<ID
 		return this.repository;
 	}
 	
-	protected final void updateUserDateModificacion(AuditableEntity<ID> entity) {
+	@Override
+	public final void updateUserDateModificacion(AuditableEntity<ID> entity) {
 		entity.setFechaActualizacion(DateUtils.getFechaYHoraActual());
 		entity.setUsuarioActualizacion(SecurityContextHolder.getContext().getAuthentication().getName());
 	}
 
+	@Override
+	public final T getDetached(ID id) {
+		return this.repository.getDetachedById(id);
+	}
+	
 }

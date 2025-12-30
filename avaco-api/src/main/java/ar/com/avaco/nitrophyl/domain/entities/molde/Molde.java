@@ -1,4 +1,4 @@
-package ar.com.avaco.nitrophyl.domain.entities.moldes;
+package ar.com.avaco.nitrophyl.domain.entities.molde;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -25,19 +25,18 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.GenericGenerator;
 
+import ar.com.avaco.nitrophyl.domain.entities.AuditableEntity;
 import ar.com.avaco.nitrophyl.domain.entities.cliente.Cliente;
 import ar.com.avaco.nitrophyl.domain.entities.pieza.PiezaTipo;
 import ar.com.avaco.nitrophyl.ws.dto.MoldeListadoDTO;
 
 @SqlResultSetMapping(name = "MoldeListadoDTOMapper", classes = {
 		@ConstructorResult(targetClass = MoldeListadoDTO.class, columns = {
-				@ColumnResult(name = "id", type = Integer.class), 
-				@ColumnResult(name = "codigo", type = String.class),
+				@ColumnResult(name = "id", type = Integer.class), @ColumnResult(name = "codigo", type = String.class),
 				@ColumnResult(name = "estado", type = String.class),
 				@ColumnResult(name = "nombre", type = String.class),
 				@ColumnResult(name = "ubicacion", type = String.class),
-				@ColumnResult(name = "alto", type = Integer.class), 
-				@ColumnResult(name = "ancho", type = Integer.class),
+				@ColumnResult(name = "alto", type = Integer.class), @ColumnResult(name = "ancho", type = Integer.class),
 				@ColumnResult(name = "diametro", type = Integer.class),
 				@ColumnResult(name = "profundidad", type = Integer.class),
 				@ColumnResult(name = "piezas", type = String.class),
@@ -45,9 +44,8 @@ import ar.com.avaco.nitrophyl.ws.dto.MoldeListadoDTO;
 				@ColumnResult(name = "totalRows", type = Integer.class) }) })
 
 @Entity
-@Table(name = "MOLDES")
-@Inheritance(strategy = InheritanceType.JOINED)
-public class Molde extends ar.com.avaco.arc.core.domain.Entity<Long> {
+@Table(name = "MOLDE")
+public class Molde extends AuditableEntity<Long> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -74,7 +72,7 @@ public class Molde extends ar.com.avaco.arc.core.domain.Entity<Long> {
 	private String ubicacion;
 
 	@Column(name = "BOCAS")
-	private Integer bocas;
+	private Integer cantidadBocas;
 
 	@Column(name = "OBSERVACIONES")
 	private String observaciones;
@@ -95,6 +93,14 @@ public class Molde extends ar.com.avaco.arc.core.domain.Entity<Long> {
 	@JoinTable(name = "MOLDE_TIPO_PIEZA", joinColumns = @JoinColumn(name = "ID_MOLDE", referencedColumnName = "ID_MOLDE"), inverseJoinColumns = @JoinColumn(name = "ID_PIEZA_TIPO", referencedColumnName = "ID_PIEZA_TIPO"))
 	@Fetch(FetchMode.SELECT)
 	private Set<PiezaTipo> tiposPieza = new HashSet<>();
+
+	public Integer getCantidadBocas() {
+		return cantidadBocas;
+	}
+
+	public void setCantidadBocas(Integer cantidadBocas) {
+		this.cantidadBocas = cantidadBocas;
+	}
 
 	public Set<PiezaTipo> getTiposPieza() {
 		return tiposPieza;
@@ -140,14 +146,6 @@ public class Molde extends ar.com.avaco.arc.core.domain.Entity<Long> {
 		this.ubicacion = ubicacion;
 	}
 
-	public Integer getBocas() {
-		return bocas;
-	}
-
-	public void setBocas(Integer bocas) {
-		this.bocas = bocas;
-	}
-
 	public String getObservaciones() {
 		return observaciones;
 	}
@@ -186,6 +184,12 @@ public class Molde extends ar.com.avaco.arc.core.domain.Entity<Long> {
 
 	public void setDuenio(Cliente duenio) {
 		this.duenio = duenio;
+	}
+
+	public static Molde ofId(Long id) {
+		Molde m = new Molde();
+		m.setId(id);
+		return m;
 	}
 
 }

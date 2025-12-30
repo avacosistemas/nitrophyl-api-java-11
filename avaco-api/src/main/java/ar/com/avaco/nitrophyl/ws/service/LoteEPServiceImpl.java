@@ -27,7 +27,7 @@ import ar.com.avaco.nitrophyl.domain.entities.cliente.EmpresaCliente;
 import ar.com.avaco.nitrophyl.domain.entities.formula.Formula;
 import ar.com.avaco.nitrophyl.domain.entities.lote.EstadoLote;
 import ar.com.avaco.nitrophyl.domain.entities.lote.Lote;
-import ar.com.avaco.nitrophyl.domain.entities.moldes.LoteGrafico;
+import ar.com.avaco.nitrophyl.domain.entities.molde.LoteGrafico;
 import ar.com.avaco.nitrophyl.domain.entities.reporte.RegistroEnvioInformeCalidad;
 import ar.com.avaco.nitrophyl.domain.entities.reporte.ReporteLoteConfiguracionCliente;
 import ar.com.avaco.nitrophyl.service.cliente.ClienteService;
