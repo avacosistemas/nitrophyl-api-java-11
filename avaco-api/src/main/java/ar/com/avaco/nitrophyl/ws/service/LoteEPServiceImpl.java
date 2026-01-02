@@ -50,22 +50,27 @@ import ar.com.avaco.ws.rest.service.CRUDEPBaseService;
 @Service("loteEPService")
 public class LoteEPServiceImpl extends CRUDEPBaseService<Long, LoteDTO, Lote, LoteService> implements LoteEPService {
 
+	@Autowired
 	private ReporteLoteConfiguracionClienteService reporteLoteConfigClienteService;
 
+	@Autowired
 	private ClienteService clienteService;
 
+	@Autowired
 	private FormulaService formulaService;
 
+	@Autowired
 	private LoteGraficoService loteGraficoService;
 
 	@Autowired
 	private MailSenderSMTPService mailSenderSMTPService;
 
+	@Autowired
 	private ReporteLoteConfiguracionClienteService reporteConfiguracionService;
 
 	@Autowired
 	private RegistroEnvioInformeCalidadService registroEnvioService;
-	
+
 	@Override
 	public List<LoteDTO> listFilter(AbstractFilter abstractFilter) {
 		List<LoteDTO> lotes = super.listFilter(abstractFilter);
@@ -242,13 +247,6 @@ public class LoteEPServiceImpl extends CRUDEPBaseService<Long, LoteDTO, Lote, Lo
 		return reporteEnsayoLotePorMaquinaDTO;
 	}
 
-	public void borrar(Long idLote) throws BusinessException {
-		if (this.service.hasEnsayos(idLote))
-			throw new BusinessException("No se puede borrar el lote porque tiene ensayos asociados");
-		this.service.borrar(idLote);
-
-	}
-
 	@Override
 	public void revisiones() {
 		this.service.revisiones();
@@ -315,7 +313,8 @@ public class LoteEPServiceImpl extends CRUDEPBaseService<Long, LoteDTO, Lote, Lo
 				archivos.add(tempFileAdjunto);
 			}
 
-			this.mailSenderSMTPService.sendMail("informes@nitrophyl.com.ar", correos.toArray(new String[0]), null, subject, msg, archivos);  
+			this.mailSenderSMTPService.sendMail("informes@nitrophyl.com.ar", correos.toArray(new String[0]), null,
+					subject, msg, archivos);
 
 			RegistroEnvioInformeCalidad registro = new RegistroEnvioInformeCalidad();
 			registro.setCliente(cliente);
@@ -327,9 +326,9 @@ public class LoteEPServiceImpl extends CRUDEPBaseService<Long, LoteDTO, Lote, Lo
 			registro.setObservacionesMail(observaciones);
 			registro.setUsuarioActualizacion(SecurityContextHolder.getContext().getAuthentication().getName());
 			registro.setUsuarioCreacion(SecurityContextHolder.getContext().getAuthentication().getName());
-			
+
 			this.registroEnvioService.save(registro);
-			
+
 			fosReporte.close();
 
 			if (fosGrafico != null)
@@ -353,7 +352,7 @@ public class LoteEPServiceImpl extends CRUDEPBaseService<Long, LoteDTO, Lote, Lo
 		return "<strong><span style='color: blue;'>Nitrophyl S.A.</span></strong> <br>" + "Dr. Rebizzo 5378<br>"
 				+ "(1678) Caseros, Buenos Aires<br>" + "+54 11 4759-0592 / 4759-0954 / 4750-3052";
 	}
-	
+
 	@Override
 	public Boolean hasEnsayos(Long idLote) {
 		return this.service.hasEnsayos(idLote);
@@ -363,36 +362,6 @@ public class LoteEPServiceImpl extends CRUDEPBaseService<Long, LoteDTO, Lote, Lo
 	@Resource(name = "loteService")
 	protected void setService(LoteService service) {
 		this.service = service;
-	}
-
-	@Resource(name = "clienteService")
-	public void setClienteService(ClienteService clienteService) {
-		this.clienteService = clienteService;
-	}
-
-	@Resource(name = "formulaService")
-	public void setFormulaService(FormulaService formulaService) {
-		this.formulaService = formulaService;
-	}
-
-	@Resource(name = "reporteLoteConfiguracionClienteService")
-	public void setReporteLoteConfigClienteService(
-			ReporteLoteConfiguracionClienteService reporteLoteConfigClienteService) {
-		this.reporteLoteConfigClienteService = reporteLoteConfigClienteService;
-	}
-
-	@Resource(name = "loteGraficoService")
-	public void setLoteGraficoService(LoteGraficoService loteGraficoService) {
-		this.loteGraficoService = loteGraficoService;
-	}
-
-	public void setMailSenderSMTPService(MailSenderSMTPService mailSenderSMTPService) {
-		this.mailSenderSMTPService = mailSenderSMTPService;
-	}
-
-	@Resource(name = "reporteLoteConfiguracionClienteService")
-	public void setReporteConfiguracionService(ReporteLoteConfiguracionClienteService reporteConfiguracionService) {
-		this.reporteConfiguracionService = reporteConfiguracionService;
 	}
 
 }

@@ -33,7 +33,6 @@ import ar.com.avaco.nitrophyl.service.molde.MoldePlanoService;
 import ar.com.avaco.nitrophyl.service.molde.MoldeRegistroService;
 import ar.com.avaco.nitrophyl.service.molde.MoldeService;
 import ar.com.avaco.nitrophyl.service.pieza.PiezaTipoService;
-import ar.com.avaco.nitrophyl.ws.dto.MoldeBocaListadoDTO;
 import ar.com.avaco.nitrophyl.ws.dto.MoldeClienteDTO;
 import ar.com.avaco.nitrophyl.ws.dto.MoldeDTO;
 import ar.com.avaco.nitrophyl.ws.dto.MoldeDimensionListadoDTO;
@@ -49,7 +48,6 @@ import ar.com.avaco.nitrophyl.ws.dto.PageDTO;
 import ar.com.avaco.nitrophyl.ws.dto.PiezaTipoDTO;
 import ar.com.avaco.utils.DateUtils;
 import ar.com.avaco.ws.rest.service.CRUDAuditableEPBaseService;
-import ar.com.avaco.ws.rest.service.CRUDEPBaseService;
 
 @Transactional
 @Service("moldeEPService")

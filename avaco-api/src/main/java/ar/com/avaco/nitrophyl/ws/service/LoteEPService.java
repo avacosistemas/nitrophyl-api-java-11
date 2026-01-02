@@ -14,8 +14,6 @@ public interface LoteEPService extends CRUDEPService<Long, LoteDTO> {
 
 	void rechazar(Long idLote, String observaciones);
 
-	void borrar(Long idLote) throws BusinessException;
-
 	ArchivoDTO generarReporteLoteCliente(Long idLote, Long idCliente, String string) throws BusinessException;
 
 	void revisiones();
@@ -24,8 +22,7 @@ public interface LoteEPService extends CRUDEPService<Long, LoteDTO> {
 			ReporteEnsayoLotePorMaquinaFilterDTO filtro);
 
 	void enviarReporte(Long idLote, Long idCliente, byte[] adjuntoextra, String nombreAdjunto, String observaciones,
-			String string)
-			throws BusinessException;
+			String string) throws BusinessException;
 
 	Boolean hasEnsayos(Long idLote);
 
