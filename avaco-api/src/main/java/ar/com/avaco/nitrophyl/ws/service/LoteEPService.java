@@ -21,7 +21,7 @@ public interface LoteEPService extends CRUDEPService<Long, LoteDTO> {
 	PageDTO<ReporteEnsayoLotePorMaquinaDTO> generarReporteEnsayoLotePorMaquina(
 			ReporteEnsayoLotePorMaquinaFilterDTO filtro);
 
-	void enviarReporte(Long idLote, Long idCliente, byte[] adjuntoextra, String nombreAdjunto, String observaciones,
+	void enviarReporte(String idLotes, Long idCliente, byte[] adjuntoextra, String nombreAdjunto, String observaciones,
 			String string) throws BusinessException;
 
 	Boolean hasEnsayos(Long idLote);

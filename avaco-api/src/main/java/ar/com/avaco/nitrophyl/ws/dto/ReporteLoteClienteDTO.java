@@ -3,7 +3,7 @@ package ar.com.avaco.nitrophyl.ws.dto;
 public class ReporteLoteClienteDTO {
 
 	private Long idCliente;
-	private Long idLote;
+	private String idLote;
 	private byte[] archivo;
 	private String observaciones;
 	private String nombreArchivo;
@@ -25,11 +25,11 @@ public class ReporteLoteClienteDTO {
 		this.idCliente = idCliente;
 	}
 
-	public Long getIdLote() {
+	public String getIdLote() {
 		return idLote;
 	}
 
-	public void setIdLote(Long idLote) {
+	public void setIdLote(String idLote) {
 		this.idLote = idLote;
 	}
 

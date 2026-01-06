@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -253,94 +254,107 @@ public class LoteEPServiceImpl extends CRUDEPBaseService<Long, LoteDTO, Lote, Lo
 	}
 
 	@Override
-	public void enviarReporte(Long idLote, Long idCliente, byte[] adjuntoextra, String nombreAdjunto,
+	public void enviarReporte(String idLotes, Long idCliente, byte[] adjuntoextra, String nombreAdjunto,
 			String observaciones, String observacionesInforme) throws BusinessException {
 
-		Cliente cliente = this.clienteService.getCliente(idCliente);
-		Lote lote = this.service.get(idLote);
-
-		List<String> correos = this.clienteService.getCorreoInformesList(idCliente);
-		EmpresaCliente empresa = this.clienteService.getCliente(idCliente).getEmpresa();
-		String subject = "CERTIFICADO DE CALIDAD";
-		String msg = "Estimados, <br> <br> Adjuntamos el certificado de calidad del material entregado.<br><br>";
-		if (StringUtils.isNotBlank(observaciones))
-			msg += observaciones + "<br><br>";
-		msg += "Saludos cordiales<br><br>";
-
-		if (empresa.equals(EmpresaCliente.NITROPHYL))
-			msg = msg + getFirmaNitrophyl();
-		else
-			msg = msg + getFirmaElasint();
-
 		try {
+			List<String> correos = this.clienteService.getCorreoInformesList(idCliente);
+			EmpresaCliente empresa = this.clienteService.getCliente(idCliente).getEmpresa();
+			String subject = "CERTIFICADO DE CALIDAD";
+			String msg = "Estimados, <br> <br> Adjuntamos el certificado de calidad del material entregado.<br><br>";
+			if (StringUtils.isNotBlank(observaciones))
+				msg += observaciones + "<br><br>";
+			msg += "Saludos cordiales<br><br>";
+
+			if (empresa.equals(EmpresaCliente.NITROPHYL))
+				msg = msg + getFirmaNitrophyl();
+			else
+				msg = msg + getFirmaElasint();
+
+			Cliente cliente = this.clienteService.getCliente(idCliente);
+
+			List<Long> idLoteList = Arrays.stream(idLotes.split(",")).map(String::trim).map(Long::parseLong)
+					.collect(Collectors.toList());
 
 			List<File> archivos = new ArrayList<>();
 
-			// Archivo de reporte
-			ArchivoDTO reporte = generarReporteLoteCliente(idLote, idCliente, observacionesInforme);
-			String nombreReporte = "Informe Calidad - " + cliente.getNombre().replace(".", " - " + lote.getNroLote());
-			File tempFileReporte = File.createTempFile(nombreReporte, ".pdf");
-			FileOutputStream fosReporte = new FileOutputStream(tempFileReporte);
-			fosReporte.write(reporte.getArchivo());
-			archivos.add(tempFileReporte);
+			for (Long idLote : idLoteList) {
 
-			FileOutputStream fosGrafico = null;
+				// Obtengo el lote
+				Lote lote = this.service.get(idLote);
 
-			List<ReporteLoteConfiguracionCliente> findConfiguracionesByClienteFormula = reporteConfiguracionService
-					.findConfiguracionesByClienteFormula(lote.getFormula(), cliente);
+				// Obtengo la configuracion para el cliente y formula
+				// FIXME VER DE AGREGAR UN MAPA PARA NO BUSCAR DOS VECES
+				List<ReporteLoteConfiguracionCliente> findConfiguracionesByClienteFormula = reporteConfiguracionService
+						.findConfiguracionesByClienteFormula(lote.getFormula(), cliente);
 
-			// Archivo de grafico
-			List<LoteGrafico> graficos = loteGraficoService.listEqField("lote.id", lote.getId());
+				// Archivo de reporte
+				ArchivoDTO reporte = generarReporteLoteCliente(idLote, idCliente, observacionesInforme);
+				String nombreReporte = "Informe Calidad - "
+						+ cliente.getNombre().replace(".", " - " + lote.getNroLote());
+				File tempFileReporte;
+				tempFileReporte = File.createTempFile(nombreReporte, ".pdf");
 
-			for (LoteGrafico grafico : graficos) {
-				ReporteLoteConfiguracionCliente conf = reporteConfiguracionService.buscarConfiguracion(idCliente,
-						findConfiguracionesByClienteFormula, grafico.getMaquina().getId());
-				if (conf != null && conf.getEnviarGrafico()) {
-					String nombreGrafico = "Informe Calidad - Grafico - " + grafico.getMaquina() + " - "
-							+ cliente.getNombre().replace(".", " - " + lote.getNroLote());
-					File tempFileGrafico = File.createTempFile(nombreGrafico, ".pdf");
-					fosGrafico = new FileOutputStream(tempFileGrafico);
-					fosGrafico.write(grafico.getArchivo());
-					archivos.add(tempFileGrafico);
+				FileOutputStream fosReporte = new FileOutputStream(tempFileReporte);
+				fosReporte.write(reporte.getArchivo());
+				archivos.add(tempFileReporte);
+
+				FileOutputStream fosGrafico = null;
+
+				// Archivo de grafico
+				List<LoteGrafico> graficos = loteGraficoService.listEqField("lote.id", lote.getId());
+
+				for (LoteGrafico grafico : graficos) {
+					ReporteLoteConfiguracionCliente conf = reporteConfiguracionService.buscarConfiguracion(idCliente,
+							findConfiguracionesByClienteFormula, grafico.getMaquina().getId());
+					if (conf != null && conf.getEnviarGrafico()) {
+						String nombreGrafico = "Informe Calidad - Grafico - " + grafico.getMaquina() + " - "
+								+ cliente.getNombre().replace(".", " - " + lote.getNroLote());
+						File tempFileGrafico = File.createTempFile(nombreGrafico, ".pdf");
+						fosGrafico = new FileOutputStream(tempFileGrafico);
+						fosGrafico.write(grafico.getArchivo());
+						archivos.add(tempFileGrafico);
+					}
 				}
+
+				fosReporte.close();
+
+				if (fosGrafico != null)
+					fosGrafico.close();
+
+				RegistroEnvioInformeCalidad registro = new RegistroEnvioInformeCalidad();
+				registro.setCliente(cliente);
+				registro.setEmailEnviado(String.join(" ,", correos));
+				registro.setFechaActualizacion(DateUtils.getFechaYHoraActual());
+				registro.setFechaCreacion(DateUtils.getFechaYHoraActual());
+				registro.setLote(lote);
+				registro.setObservacionesInforme(observacionesInforme);
+				registro.setObservacionesMail(observaciones);
+				registro.setUsuarioActualizacion(SecurityContextHolder.getContext().getAuthentication().getName());
+				registro.setUsuarioCreacion(SecurityContextHolder.getContext().getAuthentication().getName());
+
+				this.registroEnvioService.save(registro);
+
 			}
 
 			FileOutputStream fosAdjunto = null;
 			if (adjuntoextra != null) {
-				File tempFileAdjunto = File.createTempFile("Informe Calidad - Adjunto - " + lote.getNroLote(), ".pdf");
+				File tempFileAdjunto = File.createTempFile("Informe Calidad - Adjunto", ".pdf");
 				fosAdjunto = new FileOutputStream(tempFileAdjunto);
 				fosAdjunto.write(adjuntoextra);
 				archivos.add(tempFileAdjunto);
 			}
 
-			this.mailSenderSMTPService.sendMail("informes@nitrophyl.com.ar", correos.toArray(new String[0]), null,
-					subject, msg, archivos);
-
-			RegistroEnvioInformeCalidad registro = new RegistroEnvioInformeCalidad();
-			registro.setCliente(cliente);
-			registro.setEmailEnviado(String.join(" ,", correos));
-			registro.setFechaActualizacion(DateUtils.getFechaYHoraActual());
-			registro.setFechaCreacion(DateUtils.getFechaYHoraActual());
-			registro.setLote(lote);
-			registro.setObservacionesInforme(observacionesInforme);
-			registro.setObservacionesMail(observaciones);
-			registro.setUsuarioActualizacion(SecurityContextHolder.getContext().getAuthentication().getName());
-			registro.setUsuarioCreacion(SecurityContextHolder.getContext().getAuthentication().getName());
-
-			this.registroEnvioService.save(registro);
-
-			fosReporte.close();
-
-			if (fosGrafico != null)
-				fosGrafico.close();
-
 			if (fosAdjunto != null)
 				fosAdjunto.close();
 
-		} catch (BusinessException | IOException e) {
+			this.mailSenderSMTPService.sendMail("informes@nitrophyl.com.ar", correos.toArray(new String[0]), null,
+					subject, msg, archivos);
+
+		} catch (IOException e) {
+			e.printStackTrace();
 			throw new BusinessException(e);
 		}
-
 	}
 
 	private String getFirmaElasint() {
