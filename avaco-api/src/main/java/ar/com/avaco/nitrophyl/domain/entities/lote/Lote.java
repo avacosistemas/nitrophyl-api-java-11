@@ -21,12 +21,13 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.GenericGenerator;
 
+import ar.com.avaco.nitrophyl.domain.entities.AuditableEntity;
 import ar.com.avaco.nitrophyl.domain.entities.formula.Formula;
 import ar.com.avaco.nitrophyl.domain.entities.formula.RevisionParametros;
 
 @Entity
 @Table(name = "LOTE")
-public class Lote extends ar.com.avaco.arc.core.domain.Entity<Long> {
+public class Lote extends AuditableEntity<Long> {
 
 	private static final long serialVersionUID = -4128392123321814398L;
 

@@ -12,7 +12,9 @@ import org.springframework.transaction.annotation.Transactional;
 import ar.com.avaco.commons.exception.BusinessException;
 import ar.com.avaco.nitrophyl.domain.entities.molde.Molde;
 import ar.com.avaco.nitrophyl.domain.entities.molde.MoldeBoca;
+import ar.com.avaco.nitrophyl.domain.entities.molde.MoldeObservacion;
 import ar.com.avaco.nitrophyl.service.molde.MoldeBocaService;
+import ar.com.avaco.nitrophyl.service.molde.MoldeObservacionService;
 import ar.com.avaco.nitrophyl.service.molde.MoldeService;
 import ar.com.avaco.nitrophyl.ws.dto.MoldeBocaDTO;
 import ar.com.avaco.ws.rest.service.CRUDAuditableEPBaseService;
@@ -25,6 +27,9 @@ public class MoldeBocaEPServiceImpl extends CRUDAuditableEPBaseService<Long, Mol
 	@Autowired
 	private MoldeService moldeService;
 
+	@Autowired
+	private MoldeObservacionService moldeObservacionService;
+	
 	public MoldeBocaEPServiceImpl() {
 		super(MoldeBoca.class, MoldeBocaDTO.class);
 	}
@@ -42,6 +47,22 @@ public class MoldeBocaEPServiceImpl extends CRUDAuditableEPBaseService<Long, Mol
 		return null;
 	}
 
+	@Override
+	public MoldeBocaDTO update(MoldeBocaDTO dto) throws BusinessException {
+		MoldeBoca boca = this.service.get(dto.getId());
+		if (!boca.getEstado().equals(dto.getEstado())) {
+			MoldeObservacion mo = new MoldeObservacion();
+			mo.setIdMolde(boca.getMolde().getId());
+			StringBuilder observacionesEstado = new StringBuilder();
+			observacionesEstado.append("Boca " + boca.getNroBoca());
+			observacionesEstado.append(" cambio de estado: ");
+			observacionesEstado.append(boca.getEstado() + " -> " + dto.getEstado() + ": " + dto.getObservacionesEstado());
+			mo.setObservacion(observacionesEstado.toString());
+			this.moldeObservacionService.save(mo);
+		}
+		return super.update(dto);
+	}
+	
 	@Override
 	public MoldeBocaDTO save(MoldeBocaDTO dto) throws BusinessException {
 		this.moldeService.incrementarBocas(dto.getIdMolde());
@@ -64,7 +85,6 @@ public class MoldeBocaEPServiceImpl extends CRUDAuditableEPBaseService<Long, Mol
 		MoldeBoca mb = this.service.get(dto.getId());
 		mb.setDescripcion(dto.getDescripcion());
 		mb.setEstado(dto.getEstado());
-		this.service.updateUserDateModificacion(mb);
 		MoldeBoca update = this.service.update(mb);
 		return update;
 	}

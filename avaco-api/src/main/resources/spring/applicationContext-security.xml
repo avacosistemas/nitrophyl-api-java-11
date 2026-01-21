@@ -46,6 +46,8 @@
 		base-package="ar.com.avaco.arc.sec.service.impl" />
 	<ctx:component-scan
 		base-package="ar.com.avaco.ws.rest.security.service.impl" />
+	<ctx:component-scan
+		base-package="ar.com.avaco.arc.core.jpa.configuration" />
 
 	<global-method-security
 		pre-post-annotations="enabled" />
