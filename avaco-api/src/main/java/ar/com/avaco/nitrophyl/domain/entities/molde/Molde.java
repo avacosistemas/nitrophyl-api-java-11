@@ -3,6 +3,7 @@ package ar.com.avaco.nitrophyl.domain.entities.molde;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ColumnResult;
 import javax.persistence.ConstructorResult;
@@ -12,12 +13,11 @@ import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.SqlResultSetMapping;
 import javax.persistence.Table;
 
@@ -84,10 +84,8 @@ public class Molde extends AuditableEntity<Long> {
 	@JoinColumn(name = "ID_CLIENTE_DUENIO", nullable = true)
 	private Cliente duenio;
 
-	@ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "MOLDE_CLIENTE", joinColumns = @JoinColumn(name = "ID_MOLDE", referencedColumnName = "ID_MOLDE"), inverseJoinColumns = @JoinColumn(name = "ID_CLIENTE", referencedColumnName = "ID_CLIENTE"))
-	@Fetch(FetchMode.SELECT)
-	private Set<Cliente> clientes = new HashSet<>();
+	@OneToMany(mappedBy = "molde", cascade = CascadeType.ALL, orphanRemoval = true)
+	private Set<MoldeCliente> clientes = new HashSet<>();
 
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "MOLDE_TIPO_PIEZA", joinColumns = @JoinColumn(name = "ID_MOLDE", referencedColumnName = "ID_MOLDE"), inverseJoinColumns = @JoinColumn(name = "ID_PIEZA_TIPO", referencedColumnName = "ID_PIEZA_TIPO"))
@@ -162,11 +160,11 @@ public class Molde extends AuditableEntity<Long> {
 		this.id = id;
 	}
 
-	public Set<Cliente> getClientes() {
+	public Set<MoldeCliente> getClientes() {
 		return clientes;
 	}
 
-	public void setClientes(Set<Cliente> clientes) {
+	public void setClientes(Set<MoldeCliente> clientes) {
 		this.clientes = clientes;
 	}
 

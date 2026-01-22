@@ -17,6 +17,7 @@ import ar.com.avaco.nitrophyl.domain.entities.molde.EstadoBoca;
 import ar.com.avaco.nitrophyl.domain.entities.molde.EstadoMolde;
 import ar.com.avaco.nitrophyl.domain.entities.molde.Molde;
 import ar.com.avaco.nitrophyl.domain.entities.molde.MoldeBoca;
+import ar.com.avaco.nitrophyl.domain.entities.molde.MoldeCliente;
 import ar.com.avaco.nitrophyl.domain.entities.molde.MoldeDimension;
 import ar.com.avaco.nitrophyl.domain.entities.molde.MoldeFoto;
 import ar.com.avaco.nitrophyl.domain.entities.molde.MoldeObservacion;
@@ -335,7 +336,7 @@ public class MoldeEPServiceImpl extends CRUDAuditableEPBaseService<Long, MoldeDT
 		Molde m = this.service.get(idMolde);
 		List<MoldeClienteDTO> clientes = new ArrayList<>();
 		m.getClientes().forEach(x -> {
-			clientes.add(new MoldeClienteDTO(x, m));
+			clientes.add(new MoldeClienteDTO(x.getCliente(),m, x.getObservaciones()));
 		});
 		return clientes;
 	}
@@ -346,7 +347,13 @@ public class MoldeEPServiceImpl extends CRUDAuditableEPBaseService<Long, MoldeDT
 		List<Cliente> clientes = this.clienteService.getByIds(
 				moldeClientesListadoDTOs.stream().map(MoldeClienteDTO::getIdCliente).collect(Collectors.toList()));
 		m.getClientes().clear();
-		m.getClientes().addAll(clientes);
+		
+		moldeClientesListadoDTOs.forEach(mcdto -> {
+			Cliente c = clientes.stream().filter(x->x.getId().equals(mcdto.getIdCliente())).findAny().get();
+			MoldeCliente mc = new MoldeCliente(m,c);
+			mc.setObservaciones(mcdto.getObservaciones());
+			m.getClientes().add(mc);
+		});
 		this.service.update(m);
 		return getMoldeClientes(idMolde);
 	}

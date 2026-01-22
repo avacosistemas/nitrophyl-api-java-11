@@ -8,16 +8,18 @@ public class MoldeClienteDTO {
 	private Long idMolde;
 	private Long idCliente;
 	private String nombre;
+	private String observaciones;
 
 	public MoldeClienteDTO() {
 		super();
 	}
 
-	public MoldeClienteDTO(Cliente cliente, Molde molde) {
+	public MoldeClienteDTO(Cliente cliente, Molde molde, String observaciones) {
 		super();
 		this.idMolde = molde.getId();
 		this.idCliente = cliente.getId();
 		this.nombre = cliente.getNombre();
+		this.observaciones = observaciones;
 	}
 
 	public Long getIdMolde() {
@@ -42,6 +44,14 @@ public class MoldeClienteDTO {
 
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
+	}
+
+	public String getObservaciones() {
+		return observaciones;
+	}
+
+	public void setObservaciones(String observaciones) {
+		this.observaciones = observaciones;
 	}
 
 }
