@@ -102,8 +102,37 @@ public class MoldeEPServiceImpl extends CRUDAuditableEPBaseService<Long, MoldeDT
 	}
 
 	@Override
-	protected Molde convertToEntity(MoldeDTO dto) {
+	protected Molde convertToEntityForSave(MoldeDTO dto) {
 		Molde molde = super.convertToEntity(dto);
+		molde.setCodigo(dto.getCodigo());
+		molde.setPropio(dto.isPropio());
+		molde.setEstado(EstadoMolde.valueOf(dto.getEstado()));
+		molde.setNombre(dto.getNombre());
+		molde.setObservaciones(dto.getObservaciones());
+		molde.setUbicacion(dto.getUbicacion());
+		molde.setCantidadBocas(dto.getCantidadBocas());
+		
+		Cliente duenio = clienteService.get(dto.getIdClienteDuenio());
+
+		if (!dto.isPropio()) {
+			molde.setDuenio(duenio);
+		}
+		
+		MoldeCliente mc = new MoldeCliente();
+		mc.setCliente(duenio);
+		mc.setMolde(molde);
+		
+		molde.getClientes().add(mc);
+
+		molde.getTiposPieza().clear();
+		dto.getPiezaTipos().forEach(x -> molde.getTiposPieza().add(piezaTipoService.get(x.getId())));
+
+		return molde;
+	}
+	
+	@Override
+	protected Molde convertToEntityForUpdate(MoldeDTO dto) {
+		Molde molde = this.service.get(dto.getId());
 		molde.setCodigo(dto.getCodigo());
 		molde.setPropio(dto.isPropio());
 		molde.setEstado(EstadoMolde.valueOf(dto.getEstado()));
@@ -111,18 +140,27 @@ public class MoldeEPServiceImpl extends CRUDAuditableEPBaseService<Long, MoldeDT
 		molde.setNombre(dto.getNombre());
 		molde.setObservaciones(dto.getObservaciones());
 		molde.setUbicacion(dto.getUbicacion());
-		molde.setCantidadBocas(dto.getCantidadBocas());
-		if (!dto.isPropio()) {
-			Cliente duenio = clienteService.get(dto.getIdClienteDuenio());
+		
+		Cliente duenio = clienteService.get(dto.getIdClienteDuenio());
+
+		if (dto.isPropio()) {
+			molde.setDuenio(null);
+		} else {
 			molde.setDuenio(duenio);
 		}
+		
+		MoldeCliente mc = new MoldeCliente();
+		mc.setCliente(duenio);
+		mc.setMolde(molde);
+		
+		molde.getClientes().add(mc);
 
 		molde.getTiposPieza().clear();
 		dto.getPiezaTipos().forEach(x -> molde.getTiposPieza().add(piezaTipoService.get(x.getId())));
 
 		return molde;
 	}
-
+	
 	@Override
 	protected MoldeDTO convertToDto(Molde entity) {
 		MoldeDTO moldeDto = super.convertToDto(entity);
