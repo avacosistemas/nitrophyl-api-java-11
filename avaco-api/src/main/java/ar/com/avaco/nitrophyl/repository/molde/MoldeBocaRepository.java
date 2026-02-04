@@ -10,9 +10,9 @@ import ar.com.avaco.nitrophyl.domain.entities.molde.MoldeBoca;
 
 public interface MoldeBocaRepository extends NJRepository<Long, MoldeBoca>, MoldeBocaRepositoryCustom {
 
-	List<MoldeBoca> findByIdMoldeOrderByNroBoca(Long idMolde);
+	List<MoldeBoca> findByMoldeIdOrderByNroBoca(Long idMolde);
 
-	void deleteByIdMolde(Long idMolde);
+	void deleteByMoldeId(Long idMolde);
 
 	@Modifying
 	@Query(value = "UPDATE molde_boca SET NROBOCA = NROBOCA - 1 WHERE id_molde = ?1 AND NROBOCA > ?2", nativeQuery = true)

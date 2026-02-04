@@ -33,6 +33,7 @@ import ar.com.avaco.nitrophyl.ws.dto.MoldeListadoDTO;
 @SqlResultSetMapping(name = "MoldeListadoDTOMapper", classes = {
 		@ConstructorResult(targetClass = MoldeListadoDTO.class, columns = {
 				@ColumnResult(name = "id", type = Integer.class), @ColumnResult(name = "codigo", type = String.class),
+				@ColumnResult(name = "faltantes", type = String.class),
 				@ColumnResult(name = "estado", type = String.class),
 				@ColumnResult(name = "nombre", type = String.class),
 				@ColumnResult(name = "ubicacion", type = String.class),
@@ -85,12 +86,25 @@ public class Molde extends AuditableEntity<Long> {
 	private Cliente duenio;
 
 	@OneToMany(mappedBy = "molde", cascade = CascadeType.ALL, orphanRemoval = true)
+	private Set<MoldeDimension> dimensiones = new HashSet<>();
+
+	@OneToMany(mappedBy = "molde", cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<MoldeCliente> clientes = new HashSet<>();
 
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "MOLDE_TIPO_PIEZA", joinColumns = @JoinColumn(name = "ID_MOLDE", referencedColumnName = "ID_MOLDE"), inverseJoinColumns = @JoinColumn(name = "ID_PIEZA_TIPO", referencedColumnName = "ID_PIEZA_TIPO"))
 	@Fetch(FetchMode.SELECT)
 	private Set<PiezaTipo> tiposPieza = new HashSet<>();
+
+	@OneToMany(mappedBy = "molde", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+	private Set<MoldeBoca> bocas = new HashSet<>();
+
+	@Column(name = "TIPO_MOLDE")
+	@Enumerated(EnumType.STRING)
+	private TipoMolde tipoMolde;
+
+	@Column(name = "FALTANTES", insertable = false, updatable = false)
+	private String faltantes;
 
 	public Integer getCantidadBocas() {
 		return cantidadBocas;
@@ -182,6 +196,38 @@ public class Molde extends AuditableEntity<Long> {
 
 	public void setDuenio(Cliente duenio) {
 		this.duenio = duenio;
+	}
+
+	public TipoMolde getTipoMolde() {
+		return tipoMolde;
+	}
+
+	public void setTipoMolde(TipoMolde tipoMolde) {
+		this.tipoMolde = tipoMolde;
+	}
+
+	public Set<MoldeDimension> getDimensiones() {
+		return dimensiones;
+	}
+
+	public void setDimensiones(Set<MoldeDimension> dimensiones) {
+		this.dimensiones = dimensiones;
+	}
+
+	public String getFaltantes() {
+		return faltantes;
+	}
+
+	public void setFaltantes(String faltantes) {
+		this.faltantes = faltantes;
+	}
+
+	public Set<MoldeBoca> getBocas() {
+		return bocas;
+	}
+
+	public void setBocas(Set<MoldeBoca> bocas) {
+		this.bocas = bocas;
 	}
 
 	public static Molde ofId(Long id) {

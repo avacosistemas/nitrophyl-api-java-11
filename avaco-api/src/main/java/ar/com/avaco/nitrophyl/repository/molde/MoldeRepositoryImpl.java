@@ -34,11 +34,11 @@ public class MoldeRepositoryImpl extends NJBaseRepository<Long, Molde> implement
 	}
 
 	private String getQueryListMoldes(MoldeFilterDTO filtro) {
-		String query = " select *, cast(COUNT(*) OVER() as integer) AS totalRows from ( SELECT string_agg(distinct pt.nombre, ', ') as tiposPieza, string_agg(distinct pi.denominacion, ', ') as piezas, cast(m.id_molde as integer) as id, m.codigo, m.estado, m.nombre, m.ubicacion, "
-				+ " cast(SUM(CASE WHEN md.tipodimension = 'ALTO' THEN md.valordimension ELSE NULL END) as integer) AS ALTO, "
-				+ " cast(SUM(CASE WHEN md.tipodimension = 'ANCHO' THEN md.valordimension ELSE NULL END) as integer) AS ANCHO, "
-				+ " cast(SUM(CASE WHEN md.tipodimension  = 'DIAMETRO' THEN md.valordimension ELSE NULL END) as integer)AS DIAMETRO, "
-				+ " cast(SUM(CASE WHEN md.tipodimension = 'PROFUNDIDAD' THEN md.valordimension ELSE NULL END) as integer) AS PROFUNDIDAD, "
+		String query = " select *, cast(COUNT(*) OVER() as integer) AS totalRows from ( SELECT string_agg(distinct pt.nombre, ', ') as tiposPieza, string_agg(distinct pi.denominacion, ', ') as piezas, cast(m.id_molde as integer) as id, m.codigo, m.faltantes, m.estado, m.nombre, m.ubicacion, "
+				+ " cast(MAX(CASE WHEN md.tipodimension = 'ALTO' THEN md.valordimension ELSE NULL END) as integer) AS ALTO, "
+				+ " cast(MAX(CASE WHEN md.tipodimension = 'ANCHO' THEN md.valordimension ELSE NULL END) as integer) AS ANCHO, "
+				+ " cast(MAX(CASE WHEN md.tipodimension  = 'DIAMETRO' THEN md.valordimension ELSE NULL END) as integer)AS DIAMETRO, "
+				+ " cast(MAX(CASE WHEN md.tipodimension = 'PROFUNDIDAD' THEN md.valordimension ELSE NULL END) as integer) AS PROFUNDIDAD, "
 				+ " ult.tiporegistro as ultimoRegistro " + " FROM molde m "
 				+ " left join moldedimension md on m.id_molde = md.id_molde "
 				+ " left join pieza_molde pm on m.id_molde  = pm.id_molde "

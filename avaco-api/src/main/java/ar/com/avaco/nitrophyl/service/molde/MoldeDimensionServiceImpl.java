@@ -27,7 +27,7 @@ public class MoldeDimensionServiceImpl extends NJBaseService<Long, MoldeDimensio
 
 	@Override
 	public List<MoldeDimension> getByMolde(Long idMolde) {
-		return this.repository.findByIdMolde(idMolde);
+		return this.repository.findByMoldeId(idMolde);
 	}
 
 	@Override

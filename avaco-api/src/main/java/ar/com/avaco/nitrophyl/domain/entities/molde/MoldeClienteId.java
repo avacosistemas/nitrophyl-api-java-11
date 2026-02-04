@@ -55,4 +55,9 @@ public class MoldeClienteId implements Serializable {
 	public int hashCode() {
 		return Objects.hash(idMolde, idCliente);
 	}
+	
+	@Override
+	public String toString() {
+	    return "MoldeClienteId[idMolde=" + idMolde + ", idCliente=" + idCliente + "]";
+	}
 }

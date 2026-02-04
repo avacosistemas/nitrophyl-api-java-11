@@ -2,6 +2,7 @@ package ar.com.avaco.nitrophyl.ws.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
@@ -18,12 +19,15 @@ import ar.com.avaco.nitrophyl.domain.entities.molde.EstadoMolde;
 import ar.com.avaco.nitrophyl.domain.entities.molde.Molde;
 import ar.com.avaco.nitrophyl.domain.entities.molde.MoldeBoca;
 import ar.com.avaco.nitrophyl.domain.entities.molde.MoldeCliente;
+import ar.com.avaco.nitrophyl.domain.entities.molde.MoldeClienteId;
 import ar.com.avaco.nitrophyl.domain.entities.molde.MoldeDimension;
 import ar.com.avaco.nitrophyl.domain.entities.molde.MoldeFoto;
 import ar.com.avaco.nitrophyl.domain.entities.molde.MoldeObservacion;
 import ar.com.avaco.nitrophyl.domain.entities.molde.MoldePlano;
 import ar.com.avaco.nitrophyl.domain.entities.molde.MoldeRegistro;
 import ar.com.avaco.nitrophyl.domain.entities.molde.PlanoClasificacion;
+import ar.com.avaco.nitrophyl.domain.entities.molde.TipoDimension;
+import ar.com.avaco.nitrophyl.domain.entities.molde.TipoMolde;
 import ar.com.avaco.nitrophyl.domain.entities.molde.TipoRegistroMolde;
 import ar.com.avaco.nitrophyl.service.cliente.ClienteService;
 import ar.com.avaco.nitrophyl.service.molde.MoldeBocaService;
@@ -111,25 +115,36 @@ public class MoldeEPServiceImpl extends CRUDAuditableEPBaseService<Long, MoldeDT
 		molde.setObservaciones(dto.getObservaciones());
 		molde.setUbicacion(dto.getUbicacion());
 		molde.setCantidadBocas(dto.getCantidadBocas());
-		
+
 		Cliente duenio = clienteService.get(dto.getIdClienteDuenio());
 
 		if (!dto.isPropio()) {
 			molde.setDuenio(duenio);
 		}
-		
-		MoldeCliente mc = new MoldeCliente();
-		mc.setCliente(duenio);
-		mc.setMolde(molde);
-		
-		molde.getClientes().add(mc);
 
 		molde.getTiposPieza().clear();
 		dto.getPiezaTipos().forEach(x -> molde.getTiposPieza().add(piezaTipoService.get(x.getId())));
 
 		return molde;
 	}
-	
+
+	private void setearDimensiones(MoldeDTO dto, Molde molde) {
+		molde.getDimensiones().clear();
+		if (dto.getTipoMolde().equals(TipoMolde.CIRCULAR)) {
+			MoldeDimension alto = new MoldeDimension(molde, TipoDimension.ALTO, dto.getAlto());
+			MoldeDimension diametro = new MoldeDimension(molde, TipoDimension.DIAMETRO, dto.getDiametro());
+			molde.getDimensiones().add(alto);
+			molde.getDimensiones().add(diametro);
+		} else {
+			MoldeDimension alto = new MoldeDimension(molde, TipoDimension.ALTO, dto.getAlto());
+			MoldeDimension ancho = new MoldeDimension(molde, TipoDimension.ANCHO, dto.getAncho());
+			MoldeDimension profundidad = new MoldeDimension(molde, TipoDimension.PROFUNDIDAD, dto.getProfundidad());
+			molde.getDimensiones().add(alto);
+			molde.getDimensiones().add(ancho);
+			molde.getDimensiones().add(profundidad);
+		}
+	}
+
 	@Override
 	protected Molde convertToEntityForUpdate(MoldeDTO dto) {
 		Molde molde = this.service.get(dto.getId());
@@ -140,27 +155,28 @@ public class MoldeEPServiceImpl extends CRUDAuditableEPBaseService<Long, MoldeDT
 		molde.setNombre(dto.getNombre());
 		molde.setObservaciones(dto.getObservaciones());
 		molde.setUbicacion(dto.getUbicacion());
-		
-		Cliente duenio = clienteService.get(dto.getIdClienteDuenio());
 
-		if (dto.isPropio()) {
-			molde.setDuenio(null);
-		} else {
-			molde.setDuenio(duenio);
-		}
+		Cliente duenio = null;
+		if (dto.getIdClienteDuenio() != null) {
+			duenio = clienteService.get(dto.getIdClienteDuenio());
+		} 
 		
-		MoldeCliente mc = new MoldeCliente();
-		mc.setCliente(duenio);
-		mc.setMolde(molde);
+		molde.setDuenio(duenio);
+
+		setearDimensiones(dto, molde);
 		
-		molde.getClientes().add(mc);
+//		MoldeCliente mc = new MoldeCliente();
+//		mc.setCliente(duenio);
+//		mc.setMolde(molde);
+//
+//		molde.getClientes().add(mc);
 
 		molde.getTiposPieza().clear();
 		dto.getPiezaTipos().forEach(x -> molde.getTiposPieza().add(piezaTipoService.get(x.getId())));
 
 		return molde;
 	}
-	
+
 	@Override
 	protected MoldeDTO convertToDto(Molde entity) {
 		MoldeDTO moldeDto = super.convertToDto(entity);
@@ -176,6 +192,14 @@ public class MoldeEPServiceImpl extends CRUDAuditableEPBaseService<Long, MoldeDT
 			moldeDto.setClienteDuenio(entity.getDuenio().getNombre());
 			moldeDto.setIdClienteDuenio(entity.getDuenio().getId());
 		}
+		
+		Map<TipoDimension, Integer> dimensiones = entity.getDimensiones().stream().collect(Collectors.toMap(MoldeDimension::getTipodimension, MoldeDimension::getValordimension));
+		
+		moldeDto.setAlto(dimensiones.get(TipoDimension.ALTO));
+		moldeDto.setAncho(dimensiones.get(TipoDimension.ANCHO));
+		moldeDto.setProfundidad(dimensiones.get(TipoDimension.PROFUNDIDAD));
+		moldeDto.setDiametro(dimensiones.get(TipoDimension.DIAMETRO));
+		
 		entity.getTiposPieza().forEach(x -> moldeDto.getPiezaTipos().add(new PiezaTipoDTO(x)));
 		return moldeDto;
 	}
@@ -185,52 +209,6 @@ public class MoldeEPServiceImpl extends CRUDAuditableEPBaseService<Long, MoldeDT
 	protected void setService(MoldeService service) {
 		this.service = service;
 	}
-
-//	@Override
-//	public List<MoldeBocaListadoDTO> updateMoldesBoca(Long idMolde, List<MoldeBocaListadoDTO> moldeBocaListadoDTO) {
-//
-//		List<MoldeBocaListadoDTO> moldesActuales = this.getMoldesBoca(idMolde);
-//
-//		if (moldeBocaListadoDTO != null) {
-//			List<MoldeBoca> listado = new ArrayList<MoldeBoca>();
-//
-//			Molde molde = service.get(idMolde);
-//
-//			for (MoldeBocaListadoDTO dto : moldeBocaListadoDTO) {
-//				MoldeBoca nuevoMoldeBoca = new MoldeBoca();
-//				nuevoMoldeBoca.setEstado(EstadoBoca.valueOf(dto.getEstado()));
-//				nuevoMoldeBoca.setNroBoca(dto.getNroBoca());
-//				nuevoMoldeBoca.setIdMolde(idMolde);
-//				nuevoMoldeBoca.setDescripcion(dto.getDescripcion());
-//				listado.add(nuevoMoldeBoca);
-//
-//				MoldeBocaListadoDTO modeActual = moldesActuales.stream()
-//						.filter(x -> x.getNroBoca().equals(nuevoMoldeBoca.getNroBoca())).findFirst().get();
-//				if (!nuevoMoldeBoca.getEstado().toString().equals(modeActual.getEstado())) {
-//					MoldeObservacion observacion = new MoldeObservacion();
-//					observacion.setFechaActualizacion(DateUtils.getFechaYHoraActual());
-//					observacion.setFechaCreacion(DateUtils.getFechaYHoraActual());
-//					observacion.setIdMolde(idMolde);
-//					observacion.setObservacion("Boca " + nuevoMoldeBoca.getNroBoca() + " " + modeActual.getEstado()
-//							+ " -> " + nuevoMoldeBoca.getEstado().toString() + ": " + dto.getObservacionesEstado());
-//					observacion
-//							.setUsuarioActualizacion(SecurityContextHolder.getContext().getAuthentication().getName());
-//					observacion.setUsuarioCreacion(SecurityContextHolder.getContext().getAuthentication().getName());
-//					moldeObservacionService.save(observacion);
-//				}
-//
-//			}
-//
-//			moldeBocaService.removeByMolde(idMolde);
-//			moldeBocaService.save(listado);
-//
-//			molde.setBocas(listado.size());
-//			service.save(molde);
-//
-//			return moldeBocaListadoDTO;
-//		}
-//		return null;
-//	}
 
 	@Override
 	public List<MoldeDimensionListadoDTO> getMoldesDimension(Long idMolde) {
@@ -374,7 +352,7 @@ public class MoldeEPServiceImpl extends CRUDAuditableEPBaseService<Long, MoldeDT
 		Molde m = this.service.get(idMolde);
 		List<MoldeClienteDTO> clientes = new ArrayList<>();
 		m.getClientes().forEach(x -> {
-			clientes.add(new MoldeClienteDTO(x.getCliente(),m, x.getObservaciones()));
+			clientes.add(new MoldeClienteDTO(x.getCliente(), m, x.getObservaciones()));
 		});
 		return clientes;
 	}
@@ -385,10 +363,10 @@ public class MoldeEPServiceImpl extends CRUDAuditableEPBaseService<Long, MoldeDT
 		List<Cliente> clientes = this.clienteService.getByIds(
 				moldeClientesListadoDTOs.stream().map(MoldeClienteDTO::getIdCliente).collect(Collectors.toList()));
 		m.getClientes().clear();
-		
+
 		moldeClientesListadoDTOs.forEach(mcdto -> {
-			Cliente c = clientes.stream().filter(x->x.getId().equals(mcdto.getIdCliente())).findAny().get();
-			MoldeCliente mc = new MoldeCliente(m,c);
+			Cliente c = clientes.stream().filter(x -> x.getId().equals(mcdto.getIdCliente())).findAny().get();
+			MoldeCliente mc = new MoldeCliente(m, c);
 			mc.setObservaciones(mcdto.getObservaciones());
 			m.getClientes().add(mc);
 		});
@@ -433,33 +411,52 @@ public class MoldeEPServiceImpl extends CRUDAuditableEPBaseService<Long, MoldeDT
 
 	@Override
 	public MoldeDTO save(MoldeDTO dto) throws BusinessException {
-		MoldeDTO save = super.save(dto);
 
-		// Genero las bocas
-		List<MoldeBoca> bocas = new ArrayList<MoldeBoca>();
-		for (int i = 1; i <= save.getCantidadBocas(); i++) {
-			MoldeBoca mb = new MoldeBoca();
-			mb.setEstado(EstadoBoca.ACTIVO);
-			mb.setIdMolde(save.getId());
-			mb.setMolde(Molde.ofId(save.getId()));
-			mb.setNroBoca(i);
-			mb.setUsuarioCreacion(SecurityContextHolder.getContext().getAuthentication().getName());
-			mb.setFechaCreacion(DateUtils.getFechaYHoraActual());
-			bocas.add(mb);
-		}
+	    // 1. Crear y persistir el Molde
+	    Molde entity = convertToEntityForSave(dto);
+	    entity = service.save(entity); // ahora entity.getId() EXISTE y está MANAGED
 
-		this.moldeBocaService.save(bocas);
+	    // 2. Crear relación MoldeCliente CORRECTAMENTE
+	    Cliente cliente = clienteService.get(dto.getIdClienteDuenio());
 
-		// Registro el ingreso
-		MoldeRegistro registro = new MoldeRegistro();
-		registro.setFecha(DateUtils.getFechaYHoraActual());
-		registro.setIdMolde(save.getId());
-		registro.setTipoRegistro(TipoRegistroMolde.INGRESO);
-		moldeRegistroService.save(registro);
+	    MoldeCliente mc = new MoldeCliente();
+	    mc.setId(new MoldeClienteId(entity.getId(), cliente.getId()));
+	    mc.setMolde(entity);
+	    mc.setCliente(cliente);
 
-		return save;
+	    entity.getClientes().add(mc);
+
+	    // 3. Dimensiones
+	    setearDimensiones(dto, entity);
+
+	    // 4. Crear bocas SIN IDs manuales
+	    entity.getBocas().clear();
+
+	    for (int i = 1; i <= entity.getCantidadBocas(); i++) {
+	        MoldeBoca mb = new MoldeBoca();
+	        mb.setEstado(EstadoBoca.ACTIVO);
+	        mb.setMolde(entity); // SOLO esto
+	        mb.setNroBoca(i);
+	        mb.setUsuarioCreacion(
+	            SecurityContextHolder.getContext().getAuthentication().getName()
+	        );
+	        mb.setFechaCreacion(DateUtils.getFechaYHoraActual());
+
+	        entity.getBocas().add(mb);
+	    }
+
+	    // 5. Guardar todo por cascada
+	    service.save(entity);
+
+	    // 6. Registro
+	    MoldeRegistro registro = new MoldeRegistro();
+	    registro.setFecha(DateUtils.getFechaYHoraActual());
+	    registro.setIdMolde(entity.getId());
+	    registro.setTipoRegistro(TipoRegistroMolde.INGRESO);
+	    moldeRegistroService.save(registro);
+
+	    return convertToDto(entity);
 	}
 
-	
-	
+
 }

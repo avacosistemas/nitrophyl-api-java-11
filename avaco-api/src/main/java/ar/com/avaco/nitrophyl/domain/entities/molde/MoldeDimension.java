@@ -36,7 +36,6 @@ public class MoldeDimension extends ar.com.avaco.arc.core.domain.Entity<Long> {
 	
 	@Column(name = "ID_MOLDE")
 	private Long idMolde;
-	
 
 	@Column(name = "TIPODIMENSION")
 	@Enumerated(EnumType.STRING)
@@ -48,6 +47,14 @@ public class MoldeDimension extends ar.com.avaco.arc.core.domain.Entity<Long> {
 	public MoldeDimension() {
 		super();
 	}
+
+	public MoldeDimension(Molde molde, TipoDimension tipo, Integer valor) {
+		this.molde = molde;
+		this.tipodimension = tipo;
+		this.valordimension = valor;
+		this.idMolde = molde.getId();
+	}
+	
 
 	public Long getId() {
 		return id;

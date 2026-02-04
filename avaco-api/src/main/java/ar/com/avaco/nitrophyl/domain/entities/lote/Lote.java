@@ -153,4 +153,10 @@ public class Lote extends AuditableEntity<Long> {
 		this.revisionParametros = revisionParametros;
 	}
 
+	public static Lote ofId(Long idLote) {
+		Lote lote = new Lote();
+		lote.setId(idLote);
+		return lote;
+	}
+
 }

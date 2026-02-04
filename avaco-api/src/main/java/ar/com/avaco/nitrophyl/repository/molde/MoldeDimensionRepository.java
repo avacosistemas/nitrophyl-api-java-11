@@ -7,7 +7,7 @@ import ar.com.avaco.nitrophyl.domain.entities.molde.MoldeDimension;
 
 public interface MoldeDimensionRepository extends NJRepository<Long, MoldeDimension>, MoldeDimensionRepositoryCustom {
 
-	List<MoldeDimension> findByIdMolde(Long idMolde);
+	List<MoldeDimension> findByMoldeId(Long idMolde);
 	
 	long deleteByIdMolde(Long idMolde);
 

@@ -48,6 +48,8 @@
 		base-package="ar.com.avaco.ws.rest.security.service.impl" />
 	<ctx:component-scan
 		base-package="ar.com.avaco.arc.core.jpa.configuration" />
+	<ctx:component-scan
+		base-package="ar.com.avaco.ws.rest.security.swagger" />
 
 	<global-method-security
 		pre-post-annotations="enabled" />

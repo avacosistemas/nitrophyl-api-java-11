@@ -13,4 +13,6 @@ public interface MoldeFotoRepository extends NJRepository<Long, MoldeFoto>, Mold
 	
 	MoldeFoto findFirstByNombreArchivoOrderByVersionDesc(String nombreArchivo);
 
+	boolean existsByMoldeId(Long idMolde);
+
 }

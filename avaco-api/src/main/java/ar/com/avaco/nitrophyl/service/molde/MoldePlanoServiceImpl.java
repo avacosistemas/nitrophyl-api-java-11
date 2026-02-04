@@ -9,6 +9,7 @@ import javax.annotation.Resource;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,6 +26,9 @@ public class MoldePlanoServiceImpl extends NJBaseService<Long, MoldePlano, Molde
 
 	private Logger logger = LogManager.getLogger(getClass());
 
+	@Autowired
+	private MoldeService moldeService;
+	
 	@Resource(name = "moldePlanoRepository")
 	void setMoldePlanoRepository(MoldePlanoRepository moldePlanoRepository) {
 		this.repository = moldePlanoRepository;
@@ -50,6 +54,9 @@ public class MoldePlanoServiceImpl extends NJBaseService<Long, MoldePlano, Molde
 			moldePlano.setVersion(lastMoldePlano.getVersion() + 1);
 		}
 
+		// Revisa si hay faltantes
+		this.moldeService.actualizarFaltantes(moldePlano.getIdMolde());
+		
 		return this.repository.save(moldePlano);
 	}
 

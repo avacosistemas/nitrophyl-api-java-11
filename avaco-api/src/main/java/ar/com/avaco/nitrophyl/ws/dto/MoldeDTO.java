@@ -6,6 +6,7 @@ package ar.com.avaco.nitrophyl.ws.dto;
 import java.util.ArrayList;
 import java.util.List;
 
+import ar.com.avaco.nitrophyl.domain.entities.molde.TipoMolde;
 import ar.com.avaco.ws.rest.dto.DTOAuditableEntity;
 
 public class MoldeDTO extends DTOAuditableEntity<Long> {
@@ -22,6 +23,52 @@ public class MoldeDTO extends DTOAuditableEntity<Long> {
 	private String observacionesEstado;
 	private List<PiezaTipoDTO> piezaTipos = new ArrayList<PiezaTipoDTO>();
 	private Integer cantidadBocas;
+
+	private TipoMolde tipoMolde;
+	private Integer alto;
+	private Integer ancho;
+	private Integer profundidad;
+	private Integer diametro;
+
+	public TipoMolde getTipoMolde() {
+		return tipoMolde;
+	}
+
+	public void setTipoMolde(TipoMolde tipoMolde) {
+		this.tipoMolde = tipoMolde;
+	}
+
+	public Integer getAlto() {
+		return alto;
+	}
+
+	public void setAlto(Integer alto) {
+		this.alto = alto;
+	}
+
+	public Integer getAncho() {
+		return ancho;
+	}
+
+	public void setAncho(Integer ancho) {
+		this.ancho = ancho;
+	}
+
+	public Integer getProfundidad() {
+		return profundidad;
+	}
+
+	public void setProfundidad(Integer profundidad) {
+		this.profundidad = profundidad;
+	}
+
+	public Integer getDiametro() {
+		return diametro;
+	}
+
+	public void setDiametro(Integer diametro) {
+		this.diametro = diametro;
+	}
 
 	public Integer getCantidadBocas() {
 		return cantidadBocas;

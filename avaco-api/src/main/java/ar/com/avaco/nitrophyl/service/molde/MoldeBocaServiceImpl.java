@@ -23,7 +23,7 @@ public class MoldeBocaServiceImpl extends NJBaseService<Long, MoldeBoca, MoldeBo
 
 	@Override
 	public List<MoldeBoca> getByMolde(Long idMolde) {
-		return this.repository.findByIdMoldeOrderByNroBoca(idMolde);
+		return this.repository.findByMoldeIdOrderByNroBoca(idMolde);
 	}
 
 	@Override

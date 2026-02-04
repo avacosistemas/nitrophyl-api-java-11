@@ -17,4 +17,6 @@ public interface MoldeService extends NJService<Long, Molde> {
 
 	Integer getCantidadBocas(Long idMolde);
 
+	void actualizarFaltantes(Long idMolde);
+
 }

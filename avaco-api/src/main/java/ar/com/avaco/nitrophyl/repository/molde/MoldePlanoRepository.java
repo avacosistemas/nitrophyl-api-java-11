@@ -13,4 +13,6 @@ public interface MoldePlanoRepository extends NJRepository<Long, MoldePlano>, Mo
 
 	MoldePlano findFirstByNombreArchivoOrderByVersionDesc(String nombreArchivo);
 	
+	boolean existsByMoldeIdAndMoldePropioTrue(Long idMolde);
+	
 }
