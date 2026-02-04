@@ -115,7 +115,7 @@ public class MoldeEPServiceImpl extends CRUDAuditableEPBaseService<Long, MoldeDT
 		molde.setObservaciones(dto.getObservaciones());
 		molde.setUbicacion(dto.getUbicacion());
 		molde.setCantidadBocas(dto.getCantidadBocas());
-
+		molde.setTipoMolde(dto.getTipoMolde());
 		Cliente duenio = clienteService.get(dto.getIdClienteDuenio());
 
 		if (!dto.isPropio()) {
@@ -155,7 +155,8 @@ public class MoldeEPServiceImpl extends CRUDAuditableEPBaseService<Long, MoldeDT
 		molde.setNombre(dto.getNombre());
 		molde.setObservaciones(dto.getObservaciones());
 		molde.setUbicacion(dto.getUbicacion());
-
+		molde.setTipoMolde(dto.getTipoMolde());
+		
 		Cliente duenio = null;
 		if (dto.getIdClienteDuenio() != null) {
 			duenio = clienteService.get(dto.getIdClienteDuenio());
@@ -165,12 +166,6 @@ public class MoldeEPServiceImpl extends CRUDAuditableEPBaseService<Long, MoldeDT
 
 		setearDimensiones(dto, molde);
 		
-//		MoldeCliente mc = new MoldeCliente();
-//		mc.setCliente(duenio);
-//		mc.setMolde(molde);
-//
-//		molde.getClientes().add(mc);
-
 		molde.getTiposPieza().clear();
 		dto.getPiezaTipos().forEach(x -> molde.getTiposPieza().add(piezaTipoService.get(x.getId())));
 

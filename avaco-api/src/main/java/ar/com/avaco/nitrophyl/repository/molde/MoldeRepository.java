@@ -24,6 +24,6 @@ public interface MoldeRepository extends NJRepository<Long, Molde>, MoldeReposit
 	String getFaltantesById(@Param("id") Long id);
 	
 	@Modifying(clearAutomatically = true, flushAutomatically = true)
-	@Query("UPDATE Molde m SET m.faltantes = ?1 where m.id = ?2")
+	@Query("UPDATE Molde m SET m.faltantes = ?2 where m.id = ?1")
 	void actualizarFaltantes(Long idMolde, String faltantes);
 }

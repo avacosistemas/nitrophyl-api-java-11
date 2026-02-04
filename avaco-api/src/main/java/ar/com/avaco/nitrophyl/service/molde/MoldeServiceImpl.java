@@ -34,6 +34,14 @@ public class MoldeServiceImpl extends NJBaseService<Long, Molde, MoldeRepository
 		return save;
 	}
 	
+	@Override
+	public Molde update(Molde entity) {
+		// TODO Auto-generated method stub
+		Molde update = super.update(entity);
+		// Revisa si hay faltantes
+		this.actualizarFaltantes(entity.getId());
+		return update;
+	}
 	
 	public List<MoldeListadoDTO> list(MoldeFilterDTO filter) {
 		return this.repository.list(filter);
@@ -56,24 +64,19 @@ public class MoldeServiceImpl extends NJBaseService<Long, Molde, MoldeRepository
 	
 	@Override
 	public void actualizarFaltantes(Long idMolde) {
-		String faltantes = this.repository.getFaltantesById(idMolde);
-		// Si tiene algo pendiente reviso
-		if (StringUtils.isNotBlank(faltantes)) {
-			StringBuilder sb = new StringBuilder();
-			
-			boolean plano = this.moldePlanoRepository.existsByMoldeIdAndMoldePropioTrue(idMolde);
-			if (!plano) {
-				sb.append("Falta cargar un plano");
-			}
-			
-			boolean foto = this.moldeFotoRepository.existsByMoldeId(idMolde);
-			if (!foto) {
-				sb.append("Falta cargar una foto");
-			}
-			
-			this.repository.actualizarFaltantes(idMolde, sb.toString());
+		StringBuilder sb = new StringBuilder();
+		
+		boolean plano = this.moldePlanoRepository.existsByMoldeIdAndMoldePropioTrue(idMolde);
+		if (!plano) {
+			sb.append("Falta cargar un plano");
 		}
 		
+		boolean foto = this.moldeFotoRepository.existsByMoldeId(idMolde);
+		if (!foto) {
+			sb.append("Falta cargar una foto");
+		}
+		
+		this.repository.actualizarFaltantes(idMolde, sb.toString());
 	}
 
 	@Resource(name = "moldeRepository")
