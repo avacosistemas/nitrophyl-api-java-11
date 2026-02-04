@@ -23,7 +23,7 @@ import ar.com.avaco.nitrophyl.ws.service.filter.MaquinaFilter;
 import ar.com.avaco.ws.rest.dto.JSONResponse;
 
 @RestController
-public class MaquinaRestController extends AbstractDTORestController<MaquinaDTO, Long, MaquinaEPService> {
+public class MaquinaRestController extends AbstractAuditableDTORestController<MaquinaDTO, Long, MaquinaEPService> {
 
 	@RequestMapping(value = "/maquinas", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<JSONResponse> list(MaquinaFilterDTO filter) {

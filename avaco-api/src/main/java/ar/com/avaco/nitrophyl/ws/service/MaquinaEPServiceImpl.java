@@ -9,11 +9,15 @@ import ar.com.avaco.nitrophyl.domain.entities.maquina.EstadoMaquina;
 import ar.com.avaco.nitrophyl.domain.entities.maquina.Maquina;
 import ar.com.avaco.nitrophyl.service.maquina.MaquinaService;
 import ar.com.avaco.nitrophyl.ws.dto.MaquinaDTO;
-import ar.com.avaco.ws.rest.service.CRUDEPBaseService;
+import ar.com.avaco.ws.rest.service.CRUDAuditableEPBaseService;
 
 @Service("maquinaEPService")
-public class MaquinaEPServiceImpl extends CRUDEPBaseService<Long, MaquinaDTO, Maquina, MaquinaService>
+public class MaquinaEPServiceImpl extends CRUDAuditableEPBaseService<Long, MaquinaDTO, Maquina, MaquinaService>
 		implements MaquinaEPService {
+
+	public MaquinaEPServiceImpl() {
+		super(Maquina.class, MaquinaDTO.class);
+	}
 
 	@Override
 	@Resource(name = "maquinaService")
@@ -31,6 +35,8 @@ public class MaquinaEPServiceImpl extends CRUDEPBaseService<Long, MaquinaDTO, Ma
 		maquina.setPosicion(dto.getPosicion());
 		maquina.setVersionable(dto.isVersionable());
 		maquina.setNorma(dto.getNorma());
+		maquina.setPerioricidadCalibracion(dto.getPerioricidadCalibracion());
+		maquina.setFechaUltimaCalibracion(dto.getFechaUltimaCalibracion());
 		return maquina;
 	}
 
@@ -44,6 +50,8 @@ public class MaquinaEPServiceImpl extends CRUDEPBaseService<Long, MaquinaDTO, Ma
 		dto.setPosicion(entity.getPosicion());
 		dto.setVersionable(entity.isVersionable());
 		dto.setNorma(entity.getNorma());
+		dto.setPerioricidadCalibracion(dto.getPerioricidadCalibracion());
+		dto.setFechaUltimaCalibracion(dto.getFechaUltimaCalibracion());
 		return dto;
 	}
 

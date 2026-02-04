@@ -1,8 +1,10 @@
 package ar.com.avaco.nitrophyl.ws.dto;
 
-import ar.com.avaco.ws.rest.dto.DTOEntity;
+import java.util.Date;
 
-public class MaquinaDTO extends DTOEntity<Long> {
+import ar.com.avaco.ws.rest.dto.DTOAuditableEntity;
+
+public class MaquinaDTO extends DTOAuditableEntity<Long> {
 
 	private Long id;
 	private String nombre;
@@ -11,6 +13,24 @@ public class MaquinaDTO extends DTOEntity<Long> {
 	private int posicion;
 	private boolean versionable;
 	private String norma;
+	private Date fechaUltimaCalibracion;
+	private Integer perioricidadCalibracion;
+
+	public Date getFechaUltimaCalibracion() {
+		return fechaUltimaCalibracion;
+	}
+
+	public void setFechaUltimaCalibracion(Date fechaUltimaCalibracion) {
+		this.fechaUltimaCalibracion = fechaUltimaCalibracion;
+	}
+
+	public Integer getPerioricidadCalibracion() {
+		return perioricidadCalibracion;
+	}
+
+	public void setPerioricidadCalibracion(Integer perioricidadCalibracion) {
+		this.perioricidadCalibracion = perioricidadCalibracion;
+	}
 
 	public boolean isVersionable() {
 		return versionable;
