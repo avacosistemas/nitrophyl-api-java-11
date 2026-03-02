@@ -7,6 +7,8 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.Column;
+
 import ar.com.avaco.ws.rest.dto.DTOEntity;
 
 public class PiezaEdicionDTO extends DTOEntity<Long> {
@@ -56,6 +58,26 @@ public class PiezaEdicionDTO extends DTOEntity<Long> {
 	private String postCura;
 
 	private String hojaProceso;
+
+	private Boolean requiereInsumos;
+
+	private Integer cantidadInsumos;
+
+	public Boolean getRequiereInsumos() {
+		return requiereInsumos;
+	}
+
+	public void setRequiereInsumos(Boolean requiereInsumos) {
+		this.requiereInsumos = requiereInsumos;
+	}
+
+	public Integer getCantidadInsumos() {
+		return cantidadInsumos;
+	}
+
+	public void setCantidadInsumos(Integer cantidadInsumos) {
+		this.cantidadInsumos = cantidadInsumos;
+	}
 
 	public String getHojaProceso() {
 		return hojaProceso;

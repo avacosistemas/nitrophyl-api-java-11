@@ -22,13 +22,13 @@ public class SwaggerConfig {
 
     @Bean
     public Docket api() {
-        return new Docket(DocumentationType.SWAGGER_2)
-                .select()
-                .apis(RequestHandlerSelectors.basePackage("ar.com.avaco.ws.rest.controller"))
-                .paths(PathSelectors.any())
-                .build()
-                .securitySchemes(Arrays.asList(apiKey()))
-                .securityContexts(Arrays.asList(securityContext()));
+    	return new Docket(DocumentationType.SWAGGER_2)
+    	        .select()
+    	        .apis(RequestHandlerSelectors.basePackage("ar.com.avaco.ws.rest"))
+    	        .paths(PathSelectors.any())
+    	        .build()
+    	        .securitySchemes(Arrays.asList(apiKey()))
+    	        .securityContexts(Arrays.asList(securityContext()));
     }
 
     private ApiKey apiKey() {

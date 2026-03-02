@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import ar.com.avaco.arc.sec.domain.Rol;
 import ar.com.avaco.arc.sec.service.RolService;
-import ar.com.avaco.nitrophyl.domain.entities.AuditableEntity;
 import ar.com.avaco.ws.rest.security.dto.Role;
 import ar.com.avaco.ws.rest.security.service.RoleService;
 import ar.com.avaco.ws.rest.service.AbstractConvertService;
@@ -52,8 +51,4 @@ public class RoleServiceImpl extends AbstractConvertService<Role, Long, Rol> imp
 		return entity;
 	}
 
-	@Override
-	public void updateUserDateModificacion(AuditableEntity<Long> entity) {
-		throw new RuntimeException("Not implemented");
-	}
 }

@@ -1,4 +1,4 @@
-package ar.com.avaco.nitrophyl.domain.entities.pieza;
+package ar.com.avaco.nitrophyl.domain.entities.pieza.moldeo;
 
 import java.util.Date;
 
@@ -15,6 +15,7 @@ import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 
 import ar.com.avaco.nitrophyl.domain.entities.AuditableEntity;
+import ar.com.avaco.nitrophyl.domain.entities.pieza.Proceso;
 
 @Entity
 @Table(name = "BOMBEO")

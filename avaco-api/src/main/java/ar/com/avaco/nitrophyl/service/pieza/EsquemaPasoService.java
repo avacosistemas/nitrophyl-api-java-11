@@ -1,7 +1,7 @@
 package ar.com.avaco.nitrophyl.service.pieza;
 
 import ar.com.avaco.arc.core.component.bean.service.NJService;
-import ar.com.avaco.nitrophyl.domain.entities.pieza.EsquemaPaso;
+import ar.com.avaco.nitrophyl.domain.entities.pieza.esquema.EsquemaPaso;
 
 public interface EsquemaPasoService extends NJService<Long, EsquemaPaso> {
 

@@ -5,14 +5,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.springframework.security.core.context.SecurityContextHolder;
-
 import ar.com.avaco.arc.core.component.bean.repository.NJRepository;
 import ar.com.avaco.arc.core.domain.Entity;
 import ar.com.avaco.arc.core.domain.filter.AbstractFilter;
 import ar.com.avaco.commons.exception.ErrorValidationException;
-import ar.com.avaco.nitrophyl.domain.entities.AuditableEntity;
-import ar.com.avaco.utils.DateUtils;
 
 /**
  * Default implementation of a {@link NJService} that redirects operations to
@@ -104,12 +100,6 @@ public abstract class NJBaseService<ID extends Serializable, T extends Entity<ID
 		return this.repository;
 	}
 	
-	@Override
-	public final void updateUserDateModificacion(AuditableEntity<ID> entity) {
-		entity.setFechaActualizacion(DateUtils.getFechaYHoraActual());
-		entity.setUsuarioActualizacion(SecurityContextHolder.getContext().getAuthentication().getName());
-	}
-
 	@Override
 	public final T getDetached(ID id) {
 		return this.repository.getDetachedById(id);

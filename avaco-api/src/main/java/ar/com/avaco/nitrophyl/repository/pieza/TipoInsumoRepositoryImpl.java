@@ -11,7 +11,7 @@ import javax.persistence.criteria.Subquery;
 import org.springframework.stereotype.Repository;
 
 import ar.com.avaco.arc.core.component.bean.repository.NJBaseRepository;
-import ar.com.avaco.nitrophyl.domain.entities.pieza.TipoInsumo;
+import ar.com.avaco.nitrophyl.domain.entities.pieza.insumo.TipoInsumo;
 
 @Repository("tipoInsumoRepository")
 public class TipoInsumoRepositoryImpl extends NJBaseRepository<Long, TipoInsumo> implements TipoInsumoRepositoryCustom {

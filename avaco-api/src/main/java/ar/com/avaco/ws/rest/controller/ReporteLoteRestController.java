@@ -51,7 +51,7 @@ public class ReporteLoteRestController extends AbstractDTORestController<LoteDTO
 		JSONResponse response = new JSONResponse();
 		response.setStatus(JSONResponse.OK);
 		try {
-			this.service.enviarReporte(dto.getIdLote(), dto.getIdCliente(), dto.getArchivo(), dto.getNombreArchivo(),
+			this.service.enviarReporte(dto.getIdLote(), dto.getIdCliente(), dto.getArchivos(),
 					dto.getObservaciones(), dto.getObservacionesInforme());
 			response.setData(true);
 		} catch (Exception e) {

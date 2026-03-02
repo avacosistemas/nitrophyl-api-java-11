@@ -15,7 +15,6 @@ import ar.com.avaco.arc.sec.domain.Perfil;
 import ar.com.avaco.arc.sec.domain.Permiso;
 import ar.com.avaco.arc.sec.domain.Rol;
 import ar.com.avaco.arc.sec.service.PerfilService;
-import ar.com.avaco.nitrophyl.domain.entities.AuditableEntity;
 import ar.com.avaco.ws.rest.security.dto.Permission;
 import ar.com.avaco.ws.rest.security.dto.Profile;
 import ar.com.avaco.ws.rest.security.dto.Role;
@@ -87,8 +86,4 @@ public class ProfileServiceImpl extends AbstractConvertService<Profile, Long, Pe
 		this.service = perfilService;
 	}
 
-	@Override
-	public void updateUserDateModificacion(AuditableEntity<Long> entity) {
-		throw new RuntimeException("Not implemented");
-	}
 }

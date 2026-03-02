@@ -8,7 +8,7 @@ import javax.persistence.TypedQuery;
 import org.springframework.stereotype.Repository;
 
 import ar.com.avaco.arc.core.component.bean.repository.NJBaseRepository;
-import ar.com.avaco.nitrophyl.domain.entities.pieza.Cotizacion;
+import ar.com.avaco.nitrophyl.domain.entities.pieza.cliente.Cotizacion;
 import ar.com.avaco.nitrophyl.ws.dto.CotizacionDTO;
 import ar.com.avaco.nitrophyl.ws.dto.CotizacionFilterDTO;
 import ar.com.avaco.nitrophyl.ws.dto.PageDTO;

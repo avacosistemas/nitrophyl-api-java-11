@@ -8,14 +8,11 @@ import java.util.List;
 import javax.transaction.Transactional;
 
 import org.modelmapper.ModelMapper;
-import org.springframework.security.core.context.SecurityContextHolder;
-
 import ar.com.avaco.arc.core.component.bean.service.NJService;
 import ar.com.avaco.arc.core.domain.filter.AbstractFilter;
 import ar.com.avaco.commons.exception.BusinessException;
 import ar.com.avaco.nitrophyl.domain.entities.AuditableEntity;
 import ar.com.avaco.nitrophyl.ws.dto.PageDTO;
-import ar.com.avaco.utils.DateUtils;
 import ar.com.avaco.ws.rest.dto.DTOAuditableEntity;
 
 @Transactional
@@ -132,12 +129,9 @@ public abstract class CRUDAuditableEPBaseService<ID extends Serializable, DTO ex
 	}
 
 	public List<T> convertToEntities(Collection<DTO> dtos) {
-		String username = SecurityContextHolder.getContext().getAuthentication().getName();
 		List<T> entities = new ArrayList<T>();
 		for (DTO dto : dtos) {
 			T convertToEntity = convertToEntity(dto);
-			convertToEntity.setUsuarioActualizacion(username);
-			convertToEntity.setFechaActualizacion(DateUtils.getFechaYHoraActual());
 			entities.add(convertToEntity);
 		}
 		return entities;

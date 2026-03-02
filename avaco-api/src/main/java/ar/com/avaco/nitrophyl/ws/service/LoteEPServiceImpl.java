@@ -15,7 +15,6 @@ import javax.annotation.Resource;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.itextpdf.text.DocumentException;
@@ -37,6 +36,7 @@ import ar.com.avaco.nitrophyl.service.lote.LoteGraficoService;
 import ar.com.avaco.nitrophyl.service.lote.LoteService;
 import ar.com.avaco.nitrophyl.service.lote.RegistroEnvioInformeCalidadService;
 import ar.com.avaco.nitrophyl.service.reporte.ReporteLoteConfiguracionClienteService;
+import ar.com.avaco.nitrophyl.ws.dto.ArchivoAdjuntoReporteDTO;
 import ar.com.avaco.nitrophyl.ws.dto.ArchivoDTO;
 import ar.com.avaco.nitrophyl.ws.dto.LoteDTO;
 import ar.com.avaco.nitrophyl.ws.dto.PageDTO;
@@ -254,7 +254,7 @@ public class LoteEPServiceImpl extends CRUDEPBaseService<Long, LoteDTO, Lote, Lo
 	}
 
 	@Override
-	public void enviarReporte(String idLotes, Long idCliente, byte[] adjuntoextra, String nombreAdjunto,
+	public void enviarReporte(String idLotes, Long idCliente, List<ArchivoAdjuntoReporteDTO> archivos,
 			String observaciones, String observacionesInforme) throws BusinessException {
 
 		try {
@@ -276,7 +276,7 @@ public class LoteEPServiceImpl extends CRUDEPBaseService<Long, LoteDTO, Lote, Lo
 			List<Long> idLoteList = Arrays.stream(idLotes.split(",")).map(String::trim).map(Long::parseLong)
 					.collect(Collectors.toList());
 
-			List<File> archivos = new ArrayList<>();
+			List<File> archivosAdjuntos = new ArrayList<>();
 
 			for (Long idLote : idLoteList) {
 
@@ -297,7 +297,7 @@ public class LoteEPServiceImpl extends CRUDEPBaseService<Long, LoteDTO, Lote, Lo
 
 				FileOutputStream fosReporte = new FileOutputStream(tempFileReporte);
 				fosReporte.write(reporte.getArchivo());
-				archivos.add(tempFileReporte);
+				archivosAdjuntos.add(tempFileReporte);
 
 				FileOutputStream fosGrafico = null;
 
@@ -313,7 +313,7 @@ public class LoteEPServiceImpl extends CRUDEPBaseService<Long, LoteDTO, Lote, Lo
 						File tempFileGrafico = File.createTempFile(nombreGrafico, ".pdf");
 						fosGrafico = new FileOutputStream(tempFileGrafico);
 						fosGrafico.write(grafico.getArchivo());
-						archivos.add(tempFileGrafico);
+						archivosAdjuntos.add(tempFileGrafico);
 					}
 				}
 
@@ -325,31 +325,31 @@ public class LoteEPServiceImpl extends CRUDEPBaseService<Long, LoteDTO, Lote, Lo
 				RegistroEnvioInformeCalidad registro = new RegistroEnvioInformeCalidad();
 				registro.setCliente(cliente);
 				registro.setEmailEnviado(String.join(" ,", correos));
-				registro.setFechaActualizacion(DateUtils.getFechaYHoraActual());
-				registro.setFechaCreacion(DateUtils.getFechaYHoraActual());
 				registro.setLote(lote);
 				registro.setObservacionesInforme(observacionesInforme);
 				registro.setObservacionesMail(observaciones);
-				registro.setUsuarioActualizacion(SecurityContextHolder.getContext().getAuthentication().getName());
-				registro.setUsuarioCreacion(SecurityContextHolder.getContext().getAuthentication().getName());
 
 				this.registroEnvioService.save(registro);
 
 			}
 
-			FileOutputStream fosAdjunto = null;
-			if (adjuntoextra != null) {
-				File tempFileAdjunto = File.createTempFile("Informe Calidad - Adjunto", ".pdf");
-				fosAdjunto = new FileOutputStream(tempFileAdjunto);
-				fosAdjunto.write(adjuntoextra);
-				archivos.add(tempFileAdjunto);
+			if (archivos != null && !archivos.isEmpty()) {
+
+				int i = 1;
+				for (ArchivoAdjuntoReporteDTO adjuntoextra : archivos) {
+					FileOutputStream fosAdjunto = null;
+					File tempFileAdjunto = File.createTempFile("Informe Calidad - Adjunto - " + i, ".pdf");
+					fosAdjunto = new FileOutputStream(tempFileAdjunto);
+					fosAdjunto.write(adjuntoextra.getBase64());
+					archivosAdjuntos.add(tempFileAdjunto);
+					fosAdjunto.close();
+					i++;
+				}
+
 			}
-
-			if (fosAdjunto != null)
-				fosAdjunto.close();
-
+			
 			this.mailSenderSMTPService.sendMail("informes@nitrophyl.com.ar", correos.toArray(new String[0]), null,
-					subject, msg, archivos);
+					subject, msg, archivosAdjuntos);
 
 		} catch (IOException e) {
 			e.printStackTrace();

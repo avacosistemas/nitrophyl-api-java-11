@@ -1,4 +1,4 @@
-package ar.com.avaco.nitrophyl.domain.entities.pieza;
+package ar.com.avaco.nitrophyl.domain.entities.pieza.esquema;
 
 import java.util.Date;
 import java.util.HashSet;
@@ -19,6 +19,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 
 import ar.com.avaco.nitrophyl.domain.entities.AuditableEntity;
+import ar.com.avaco.nitrophyl.domain.entities.pieza.Proceso;
 
 @Entity
 @Table(name = "ESQUEMA")

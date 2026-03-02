@@ -1,5 +1,7 @@
 package ar.com.avaco.nitrophyl.domain.entities.pieza;
 
+import ar.com.avaco.nitrophyl.domain.entities.pieza.insumo.UnidadMedida;
+
 public enum TipoStock {
 
 	ROLLOM2DIAM(UnidadMedida.M2), 

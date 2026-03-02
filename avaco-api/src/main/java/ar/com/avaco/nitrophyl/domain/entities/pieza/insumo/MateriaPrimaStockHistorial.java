@@ -1,4 +1,4 @@
-package ar.com.avaco.nitrophyl.domain.entities.pieza;
+package ar.com.avaco.nitrophyl.domain.entities.pieza.insumo;
 
 import java.util.Date;
 
@@ -16,6 +16,7 @@ import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 
 import ar.com.avaco.nitrophyl.domain.entities.AuditableEntity;
+import ar.com.avaco.nitrophyl.domain.entities.pieza.TipoMovimientoStock;
 
 @Entity
 @Table(name = "MATERIA_PRIMA_STOCK_HISTORIAL")

@@ -2,19 +2,17 @@ package ar.com.avaco.nitrophyl.ws.service;
 
 import javax.annotation.Resource;
 
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import ar.com.avaco.nitrophyl.domain.entities.fabrica.Prensa;
-import ar.com.avaco.nitrophyl.domain.entities.pieza.Bombeo;
-import ar.com.avaco.nitrophyl.domain.entities.pieza.Precalentamiento;
 import ar.com.avaco.nitrophyl.domain.entities.pieza.Proceso;
-import ar.com.avaco.nitrophyl.domain.entities.pieza.Vulcanizacion;
+import ar.com.avaco.nitrophyl.domain.entities.pieza.moldeo.Bombeo;
+import ar.com.avaco.nitrophyl.domain.entities.pieza.moldeo.Precalentamiento;
+import ar.com.avaco.nitrophyl.domain.entities.pieza.moldeo.Vulcanizacion;
 import ar.com.avaco.nitrophyl.service.pieza.ProcesoService;
 import ar.com.avaco.nitrophyl.ws.dto.DesmoldantepostcuraPUTDTO;
 import ar.com.avaco.nitrophyl.ws.dto.MoldeoPUTDTO;
 import ar.com.avaco.nitrophyl.ws.dto.ProcesoDTO;
-import ar.com.avaco.utils.DateUtils;
 import ar.com.avaco.ws.rest.service.CRUDAuditableEPBaseService;
 
 @Service("procesoEPService")
@@ -36,8 +34,6 @@ public class ProcesoEPServiceImpl extends CRUDAuditableEPBaseService<Long, Proce
 		Proceso proceso = this.service.get(id);
 		proceso.setDesmoldante(dto.getDesmoldante());
 		proceso.setPostCura(dto.getPostCura());
-		proceso.setFechaActualizacion(DateUtils.getFechaYHoraActual());
-		proceso.setUsuarioActualizacion(SecurityContextHolder.getContext().getAuthentication().getName());
 		this.service.update(proceso);
 		
 	}
@@ -65,17 +61,10 @@ public class ProcesoEPServiceImpl extends CRUDAuditableEPBaseService<Long, Proce
 		proceso.getBombeos().clear();
 		dto.getBombeos().forEach(b -> { 
 			Bombeo bombeo = super.modelMapper.map(b, Bombeo.class);
-			bombeo.setUsuarioCreacion(SecurityContextHolder.getContext().getAuthentication().getName());
-			bombeo.setFechaCreacion(DateUtils.getFechaYHoraActual());
-			bombeo.setUsuarioActualizacion(SecurityContextHolder.getContext().getAuthentication().getName());
-			bombeo.setFechaActualizacion(DateUtils.getFechaYHoraActual());
 			bombeo.setProceso(proceso);
 			proceso.getBombeos().add(bombeo);
 			} 
 		);
-		
-		proceso.setUsuarioActualizacion(SecurityContextHolder.getContext().getAuthentication().getName());
-		proceso.setFechaActualizacion(DateUtils.getFechaYHoraActual());
 		
 		this.service.update(proceso);
 		

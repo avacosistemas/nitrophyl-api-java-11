@@ -1,9 +1,10 @@
-package ar.com.avaco.nitrophyl.domain.entities.pieza;
+package ar.com.avaco.nitrophyl.domain.entities.pieza.insumo;
 
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -15,6 +16,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Fetch;
@@ -22,6 +24,7 @@ import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.GenericGenerator;
 
 import ar.com.avaco.nitrophyl.domain.entities.AuditableEntity;
+import ar.com.avaco.nitrophyl.domain.entities.pieza.Pieza;
 
 @Entity
 @Table(name = "INSUMO_TRATADO")
@@ -56,8 +59,8 @@ public class InsumoTratado extends AuditableEntity<Long> {
 	@Fetch(FetchMode.SELECT)
 	private Set<Adhesivo> adhesivos = new HashSet<>();
 
-	@Column(name = "OBSERVACIONES")
-	private String observaciones;
+	@OneToMany(mappedBy = "insumoTratado", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+	private Set<InsumoTratadoObservacionControl> observaciones = new HashSet<InsumoTratadoObservacionControl>();
 
 	/**
 	 * La cantidad de insumos.
@@ -144,7 +147,10 @@ public class InsumoTratado extends AuditableEntity<Long> {
 		clonada.setUnidadMedidaLongitud(this.unidadMedidaLongitud);
 		clonada.setMedida1(this.medida1);
 		clonada.setMedida2(this.medida2);
-		clonada.setObservaciones(this.observaciones);
+
+		this.observaciones.forEach(x -> clonada.getObservaciones()
+				.add(new InsumoTratadoObservacionControl(x.getObservacion(), x.getControlar(), clonada)));
+
 		clonada.setPieza(pieza);
 		clonada.getTratamientos().addAll(this.tratamientos);
 		return clonada;
@@ -190,11 +196,11 @@ public class InsumoTratado extends AuditableEntity<Long> {
 		this.id = id;
 	}
 
-	public String getObservaciones() {
+	public Set<InsumoTratadoObservacionControl> getObservaciones() {
 		return observaciones;
 	}
 
-	public void setObservaciones(String observaciones) {
+	public void setObservaciones(Set<InsumoTratadoObservacionControl> observaciones) {
 		this.observaciones = observaciones;
 	}
 

@@ -4,7 +4,6 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -68,12 +67,16 @@ public class MoldeServiceImpl extends NJBaseService<Long, Molde, MoldeRepository
 		
 		boolean plano = this.moldePlanoRepository.existsByMoldeIdAndMoldePropioTrue(idMolde);
 		if (!plano) {
-			sb.append("Falta cargar un plano");
+			sb.append("Falta cargar un plano,");
 		}
 		
 		boolean foto = this.moldeFotoRepository.existsByMoldeId(idMolde);
 		if (!foto) {
-			sb.append("Falta cargar una foto");
+			sb.append("Falta cargar una foto,");
+		}
+		
+		if (sb.length() > 0 && sb.charAt(sb.length() - 1) == ',') {
+		    sb.setLength(sb.length() - 1);
 		}
 		
 		this.repository.actualizarFaltantes(idMolde, sb.toString());

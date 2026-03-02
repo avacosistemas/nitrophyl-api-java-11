@@ -1,6 +1,6 @@
 package ar.com.avaco.nitrophyl.ws.dto;
 
-import ar.com.avaco.nitrophyl.domain.entities.pieza.Origen;
+import ar.com.avaco.nitrophyl.domain.entities.pieza.insumo.Origen;
 import ar.com.avaco.ws.rest.dto.DTOAuditableEntity;
 
 public class InsumoDTO extends DTOAuditableEntity<Long> {

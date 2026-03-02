@@ -1,4 +1,4 @@
-package ar.com.avaco.nitrophyl.domain.entities.pieza;
+package ar.com.avaco.nitrophyl.domain.entities.pieza.esquema;
 
 import java.util.Date;
 

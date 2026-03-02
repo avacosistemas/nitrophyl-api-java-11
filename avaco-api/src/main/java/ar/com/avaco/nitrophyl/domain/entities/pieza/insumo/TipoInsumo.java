@@ -1,4 +1,4 @@
-package ar.com.avaco.nitrophyl.domain.entities.pieza;
+package ar.com.avaco.nitrophyl.domain.entities.pieza.insumo;
 
 import java.beans.Transient;
 import java.util.ArrayList;
@@ -18,6 +18,7 @@ import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 
 import ar.com.avaco.nitrophyl.domain.entities.AuditableEntity;
+import ar.com.avaco.nitrophyl.domain.entities.pieza.TipoStock;
 
 @Entity
 @Table(name = "TIPO_INSUMO")

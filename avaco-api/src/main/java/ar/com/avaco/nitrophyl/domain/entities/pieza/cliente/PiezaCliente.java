@@ -1,4 +1,4 @@
-package ar.com.avaco.nitrophyl.domain.entities.pieza;
+package ar.com.avaco.nitrophyl.domain.entities.pieza.cliente;
 
 import java.util.Date;
 
@@ -14,6 +14,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 import ar.com.avaco.nitrophyl.domain.entities.AuditableEntity;
 import ar.com.avaco.nitrophyl.domain.entities.cliente.Cliente;
+import ar.com.avaco.nitrophyl.domain.entities.pieza.Pieza;
 
 @Entity
 @Table(name = "PIEZA_CLIENTE")

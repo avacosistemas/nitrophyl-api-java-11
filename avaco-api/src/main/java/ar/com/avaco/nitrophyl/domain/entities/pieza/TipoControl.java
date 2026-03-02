@@ -1,13 +1,12 @@
 package ar.com.avaco.nitrophyl.domain.entities.pieza;
 
-public enum TipoBombeo {
+public enum TipoControl {
 
-	
-	AUTOMATICO("Automatico"),ESCALONADO("Escalonado"), SUAVE("Suave"), FONDO("A Fondo");
+	INSUMO("Insumos"), MEDIDA("Medidas"), GENERAL("General");
 
 	private String label;
 
-	TipoBombeo(String label) {
+	TipoControl(String label) {
 		this.label = label;
 	}
 

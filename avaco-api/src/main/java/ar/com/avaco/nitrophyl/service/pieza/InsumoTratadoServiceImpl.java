@@ -2,11 +2,12 @@ package ar.com.avaco.nitrophyl.service.pieza;
 
 import javax.annotation.Resource;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import ar.com.avaco.arc.core.component.bean.service.NJBaseService;
-import ar.com.avaco.nitrophyl.domain.entities.pieza.InsumoTratado;
+import ar.com.avaco.nitrophyl.domain.entities.pieza.insumo.InsumoTratado;
 import ar.com.avaco.nitrophyl.repository.pieza.InsumoTratadoRepository;
 
 @Transactional
@@ -18,4 +19,22 @@ public class InsumoTratadoServiceImpl extends NJBaseService<Long, InsumoTratado,
 		this.repository = insumoTratadoRepository;
 	}
 
+	@Autowired
+	private PiezaService piezaService;
+	
+	@Override
+	public InsumoTratado save(InsumoTratado entity) {
+		InsumoTratado save = super.save(entity);
+		piezaService.actualizarFaltantes(entity.getPieza().getId());
+		return save;
+	}
+	
+	@Override
+	public void remove(Long id) {
+		InsumoTratado insumoTratado = this.get(id);
+		Long idPieza = insumoTratado.getPieza().getId();
+		super.remove(id);
+		piezaService.actualizarFaltantes(idPieza);
+	}
+	
 }

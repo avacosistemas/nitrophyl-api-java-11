@@ -5,7 +5,7 @@ import javax.persistence.EntityManager;
 import org.springframework.stereotype.Repository;
 
 import ar.com.avaco.arc.core.component.bean.repository.NJBaseRepository;
-import ar.com.avaco.nitrophyl.domain.entities.pieza.MateriaPrima;
+import ar.com.avaco.nitrophyl.domain.entities.pieza.insumo.MateriaPrima;
 
 @Repository("materiaPrimaRepository")
 public class MateriaPrimaRepositoryImpl extends NJBaseRepository<Long, MateriaPrima> implements MateriaPrimaRepositoryCustom {

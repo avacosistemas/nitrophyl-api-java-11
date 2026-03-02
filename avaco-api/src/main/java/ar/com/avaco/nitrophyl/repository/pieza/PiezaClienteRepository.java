@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import ar.com.avaco.arc.core.component.bean.repository.NJRepository;
-import ar.com.avaco.nitrophyl.domain.entities.pieza.PiezaCliente;
+import ar.com.avaco.nitrophyl.domain.entities.pieza.cliente.PiezaCliente;
 
 public interface PiezaClienteRepository extends NJRepository<Long, PiezaCliente>, PiezaClienteRepositoryCustom {
 

@@ -42,6 +42,15 @@ public class PiezaDimension extends AuditableEntity<Long> {
 
 	@Column(name = "VALOR")
 	private Integer valor;
+	
+	@Column(name = "CONTROLAR")
+	private Boolean controlar;
+	
+	@Column(name = "MINIMO")
+	private Integer minimo;
+	
+	@Column(name = "MAXIMO")
+	private Integer maximo;
 
 	@Column(name = "OBSERVACIONES")
 	private String observaciones;
@@ -53,8 +62,49 @@ public class PiezaDimension extends AuditableEntity<Long> {
 		clonada.setPieza(pieza);
 		clonada.setTipo(tipo);
 		clonada.setValor(valor);
+		clonada.setMinimo(minimo);
+		clonada.setMaximo(maximo);
+		clonada.setControlar(controlar);
 		return clonada;
 	}
+
+	
+	
+	public Boolean getControlar() {
+		return controlar;
+	}
+
+
+
+	public void setControlar(Boolean controlar) {
+		this.controlar = controlar;
+	}
+
+
+
+	public Integer getMinimo() {
+		return minimo;
+	}
+
+
+
+	public void setMinimo(Integer minimo) {
+		this.minimo = minimo;
+	}
+
+
+
+	public Integer getMaximo() {
+		return maximo;
+	}
+
+
+
+	public void setMaximo(Integer maximo) {
+		this.maximo = maximo;
+	}
+
+
 
 	public Long getId() {
 		return id;

@@ -6,7 +6,6 @@ import java.util.List;
 
 import ar.com.avaco.arc.core.domain.Entity;
 import ar.com.avaco.arc.core.domain.filter.AbstractFilter;
-import ar.com.avaco.nitrophyl.domain.entities.AuditableEntity;
 
 /**
  * Generic interface that provides basic CRUD methods.
@@ -79,7 +78,4 @@ public interface NJService<ID extends Serializable, T extends Entity<ID>> {
 	
 	T getDetached(ID id);
 
-	void updateUserDateModificacion(AuditableEntity<ID> entity);	
-
-	
 }

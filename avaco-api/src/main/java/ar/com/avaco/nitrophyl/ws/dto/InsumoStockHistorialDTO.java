@@ -7,7 +7,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import ar.com.avaco.nitrophyl.domain.entities.pieza.TipoMovimientoStock;
-import ar.com.avaco.nitrophyl.domain.entities.pieza.UnidadMedida;
+import ar.com.avaco.nitrophyl.domain.entities.pieza.insumo.UnidadMedida;
 import ar.com.avaco.ws.rest.dto.DTOAuditableEntity;
 
 public class InsumoStockHistorialDTO extends DTOAuditableEntity<Long> {

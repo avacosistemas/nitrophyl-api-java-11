@@ -7,7 +7,6 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
 
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -94,12 +93,8 @@ public class MoldeEPServiceImpl extends CRUDAuditableEPBaseService<Long, MoldeDT
 		MoldeDTO update = super.update(dto);
 		if (!update.getEstado().equals(estadoAnterior)) {
 			MoldeObservacion observacion = new MoldeObservacion();
-			observacion.setFechaActualizacion(DateUtils.getFechaYHoraActual());
-			observacion.setFechaCreacion(DateUtils.getFechaYHoraActual());
 			observacion.setIdMolde(dto.getId());
 			observacion.setObservacion(estadoAnterior + " -> " + update.getEstado() + ": " + observacionesEstado);
-			observacion.setUsuarioActualizacion(SecurityContextHolder.getContext().getAuthentication().getName());
-			observacion.setUsuarioCreacion(SecurityContextHolder.getContext().getAuthentication().getName());
 			moldeObservacionService.save(observacion);
 		}
 		return update;
@@ -380,8 +375,6 @@ public class MoldeEPServiceImpl extends CRUDAuditableEPBaseService<Long, MoldeDT
 	@Override
 	public MoldeObservacionDTO addMoldeObservacion(MoldeObservacionDTO dto) {
 		MoldeObservacion mo = new MoldeObservacion();
-		mo.setFechaCreacion(DateUtils.getFechaYHoraActual());
-		mo.setUsuarioCreacion(SecurityContextHolder.getContext().getAuthentication().getName());
 		mo.setIdMolde(dto.getIdMolde());
 		mo.setObservacion(dto.getObservacion());
 		MoldeObservacion save = this.moldeObservacionService.save(mo);
@@ -432,11 +425,6 @@ public class MoldeEPServiceImpl extends CRUDAuditableEPBaseService<Long, MoldeDT
 	        mb.setEstado(EstadoBoca.ACTIVO);
 	        mb.setMolde(entity); // SOLO esto
 	        mb.setNroBoca(i);
-	        mb.setUsuarioCreacion(
-	            SecurityContextHolder.getContext().getAuthentication().getName()
-	        );
-	        mb.setFechaCreacion(DateUtils.getFechaYHoraActual());
-
 	        entity.getBocas().add(mb);
 	    }
 

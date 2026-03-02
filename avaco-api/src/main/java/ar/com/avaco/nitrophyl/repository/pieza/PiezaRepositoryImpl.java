@@ -27,7 +27,7 @@ public class PiezaRepositoryImpl extends NJBaseRepository<Long, Pieza> implement
 		if (filtro.getNombre() != null)
 			filtro.setNombre(filtro.getNombre().toUpperCase());
 		
-		String query = " SELECT cast(COUNT(*) OVER() as integer) as rows, p.denominacion as denominacion, " + 
+		String query = " SELECT cast(COUNT(*) OVER() as integer) as rows, p.denominacion as denominacion, p.faltantes as faltantes, " + 
 				"  cast(p.id_pieza as integer) as idPieza, p.codigo, cast(p.vigente as boolean), " + 
 				"  cast(p.revision as integer), p.fecha_revision as fechaRevision, " + 
 				"  pt.nombre as tipo, m.nombre as material, " +

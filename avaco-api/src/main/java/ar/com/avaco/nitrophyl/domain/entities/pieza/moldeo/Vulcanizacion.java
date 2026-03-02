@@ -1,4 +1,4 @@
-package ar.com.avaco.nitrophyl.domain.entities.pieza;
+package ar.com.avaco.nitrophyl.domain.entities.pieza.moldeo;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;

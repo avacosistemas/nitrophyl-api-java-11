@@ -4,7 +4,7 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
-import ar.com.avaco.nitrophyl.domain.entities.pieza.Bombeo;
+import ar.com.avaco.nitrophyl.domain.entities.pieza.moldeo.Bombeo;
 import ar.com.avaco.nitrophyl.service.pieza.BombeoService;
 import ar.com.avaco.nitrophyl.ws.dto.BombeoDTO;
 import ar.com.avaco.ws.rest.service.CRUDAuditableEPBaseService;

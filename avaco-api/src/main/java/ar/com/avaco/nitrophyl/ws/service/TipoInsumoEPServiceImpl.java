@@ -7,8 +7,8 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
-import ar.com.avaco.nitrophyl.domain.entities.pieza.TipoInsumo;
 import ar.com.avaco.nitrophyl.domain.entities.pieza.TipoStock;
+import ar.com.avaco.nitrophyl.domain.entities.pieza.insumo.TipoInsumo;
 import ar.com.avaco.nitrophyl.service.pieza.TipoInsumoService;
 import ar.com.avaco.nitrophyl.ws.dto.ComboDTO;
 import ar.com.avaco.nitrophyl.ws.dto.TipoInsumoDTO;

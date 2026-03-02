@@ -4,8 +4,8 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
-import ar.com.avaco.nitrophyl.domain.entities.pieza.Esquema;
 import ar.com.avaco.nitrophyl.domain.entities.pieza.Proceso;
+import ar.com.avaco.nitrophyl.domain.entities.pieza.esquema.Esquema;
 import ar.com.avaco.nitrophyl.service.pieza.EsquemaService;
 import ar.com.avaco.nitrophyl.ws.dto.EsquemaDTO;
 import ar.com.avaco.ws.rest.service.CRUDAuditableEPBaseService;

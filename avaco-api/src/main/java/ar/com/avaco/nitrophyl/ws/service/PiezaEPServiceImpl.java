@@ -19,19 +19,19 @@ import ar.com.avaco.nitrophyl.domain.entities.fabrica.Prensa;
 import ar.com.avaco.nitrophyl.domain.entities.formula.Formula;
 import ar.com.avaco.nitrophyl.domain.entities.molde.Molde;
 import ar.com.avaco.nitrophyl.domain.entities.molde.PlanoClasificacion;
-import ar.com.avaco.nitrophyl.domain.entities.pieza.Bombeo;
-import ar.com.avaco.nitrophyl.domain.entities.pieza.Cotizacion;
 import ar.com.avaco.nitrophyl.domain.entities.pieza.Pieza;
-import ar.com.avaco.nitrophyl.domain.entities.pieza.PiezaCliente;
 import ar.com.avaco.nitrophyl.domain.entities.pieza.PiezaEspesor;
 import ar.com.avaco.nitrophyl.domain.entities.pieza.PiezaFormula;
 import ar.com.avaco.nitrophyl.domain.entities.pieza.PiezaMolde;
 import ar.com.avaco.nitrophyl.domain.entities.pieza.PiezaPlano;
 import ar.com.avaco.nitrophyl.domain.entities.pieza.PiezaTipo;
-import ar.com.avaco.nitrophyl.domain.entities.pieza.Precalentamiento;
 import ar.com.avaco.nitrophyl.domain.entities.pieza.Proceso;
 import ar.com.avaco.nitrophyl.domain.entities.pieza.Terminacion;
-import ar.com.avaco.nitrophyl.domain.entities.pieza.Vulcanizacion;
+import ar.com.avaco.nitrophyl.domain.entities.pieza.cliente.Cotizacion;
+import ar.com.avaco.nitrophyl.domain.entities.pieza.cliente.PiezaCliente;
+import ar.com.avaco.nitrophyl.domain.entities.pieza.moldeo.Bombeo;
+import ar.com.avaco.nitrophyl.domain.entities.pieza.moldeo.Precalentamiento;
+import ar.com.avaco.nitrophyl.domain.entities.pieza.moldeo.Vulcanizacion;
 import ar.com.avaco.nitrophyl.service.cliente.ClienteService;
 import ar.com.avaco.nitrophyl.service.formula.FormulaService;
 import ar.com.avaco.nitrophyl.service.molde.MoldeService;
@@ -109,119 +109,115 @@ public class PiezaEPServiceImpl extends CRUDAuditableEPBaseService<Long, PiezaDT
 	public void nuevaRevision(Long piezaId) {
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
 		Date fechaHora = DateUtils.getFechaYHoraActual();
-
 		Pieza pieza = this.service.get(piezaId);
-
 		Pieza clonada = pieza.clonar(username, fechaHora);
-
 		this.service.save(clonada);
 	}
 
 	@Override
-	public void create(PiezaCreacionDTO dto) {
+	public PiezaCreacionDTO create(PiezaCreacionDTO dto) {
 
-		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+		// Obtengo fecha y hora actual
 		Date fechaYHoraActual = DateUtils.getFechaYHoraActual();
 
+		// Armo la pieza
 		Pieza pieza = new Pieza();
 		pieza.setCodigo(dto.getCodigo());
 		pieza.setDenominacion(dto.getDenominacion());
 
+		// Seteo la revision y fechas
 		pieza.setRevision(dto.getRevisionIncial());
 		pieza.setFechaRevision(fechaYHoraActual);
-
 		pieza.setFechaCreacionPiezaProceso(fechaYHoraActual);
+		pieza.setVigente(false);
 
-		pieza.setUsuarioCreacion(username);
-		pieza.setFechaCreacion(fechaYHoraActual);
-
+		// Asocio la formula
 		Formula formula = formulaService.get(dto.getIdFormula());
-
 		PiezaFormula detalle = new PiezaFormula();
 		detalle.setFormula(formula);
 
+		// Los espesores
 		if (dto.getEspesores().size() > 0) {
 			dto.getEspesores().forEach(espesor -> {
 				PiezaEspesor e = new PiezaEspesor();
 				e.setEspesorMaximo(espesor.getMax());
 				e.setEspesorMinimo(espesor.getMin());
-				e.setFechaCreacion(fechaYHoraActual);
-				e.setUsuarioCreacion(username);
 				e.setPieza(pieza);
 				pieza.getEspesores().add(e);
 			});
 		}
 
+		// Peso crudo y observaciones
 		detalle.setPesoCrudo(dto.getPesoCrudo());
 		detalle.setObservacionesPesoCrudo(dto.getObservacionesPesoCrudo());
 
 		pieza.setDetalleFormula(detalle);
 
+		// Id null porque es nueva
 		pieza.setId(null);
 
+		// Busco el molde y lo asocio
 		Molde molde = moldeService.get(dto.getIdMolde());
 		PiezaMolde pm = new PiezaMolde();
 		pm.setObservaciones(dto.getObservacionesMolde());
-		pm.setFechaCreacion(fechaYHoraActual);
-		pm.setUsuarioCreacion(username);
 		pm.setMolde(molde);
 		pm.setPieza(pieza);
 		pieza.getMoldes().add(pm);
 
-		
+		// Si hay plano lo asocio
 		if (dto.getPlanoArchivo() != null) {
 			PiezaPlano plano = new PiezaPlano();
 			plano.setArchivo(dto.getPlanoArchivo());
 			plano.setClasificacion(PlanoClasificacion.valueOf(dto.getPlanoClasificacion()));
 			plano.setCodigo(dto.getPlanoCodigo());
-			plano.setFechaCreacion(fechaYHoraActual);
 			plano.setObservaciones(dto.getPlanoObservaciones());
 			plano.setRevision(dto.getPlanoRevision());
-			plano.setUsuarioCreacion(username);
 			plano.setPieza(pieza);
 			pieza.getPlanos().add(plano);
 		}
 		
+		// Si hay cliente lo asocio
 		Cliente cliente = this.clienteService.get(dto.getIdCliente());
-
 		PiezaCliente piezaCliente = new PiezaCliente();
 		piezaCliente.setCliente(cliente);
-		piezaCliente.setFechaCreacion(fechaYHoraActual);
 		piezaCliente.setNombrePiezaPersonalizado(dto.getNombrePiezaCliente());
 		piezaCliente.setPieza(pieza);
-		piezaCliente.setUsuarioCreacion(username);
-
 		pieza.getClientes().add(piezaCliente);
 
-		Terminacion terminacion = new Terminacion();
+		// Armo el proceso y le asocio la hoja
 		Proceso proceso = new Proceso();
-
 		proceso.setHojaProceso(dto.getHojaProceso());
 		
+		// Asocio la terminacion
+		Terminacion terminacion = new Terminacion();
 		terminacion.setProceso(proceso);
 		proceso.setTerminacion(terminacion);
 		pieza.setProceso(proceso);
 		proceso.setPieza(pieza);
 
-		pieza.setRevision(dto.getRevisionIncial());
-
+		// Asocio los tipos de pieza
 		PiezaTipo tipo = this.piezaTipoService.get(dto.getIdTipoPieza());
 		pieza.setTipo(tipo);
 
-		pieza.setVigente(false);
-
+		
+		pieza.setRequiereInsumos(true);
+		pieza.setCantidadInsumos(0);
+		
+		// Guardo la pieza
 		this.service.save(pieza);
 		
+		// Si tengo una cotizacion del cliente la creo y asocio
 		if (dto.getCotizacionCliente() != null && dto.getCotizacionFecha() != null) {
 			Cotizacion c = new Cotizacion();
 			c.setFecha(dto.getCotizacionFecha());
-			c.setFechaCreacion(DateUtils.getFechaYHoraActual());
 			c.setObservaciones(dto.getObservacionesCotizacionCliente());
 			c.setPiezaCliente(piezaCliente);
-			c.setUsuarioCreacion(SecurityContextHolder.getContext().getAuthentication().getName());
 			c.setValor(dto.getCotizacionCliente());
 			this.cotizacionService.save(c);
 		}
+
+		dto.setId(pieza.getId());
+		return dto;
 	}
 
 	@Override
@@ -267,6 +263,9 @@ public class PiezaEPServiceImpl extends CRUDAuditableEPBaseService<Long, PiezaDT
 		dto.setFechaCreacionPiezaProceso(pieza.getFechaCreacionPiezaProceso());
 		dto.setObservacionesRevision(pieza.getObservacionesRevision());
 
+		dto.setRequiereInsumos(pieza.getRequiereInsumos());
+		dto.setCantidadInsumos(pieza.getCantidadInsumos());
+		
 		Precalentamiento precalentamiento = pieza.getProceso().getPrecalentamiento();
 		if (precalentamiento != null) {
 			dto.setPrecalentamientoUnidad(precalentamiento.getUnidad());
@@ -300,9 +299,6 @@ public class PiezaEPServiceImpl extends CRUDAuditableEPBaseService<Long, PiezaDT
 	@Override
 	public void update(Long idPieza, PiezaPUTDTO piezaFormula) {
 
-		String usuario = SecurityContextHolder.getContext().getAuthentication().getName();
-		Date fechaYHoraActual = DateUtils.getFechaYHoraActual();
-
 		Pieza pieza = this.service.get(idPieza);
 
 		Set<PiezaEspesor> espesoresActualizado = new HashSet<>();
@@ -313,13 +309,9 @@ public class PiezaEPServiceImpl extends CRUDAuditableEPBaseService<Long, PiezaDT
 			PiezaEspesor piezaEspesor;
 			if (espesor.isPresent()) {
 				piezaEspesor = espesor.get();
-				piezaEspesor.setFechaActualizacion(fechaYHoraActual);
-				piezaEspesor.setUsuarioActualizacion(usuario);
 			} else {
 				piezaEspesor = new PiezaEspesor();
 				piezaEspesor.setPieza(pieza);
-				piezaEspesor.setFechaCreacion(fechaYHoraActual);
-				piezaEspesor.setUsuarioCreacion(usuario);
 			}
 			piezaEspesor.setEspesorMaximo(espesordto.getMax());
 			piezaEspesor.setEspesorMinimo(espesordto.getMin());
@@ -332,8 +324,6 @@ public class PiezaEPServiceImpl extends CRUDAuditableEPBaseService<Long, PiezaDT
 		pieza.getDetalleFormula().setObservacionesPesoCrudo(piezaFormula.getObservacionesPesoCrudo());
 		pieza.getDetalleFormula().setPesoCrudo(piezaFormula.getPesoCrudo());
 		pieza.setObservacionesRevision(piezaFormula.getObservacionesRevision());
-		pieza.setUsuarioActualizacion(usuario);
-		pieza.setFechaActualizacion(fechaYHoraActual);
 		pieza.getProceso().setHojaProceso(piezaFormula.getHojaProceso());
 		this.service.update(pieza);
 	}

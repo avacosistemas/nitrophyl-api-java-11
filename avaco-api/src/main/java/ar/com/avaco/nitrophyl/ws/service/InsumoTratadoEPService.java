@@ -5,4 +5,6 @@ import ar.com.avaco.ws.rest.service.CRUDAuditableEPService;
 
 public interface InsumoTratadoEPService extends CRUDAuditableEPService<Long, InsumoTratadoDTO> {
 
+	void updateCantidades(Long idPieza, Boolean requiereInsumos, Integer cantidadInsumos);
+
 }

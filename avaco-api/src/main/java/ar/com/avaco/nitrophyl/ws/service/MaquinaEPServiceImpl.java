@@ -50,8 +50,8 @@ public class MaquinaEPServiceImpl extends CRUDAuditableEPBaseService<Long, Maqui
 		dto.setPosicion(entity.getPosicion());
 		dto.setVersionable(entity.isVersionable());
 		dto.setNorma(entity.getNorma());
-		dto.setPerioricidadCalibracion(dto.getPerioricidadCalibracion());
-		dto.setFechaUltimaCalibracion(dto.getFechaUltimaCalibracion());
+		dto.setPerioricidadCalibracion(entity.getPerioricidadCalibracion());
+		dto.setFechaUltimaCalibracion(entity.getFechaUltimaCalibracion());
 		return dto;
 	}
 

@@ -26,6 +26,8 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
 		super();
 	}
 
+	// USAR 422 PARA VALIDATION_EXCEPTION
+	
 	// =====================
 	// 400 - BAD REQUEST
 	// =====================
