@@ -19,7 +19,7 @@ public class CotizacionDTO extends DTOAuditableEntity<Long> {
 
 	private Double valor;
 	
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy", timezone = "America/Argentina/Buenos_Aires")
 	private Date fecha;
 	private String observaciones;
 

@@ -209,7 +209,7 @@ public class PiezaEPServiceImpl extends CRUDAuditableEPBaseService<Long, PiezaDT
 		// Si tengo una cotizacion del cliente la creo y asocio
 		if (dto.getCotizacionCliente() != null && dto.getCotizacionFecha() != null) {
 			Cotizacion c = new Cotizacion();
-			c.setFecha(dto.getCotizacionFecha());
+			c.setFecha(DateUtils.toDate(dto.getCotizacionFecha(), "dd/MM/yyyy"));
 			c.setObservaciones(dto.getObservacionesCotizacionCliente());
 			c.setPiezaCliente(piezaCliente);
 			c.setValor(dto.getCotizacionCliente());

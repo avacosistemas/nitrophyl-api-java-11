@@ -75,8 +75,10 @@ public class InsumoTratadoEPServiceImpl
 
 		entity.getObservaciones().clear();
 
-		dto.getObservaciones().forEach(x -> entity.getObservaciones()
-				.add(new InsumoTratadoObservacionControl(x.getObservacion(), x.getControlar(), entity)));
+		if (dto.getObservaciones() != null && !dto.getObservaciones().isEmpty()) {
+			dto.getObservaciones().forEach(x -> entity.getObservaciones()
+					.add(new InsumoTratadoObservacionControl(x.getObservacion(), x.getControlar(), entity)));
+		}
 		
 		dto.getTratamientos().forEach(tr -> entity.getTratamientos().add(super.modelMapper.map(tr, Tratamiento.class)));
 		Pieza pieza = piezaService.get(dto.getIdPieza());
