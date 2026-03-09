@@ -19,11 +19,12 @@ public class MoldeListadoDTO extends DTOEntity<Long> {
 	private String piezas;
 	private String ultimoRegistro;
 	private Integer totalRows;
+	private String faltantes;
 
 	public MoldeListadoDTO() {
 	}
 
-	public MoldeListadoDTO(Integer id, String codigo, String estado, String nombre, String ubicacion, Integer alto,
+	public MoldeListadoDTO(Integer id, String codigo, String faltantes, String estado, String nombre, String ubicacion, Integer alto,
 			Integer ancho, Integer diametro, Integer profundidad, String piezas, String ultimoRegistro,
 			Integer totalRows) {
 		this.id = Long.valueOf(id);
@@ -38,6 +39,7 @@ public class MoldeListadoDTO extends DTOEntity<Long> {
 		this.piezas = piezas;
 		this.ultimoRegistro = ultimoRegistro;
 		this.totalRows = totalRows;
+		this.faltantes = faltantes;
 	}
 
 	public Integer getTotalRows() {
@@ -136,4 +138,14 @@ public class MoldeListadoDTO extends DTOEntity<Long> {
 		this.ultimoRegistro = ultimoRegistro;
 	}
 
+	public String getFaltantes() {
+		return faltantes;
+	}
+
+	public void setFaltantes(String faltantes) {
+		this.faltantes = faltantes;
+	}
+
+	
+	
 }

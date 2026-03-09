@@ -4,16 +4,18 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
-import ar.com.avaco.nitrophyl.domain.entities.pieza.Adhesivo;
-import ar.com.avaco.nitrophyl.domain.entities.pieza.Insumo;
-import ar.com.avaco.nitrophyl.domain.entities.pieza.InsumoTratado;
 import ar.com.avaco.nitrophyl.domain.entities.pieza.Pieza;
-import ar.com.avaco.nitrophyl.domain.entities.pieza.Tratamiento;
+import ar.com.avaco.nitrophyl.domain.entities.pieza.insumo.Adhesivo;
+import ar.com.avaco.nitrophyl.domain.entities.pieza.insumo.Insumo;
+import ar.com.avaco.nitrophyl.domain.entities.pieza.insumo.InsumoTratado;
+import ar.com.avaco.nitrophyl.domain.entities.pieza.insumo.InsumoTratadoObservacionControl;
+import ar.com.avaco.nitrophyl.domain.entities.pieza.insumo.Tratamiento;
 import ar.com.avaco.nitrophyl.service.pieza.InsumoService;
 import ar.com.avaco.nitrophyl.service.pieza.InsumoTratadoService;
 import ar.com.avaco.nitrophyl.service.pieza.PiezaService;
 import ar.com.avaco.nitrophyl.ws.dto.AdhesivoDTO;
 import ar.com.avaco.nitrophyl.ws.dto.InsumoTratadoDTO;
+import ar.com.avaco.nitrophyl.ws.dto.InsumoTratadoObservacionControlDTO;
 import ar.com.avaco.nitrophyl.ws.dto.TipoInsumoDTO;
 import ar.com.avaco.nitrophyl.ws.dto.TratamientoDTO;
 import ar.com.avaco.ws.rest.service.CRUDAuditableEPBaseService;
@@ -48,7 +50,11 @@ public class InsumoTratadoEPServiceImpl
 		it.setMedida1(entity.getMedida1());
 		it.setMedida2(entity.getMedida2());
 
-		it.setObservaciones(entity.getObservaciones());
+		it.getObservaciones().clear();
+
+		entity.getObservaciones().forEach(x -> it.getObservaciones()
+				.add(new InsumoTratadoObservacionControlDTO(x.getId(), x.getObservacion(), x.getControlar())));
+
 		it.setTipo(super.modelMapper.map(entity.getInsumo().getTipo(), TipoInsumoDTO.class));
 		return it;
 	}
@@ -67,7 +73,13 @@ public class InsumoTratadoEPServiceImpl
 		entity.setMedida1(dto.getMedida1());
 		entity.setMedida2(dto.getMedida2());
 
-		entity.setObservaciones(dto.getObservaciones());
+		entity.getObservaciones().clear();
+
+		if (dto.getObservaciones() != null && !dto.getObservaciones().isEmpty()) {
+			dto.getObservaciones().forEach(x -> entity.getObservaciones()
+					.add(new InsumoTratadoObservacionControl(x.getObservacion(), x.getControlar(), entity)));
+		}
+		
 		dto.getTratamientos().forEach(tr -> entity.getTratamientos().add(super.modelMapper.map(tr, Tratamiento.class)));
 		Pieza pieza = piezaService.get(dto.getIdPieza());
 		entity.setPieza(pieza);
@@ -88,6 +100,16 @@ public class InsumoTratadoEPServiceImpl
 	@Resource(name = "piezaService")
 	public void setPiezaService(PiezaService piezaService) {
 		this.piezaService = piezaService;
+	}
+
+	@Override
+	public void updateCantidades(Long idPieza, Boolean requiereInsumos, Integer cantidadInsumos) {
+		Pieza pieza = this.piezaService.get(idPieza);
+		pieza.setRequiereInsumos(requiereInsumos);
+		pieza.setCantidadInsumos(requiereInsumos ? cantidadInsumos : 0);
+		if (!requiereInsumos)
+			pieza.getInsumos().clear();
+		this.piezaService.update(pieza);
 	}
 
 }

@@ -13,4 +13,8 @@ public interface PiezaService extends NJService<Long, Pieza> {
 
 	List<PiezaGrillaDTO> listGrilla(PiezaFilterDTO pfdto);
 
+	boolean existsByFormula(Long idFormula);
+
+	void actualizarFaltantes(Long idPieza);
+
 }

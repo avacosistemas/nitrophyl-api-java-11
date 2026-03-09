@@ -1,7 +1,7 @@
 package ar.com.avaco.nitrophyl.repository.pieza;
 
 import ar.com.avaco.arc.core.component.bean.repository.NJRepository;
-import ar.com.avaco.nitrophyl.domain.entities.pieza.InsumoTratado;
+import ar.com.avaco.nitrophyl.domain.entities.pieza.insumo.InsumoTratado;
 
 public interface InsumoTratadoRepository extends NJRepository<Long, InsumoTratado>, InsumoTratadoRepositoryCustom {
 

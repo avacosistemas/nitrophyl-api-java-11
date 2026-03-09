@@ -13,4 +13,6 @@ public interface ConfiguracionPruebaService extends NJService<Long, Configuracio
 
 	void setearVigente(Long idConfiguracionPrueba);
 
+	void deleteByFormulaId(Long idFormula);
+
 }

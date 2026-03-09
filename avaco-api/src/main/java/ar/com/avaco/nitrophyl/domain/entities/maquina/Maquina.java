@@ -1,5 +1,6 @@
 package ar.com.avaco.nitrophyl.domain.entities.maquina;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -17,10 +18,12 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import ar.com.avaco.nitrophyl.domain.entities.AuditableEntity;
+
 @Entity
 @Table(name = "MAQUINA")
 @Inheritance(strategy = InheritanceType.JOINED)
-public class Maquina extends ar.com.avaco.arc.core.domain.Entity<Long> {
+public class Maquina extends AuditableEntity<Long> {
 
 	private static final long serialVersionUID = -2296428532611007942L;
 
@@ -51,6 +54,12 @@ public class Maquina extends ar.com.avaco.arc.core.domain.Entity<Long> {
 
 	@Column(name = "VERSIONABLE")
 	private boolean versionable;
+
+	@Column(name = "FECHA_ULTIMA_CALIBRACION")
+	private Date fechaUltimaCalibracion;
+
+	@Column(name = "PERIORICIDAD_CALIBRACION")
+	private Integer perioricidadCalibracion;
 
 	@OneToMany(targetEntity = MaquinaPrueba.class, mappedBy = "maquina", cascade = CascadeType.ALL, orphanRemoval = true)
 	private Set<MaquinaPrueba> pruebas = new HashSet<>();
@@ -117,6 +126,22 @@ public class Maquina extends ar.com.avaco.arc.core.domain.Entity<Long> {
 
 	public void setNorma(String norma) {
 		this.norma = norma;
+	}
+
+	public Date getFechaUltimaCalibracion() {
+		return fechaUltimaCalibracion;
+	}
+
+	public void setFechaUltimaCalibracion(Date fechaUltimaCalibracion) {
+		this.fechaUltimaCalibracion = fechaUltimaCalibracion;
+	}
+
+	public Integer getPerioricidadCalibracion() {
+		return perioricidadCalibracion;
+	}
+
+	public void setPerioricidadCalibracion(Integer perioricidadCalibracion) {
+		this.perioricidadCalibracion = perioricidadCalibracion;
 	}
 
 }

@@ -4,8 +4,8 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
-import ar.com.avaco.nitrophyl.domain.entities.pieza.Insumo;
-import ar.com.avaco.nitrophyl.domain.entities.pieza.InsumoStockHistorial;
+import ar.com.avaco.nitrophyl.domain.entities.pieza.insumo.Insumo;
+import ar.com.avaco.nitrophyl.domain.entities.pieza.insumo.InsumoStockHistorial;
 import ar.com.avaco.nitrophyl.service.pieza.InsumoStockHistorialService;
 import ar.com.avaco.nitrophyl.ws.dto.InsumoStockHistorialDTO;
 import ar.com.avaco.ws.rest.service.CRUDAuditableEPBaseService;

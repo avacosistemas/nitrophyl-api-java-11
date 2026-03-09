@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import ar.com.avaco.arc.core.component.bean.service.NJBaseService;
-import ar.com.avaco.nitrophyl.domain.entities.pieza.PiezaCliente;
+import ar.com.avaco.nitrophyl.domain.entities.pieza.cliente.PiezaCliente;
 import ar.com.avaco.nitrophyl.repository.pieza.PiezaClienteRepository;
 
 @Transactional

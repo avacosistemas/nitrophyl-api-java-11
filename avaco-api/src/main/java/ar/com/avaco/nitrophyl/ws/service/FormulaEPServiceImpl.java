@@ -1,37 +1,50 @@
 package ar.com.avaco.nitrophyl.ws.service;
 
 import javax.annotation.Resource;
+import javax.transaction.Transactional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ar.com.avaco.commons.exception.BusinessException;
+import ar.com.avaco.commons.exception.ErrorValidationException;
 import ar.com.avaco.nitrophyl.domain.entities.formula.Formula;
 import ar.com.avaco.nitrophyl.domain.entities.formula.Material;
 import ar.com.avaco.nitrophyl.domain.entities.formula.RevisionParametros;
 import ar.com.avaco.nitrophyl.service.formula.FormulaService;
 import ar.com.avaco.nitrophyl.service.formula.MaterialService;
+import ar.com.avaco.nitrophyl.service.formula.RevisionParametroService;
+import ar.com.avaco.nitrophyl.service.lote.LoteService;
+import ar.com.avaco.nitrophyl.service.maquina.ConfiguracionPruebaService;
+import ar.com.avaco.nitrophyl.service.pieza.PiezaService;
+import ar.com.avaco.nitrophyl.service.reporte.ReporteLoteConfiguracionClienteService;
 import ar.com.avaco.nitrophyl.ws.dto.FormulaDTO;
 import ar.com.avaco.nitrophyl.ws.dto.RevisionParametrosDTO;
 import ar.com.avaco.utils.DateUtils;
 import ar.com.avaco.ws.rest.service.CRUDEPBaseService;
 
+@Transactional
 @Service("formulaEPService")
 public class FormulaEPServiceImpl extends CRUDEPBaseService<Long, FormulaDTO, Formula, FormulaService>
 		implements FormulaEPService {
 
 	private MaterialService materialService;
 
-	@Override
-	@Resource(name = "formulaService")
-	protected void setService(FormulaService service) {
-		this.service = service;
-	}
+	@Autowired
+	private LoteService loteService;
 
-	@Resource(name = "materialService")
-	public void setMaterialService(MaterialService materialService) {
-		this.materialService = materialService;
-	}
+	@Autowired
+	private PiezaService piezaService;
 
+	@Autowired
+	private ReporteLoteConfiguracionClienteService reporteLoteConfiguracionClienteService;
+
+	@Autowired
+	private ConfiguracionPruebaService configuracionPruebaService;
+
+	@Autowired
+	private RevisionParametroService revisionParametroService;
+	
 	@Override
 	protected Formula convertToEntity(FormulaDTO dto) {
 		Formula formula;
@@ -77,7 +90,7 @@ public class FormulaEPServiceImpl extends CRUDEPBaseService<Long, FormulaDTO, Fo
 		}
 		return dto;
 	}
-	
+
 	@Override
 	public FormulaDTO clone(FormulaDTO dto) throws BusinessException {
 		Formula entity = convertToEntity(dto);
@@ -94,6 +107,44 @@ public class FormulaEPServiceImpl extends CRUDEPBaseService<Long, FormulaDTO, Fo
 		rpdto.setId(rp.getId());
 		rpdto.setRevision(rp.getRevision());
 		return rpdto;
+	}
+
+	@Override
+	public void remove(Long id) {
+		
+		// Valido que la formula no este asociada a ningun lote, pieza o configuracion de reporte.
+		
+		if (loteService.existsByFormula(id)) {
+			throw new ErrorValidationException("No se puede borrar la formula. Tiene lotes asociados.");
+		}
+
+		if (piezaService.existsByFormula(id)) {
+			throw new ErrorValidationException("No se puede borrar la formula. Tiene piezas asociadas.");
+		}
+		
+		if (reporteLoteConfiguracionClienteService.existsByFormula(id)) {
+			throw new ErrorValidationException("No se puede borrar la formula. Tiene configuraciones de reporte de calidad asociados.");
+		}
+		
+		// Borro la configuracion de pruebas y revisiones
+		
+		// borro la configuracion de pruebas (en cascada su parametrizacion y condicion)
+		this.configuracionPruebaService.deleteByFormulaId(id);
+		
+		this.revisionParametroService.deleteByFormula(id);
+		
+		super.remove(id);
+	}
+	
+	@Override
+	@Resource(name = "formulaService")
+	protected void setService(FormulaService service) {
+		this.service = service;
+	}
+
+	@Resource(name = "materialService")
+	public void setMaterialService(MaterialService materialService) {
+		this.materialService = materialService;
 	}
 
 }

@@ -5,16 +5,15 @@ import java.util.List;
 import javax.annotation.Resource;
 import javax.transaction.Transactional;
 
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import ar.com.avaco.commons.exception.BusinessException;
 import ar.com.avaco.commons.exception.ErrorValidationException;
 import ar.com.avaco.nitrophyl.domain.entities.cliente.Cliente;
-import ar.com.avaco.nitrophyl.domain.entities.pieza.Cotizacion;
 import ar.com.avaco.nitrophyl.domain.entities.pieza.Pieza;
-import ar.com.avaco.nitrophyl.domain.entities.pieza.PiezaCliente;
 import ar.com.avaco.nitrophyl.domain.entities.pieza.PiezaFormula;
+import ar.com.avaco.nitrophyl.domain.entities.pieza.cliente.Cotizacion;
+import ar.com.avaco.nitrophyl.domain.entities.pieza.cliente.PiezaCliente;
 import ar.com.avaco.nitrophyl.service.pieza.CotizacionService;
 import ar.com.avaco.nitrophyl.service.pieza.PiezaClienteService;
 import ar.com.avaco.nitrophyl.ws.dto.CotizacionDTO;
@@ -72,8 +71,6 @@ public class CotizacionEPServiceImpl extends
 			piezaCliente = new PiezaCliente();
 			piezaCliente.setCliente(Cliente.ofId(dto.getIdCliente()));
 			piezaCliente.setPieza(Pieza.ofId(dto.getIdPieza()));
-			piezaCliente.setFechaCreacion(DateUtils.getFechaYHoraActual());
-			piezaCliente.setUsuarioCreacion(SecurityContextHolder.getContext().getAuthentication().getName());
 			piezaCliente = this.pcService.save(piezaCliente);
 		}
 		cotizacion.setPiezaCliente(piezaCliente);

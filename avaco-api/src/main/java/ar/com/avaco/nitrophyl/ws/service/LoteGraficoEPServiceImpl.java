@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import ar.com.avaco.nitrophyl.domain.entities.lote.Lote;
 import ar.com.avaco.nitrophyl.domain.entities.maquina.Maquina;
-import ar.com.avaco.nitrophyl.domain.entities.moldes.LoteGrafico;
+import ar.com.avaco.nitrophyl.domain.entities.molde.LoteGrafico;
 import ar.com.avaco.nitrophyl.service.lote.LoteGraficoService;
 import ar.com.avaco.nitrophyl.service.lote.LoteService;
 import ar.com.avaco.nitrophyl.service.maquina.MaquinaService;

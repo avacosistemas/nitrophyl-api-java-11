@@ -23,6 +23,10 @@ import org.hibernate.annotations.FetchMode;
 
 import ar.com.avaco.nitrophyl.domain.entities.AuditableEntity;
 import ar.com.avaco.nitrophyl.domain.entities.fabrica.Prensa;
+import ar.com.avaco.nitrophyl.domain.entities.pieza.esquema.Esquema;
+import ar.com.avaco.nitrophyl.domain.entities.pieza.moldeo.Bombeo;
+import ar.com.avaco.nitrophyl.domain.entities.pieza.moldeo.Precalentamiento;
+import ar.com.avaco.nitrophyl.domain.entities.pieza.moldeo.Vulcanizacion;
 
 @Entity
 @Table(name = "PROCESO")

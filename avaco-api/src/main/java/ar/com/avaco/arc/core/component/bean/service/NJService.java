@@ -75,6 +75,7 @@ public interface NJService<ID extends Serializable, T extends Entity<ID>> {
 	List<T> listPattern(String field, String pattern);
 	
 	List<T> listEqField(String field, Object pattern);
-
 	
+	T getDetached(ID id);
+
 }

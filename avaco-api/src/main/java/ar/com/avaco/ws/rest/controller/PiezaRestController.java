@@ -52,8 +52,8 @@ public class PiezaRestController extends AbstractAuditableDTORestController<Piez
 	
 	@RequestMapping(value = "/pieza", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<JSONResponse> create(@RequestBody PiezaCreacionDTO dto) {
-		this.service.create(dto);
-		return returnOK();
+		PiezaCreacionDTO piezaCreacionDTO = this.service.create(dto);
+		return returnOK(piezaCreacionDTO);
 	}
 
 	@RequestMapping(value = "/pieza/clonar/{idPieza}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)

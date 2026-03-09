@@ -7,15 +7,14 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import ar.com.avaco.arc.core.component.bean.service.NJBaseService;
 import ar.com.avaco.commons.exception.BusinessException;
 import ar.com.avaco.commons.exception.ErrorValidationException;
-import ar.com.avaco.nitrophyl.domain.entities.moldes.MoldeFoto;
+import ar.com.avaco.nitrophyl.domain.entities.molde.MoldeFoto;
 import ar.com.avaco.nitrophyl.repository.molde.MoldeFotoRepository;
 
 @Transactional
@@ -23,8 +22,9 @@ import ar.com.avaco.nitrophyl.repository.molde.MoldeFotoRepository;
 public class MoldeFotoServiceImpl extends NJBaseService<Long, MoldeFoto, MoldeFotoRepository>
 		implements MoldeFotoService {
 
-	private Logger logger = LogManager.getLogger(getClass());
-
+	@Autowired
+	private MoldeService moldeService;
+	
 	@Resource(name = "moldeFotoRepository")
 	void setMoldeFotoRepository(MoldeFotoRepository moldeFotoRepository) {
 		this.repository = moldeFotoRepository;
@@ -50,15 +50,25 @@ public class MoldeFotoServiceImpl extends NJBaseService<Long, MoldeFoto, MoldeFo
 			moldeFoto.setVersion(lastMoldeFoto.getVersion() + 1);
 		}
 
-		return this.repository.save(moldeFoto);
+		MoldeFoto save = this.repository.save(moldeFoto);
+		
+		// Revisa si hay faltantes
+		this.moldeService.actualizarFaltantes(moldeFoto.getIdMolde());
+		
+		return save;
 	}
 
-	// Valida los campos para el molde foto
+	/**
+	 * Valida los campos para el molde foto
+	 * @param moldeFoto
+	 * @throws ErrorValidationException
+	 * @throws BusinessException
+	 */
 	private void validarMoldeFoto(MoldeFoto moldeFoto) throws ErrorValidationException, BusinessException {
 		Map<String, String> errores = new HashMap<>();
 
 		if (moldeFoto == null) {
-			throw new BusinessException("Molde Foto vaco.");
+			throw new BusinessException("Molde Foto vacio.");
 		}
 
 		if (StringUtils.isBlank(moldeFoto.getNombreArchivo())) {
@@ -70,8 +80,6 @@ public class MoldeFotoServiceImpl extends NJBaseService<Long, MoldeFoto, MoldeFo
 		}
 
 		if (!errores.isEmpty()) {
-			logger.error("Se encontraron los siguientes errores");
-			errores.values().forEach((x -> logger.error(x)));
 			throw new ErrorValidationException("Se encontraron los siguientes errores", errores);
 		}
 

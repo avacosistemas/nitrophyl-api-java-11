@@ -5,7 +5,7 @@ import javax.persistence.EntityManager;
 import org.springframework.stereotype.Repository;
 
 import ar.com.avaco.arc.core.component.bean.repository.NJBaseRepository;
-import ar.com.avaco.nitrophyl.domain.entities.pieza.InsumoTratado;
+import ar.com.avaco.nitrophyl.domain.entities.pieza.insumo.InsumoTratado;
 
 @Repository("insumoTratadoRepository")
 public class InsumoTratadoRepositoryImpl extends NJBaseRepository<Long, InsumoTratado> implements InsumoTratadoRepositoryCustom {

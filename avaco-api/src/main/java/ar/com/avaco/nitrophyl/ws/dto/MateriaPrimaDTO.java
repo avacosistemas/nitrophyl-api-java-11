@@ -1,6 +1,6 @@
 package ar.com.avaco.nitrophyl.ws.dto;
 
-import ar.com.avaco.nitrophyl.domain.entities.pieza.UnidadMedidaMateriaPrima;
+import ar.com.avaco.nitrophyl.domain.entities.pieza.insumo.UnidadMedidaMateriaPrima;
 import ar.com.avaco.ws.rest.dto.DTOAuditableEntity;
 
 public class MateriaPrimaDTO extends DTOAuditableEntity<Long> {

@@ -1,6 +1,9 @@
 package ar.com.avaco.nitrophyl.ws.service;
 
+import java.util.List;
+
 import ar.com.avaco.commons.exception.BusinessException;
+import ar.com.avaco.nitrophyl.ws.dto.ArchivoAdjuntoReporteDTO;
 import ar.com.avaco.nitrophyl.ws.dto.ArchivoDTO;
 import ar.com.avaco.nitrophyl.ws.dto.LoteDTO;
 import ar.com.avaco.nitrophyl.ws.dto.PageDTO;
@@ -14,8 +17,6 @@ public interface LoteEPService extends CRUDEPService<Long, LoteDTO> {
 
 	void rechazar(Long idLote, String observaciones);
 
-	void borrar(Long idLote) throws BusinessException;
-
 	ArchivoDTO generarReporteLoteCliente(Long idLote, Long idCliente, String string) throws BusinessException;
 
 	void revisiones();
@@ -23,9 +24,8 @@ public interface LoteEPService extends CRUDEPService<Long, LoteDTO> {
 	PageDTO<ReporteEnsayoLotePorMaquinaDTO> generarReporteEnsayoLotePorMaquina(
 			ReporteEnsayoLotePorMaquinaFilterDTO filtro);
 
-	void enviarReporte(Long idLote, Long idCliente, byte[] adjuntoextra, String nombreAdjunto, String observaciones,
-			String string)
-			throws BusinessException;
+	void enviarReporte(String idLotes, Long idCliente, List<ArchivoAdjuntoReporteDTO> archivos, String observaciones,
+			String string) throws BusinessException;
 
 	Boolean hasEnsayos(Long idLote);
 

@@ -58,7 +58,7 @@ public class Ensayo extends AuditableEntity<Long> {
 	@Enumerated(EnumType.STRING)
 	private EstadoEnsayo estado;
 
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "ensayo")
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "ensayo", orphanRemoval = true)
 	private Set<EnsayoResultado> resultados = new HashSet<>();
 
 	public Long getId() {

@@ -3,8 +3,8 @@ package ar.com.avaco.nitrophyl.ws.dto;
 import java.util.ArrayList;
 import java.util.List;
 
-import ar.com.avaco.nitrophyl.domain.entities.pieza.UnidadMedidaInsumida;
-import ar.com.avaco.nitrophyl.domain.entities.pieza.UnidadMedidaLongitud;
+import ar.com.avaco.nitrophyl.domain.entities.pieza.insumo.UnidadMedidaInsumida;
+import ar.com.avaco.nitrophyl.domain.entities.pieza.insumo.UnidadMedidaLongitud;
 import ar.com.avaco.ws.rest.dto.DTOAuditableEntity;
 
 public class InsumoTratadoDTO extends DTOAuditableEntity<Long> {
@@ -29,7 +29,7 @@ public class InsumoTratadoDTO extends DTOAuditableEntity<Long> {
 
 	private Double medida2;
 
-	private String observaciones;
+	private List<InsumoTratadoObservacionControlDTO> observaciones = new ArrayList<InsumoTratadoObservacionControlDTO>();
 
 	private List<AdhesivoDTO> adhesivos = new ArrayList<>();
 
@@ -75,11 +75,11 @@ public class InsumoTratadoDTO extends DTOAuditableEntity<Long> {
 		this.id = id;
 	}
 
-	public String getObservaciones() {
+	public List<InsumoTratadoObservacionControlDTO> getObservaciones() {
 		return observaciones;
 	}
 
-	public void setObservaciones(String observaciones) {
+	public void setObservaciones(List<InsumoTratadoObservacionControlDTO> observaciones) {
 		this.observaciones = observaciones;
 	}
 

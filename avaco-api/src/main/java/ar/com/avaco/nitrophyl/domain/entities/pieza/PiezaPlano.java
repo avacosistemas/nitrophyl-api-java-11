@@ -17,7 +17,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Type;
 
 import ar.com.avaco.nitrophyl.domain.entities.AuditableEntity;
-import ar.com.avaco.nitrophyl.domain.entities.moldes.PlanoClasificacion;
+import ar.com.avaco.nitrophyl.domain.entities.molde.PlanoClasificacion;
 
 @Entity
 @Table(name = "PIEZA_PLANO")

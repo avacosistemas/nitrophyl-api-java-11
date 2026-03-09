@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import ar.com.avaco.commons.exception.BusinessException;
+import ar.com.avaco.nitrophyl.ws.dto.InsumoCantidadesDTO;
 import ar.com.avaco.nitrophyl.ws.dto.InsumoTratadoDTO;
 import ar.com.avaco.nitrophyl.ws.service.InsumoTratadoEPService;
 import ar.com.avaco.ws.rest.dto.JSONResponse;
@@ -53,6 +54,13 @@ public class InsumoTratadoRestController extends AbstractAuditableDTORestControl
 	public ResponseEntity<JSONResponse> update(@PathVariable Long id, @RequestBody InsumoTratadoDTO dto)
 			throws BusinessException {
 		return super.update(id, dto);
+	}
+	
+	@RequestMapping(value = "/insumoTratado/cantidad/{idPieza}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<JSONResponse> updateCantidades(@PathVariable Long idPieza, @RequestBody InsumoCantidadesDTO dto)
+			throws BusinessException {
+		this.service.updateCantidades(idPieza, dto.getRequiereInsumos(), dto.getCantidadInsumos());
+		return OK(OK);
 	}
 
 	@Override

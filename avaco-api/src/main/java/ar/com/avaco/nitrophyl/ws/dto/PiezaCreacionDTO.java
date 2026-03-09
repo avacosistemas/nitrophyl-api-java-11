@@ -53,9 +53,7 @@ public class PiezaCreacionDTO extends DTOEntity<Long> {
 
 	private Double cotizacionCliente;
 
-	@DateTimeFormat(pattern = "dd/MM/yyyy")
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
-	private Date cotizacionFecha;
+	private String cotizacionFecha;
 
 	private String observacionesCotizacionCliente;
 
@@ -221,11 +219,11 @@ public class PiezaCreacionDTO extends DTOEntity<Long> {
 		this.cotizacionCliente = cotizacionCliente;
 	}
 
-	public Date getCotizacionFecha() {
+	public String getCotizacionFecha() {
 		return cotizacionFecha;
 	}
 
-	public void setCotizacionFecha(Date cotizacionFecha) {
+	public void setCotizacionFecha(String cotizacionFecha) {
 		this.cotizacionFecha = cotizacionFecha;
 	}
 

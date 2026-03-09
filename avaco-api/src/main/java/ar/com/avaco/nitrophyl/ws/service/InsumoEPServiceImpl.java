@@ -4,9 +4,9 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
-import ar.com.avaco.nitrophyl.domain.entities.pieza.Insumo;
-import ar.com.avaco.nitrophyl.domain.entities.pieza.InsumoMateriaPrima;
-import ar.com.avaco.nitrophyl.domain.entities.pieza.MateriaPrima;
+import ar.com.avaco.nitrophyl.domain.entities.pieza.insumo.Insumo;
+import ar.com.avaco.nitrophyl.domain.entities.pieza.insumo.InsumoMateriaPrima;
+import ar.com.avaco.nitrophyl.domain.entities.pieza.insumo.MateriaPrima;
 import ar.com.avaco.nitrophyl.service.pieza.InsumoService;
 import ar.com.avaco.nitrophyl.service.pieza.TipoInsumoService;
 import ar.com.avaco.nitrophyl.ws.dto.InsumoDTO;

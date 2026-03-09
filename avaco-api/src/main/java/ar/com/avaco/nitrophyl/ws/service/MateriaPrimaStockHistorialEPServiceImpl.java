@@ -4,8 +4,8 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
-import ar.com.avaco.nitrophyl.domain.entities.pieza.MateriaPrima;
-import ar.com.avaco.nitrophyl.domain.entities.pieza.MateriaPrimaStockHistorial;
+import ar.com.avaco.nitrophyl.domain.entities.pieza.insumo.MateriaPrima;
+import ar.com.avaco.nitrophyl.domain.entities.pieza.insumo.MateriaPrimaStockHistorial;
 import ar.com.avaco.nitrophyl.service.pieza.MateriaPrimaStockHistorialService;
 import ar.com.avaco.nitrophyl.ws.dto.MateriaPrimaStockHistorialDTO;
 import ar.com.avaco.utils.DateUtils;

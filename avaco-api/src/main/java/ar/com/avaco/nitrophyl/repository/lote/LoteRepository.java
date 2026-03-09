@@ -15,4 +15,6 @@ public interface LoteRepository extends NJRepository<Long, Lote>, LoteRepository
 	@Query("update Lote l set l.estado = ?2, l.observacionesEstado = ?3, l.fechaEstado = ?4 where l.id = ?1")
 	void updateEstadoLote(Long idLote, EstadoLote estado, String observaciones, Date fecha);
 
+	boolean existsByFormulaId(Long idFormula);
+	
 }

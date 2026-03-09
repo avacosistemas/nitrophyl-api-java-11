@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import ar.com.avaco.arc.core.component.bean.service.NJBaseService;
-import ar.com.avaco.nitrophyl.domain.entities.pieza.Adhesivo;
+import ar.com.avaco.nitrophyl.domain.entities.pieza.insumo.Adhesivo;
 import ar.com.avaco.nitrophyl.repository.pieza.AdhesivoRepository;
 
 @Transactional

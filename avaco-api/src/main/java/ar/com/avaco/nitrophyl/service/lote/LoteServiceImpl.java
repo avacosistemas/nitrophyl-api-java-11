@@ -49,12 +49,6 @@ public class LoteServiceImpl extends NJBaseService<Long, Lote, LoteRepository> i
 	}
 
 	@Override
-	public void borrar(Long idLote) {
-		this.repository.deleteById(idLote);
-
-	}
-
-	@Override
 	public boolean hasEnsayos(Long idLote) {
 		return this.ensayoRepository.countByLoteId(idLote) > 0;
 	}
@@ -106,6 +100,10 @@ public class LoteServiceImpl extends NJBaseService<Long, Lote, LoteRepository> i
 			}
 		});
 	}
-	
+
+	@Override
+	public boolean existsByFormula(Long idFormula) {
+		return this.repository.existsByFormulaId(idFormula);
+	}
 
 }

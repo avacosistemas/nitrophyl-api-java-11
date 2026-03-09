@@ -15,7 +15,7 @@ import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 
 import ar.com.avaco.nitrophyl.domain.entities.AuditableEntity;
-import ar.com.avaco.nitrophyl.domain.entities.moldes.TipoDimension;
+import ar.com.avaco.nitrophyl.domain.entities.molde.TipoDimension;
 
 @Entity
 @Table(name = "PIEZA_DIMENSION")
@@ -41,7 +41,16 @@ public class PiezaDimension extends AuditableEntity<Long> {
 	private TipoDimension tipo;
 
 	@Column(name = "VALOR")
-	private Integer valor;
+	private Double valor;
+	
+	@Column(name = "CONTROLAR")
+	private Boolean controlar;
+	
+	@Column(name = "MINIMO")
+	private Double minimo;
+	
+	@Column(name = "MAXIMO")
+	private Double maximo;
 
 	@Column(name = "OBSERVACIONES")
 	private String observaciones;
@@ -53,6 +62,9 @@ public class PiezaDimension extends AuditableEntity<Long> {
 		clonada.setPieza(pieza);
 		clonada.setTipo(tipo);
 		clonada.setValor(valor);
+		clonada.setMinimo(minimo);
+		clonada.setMaximo(maximo);
+		clonada.setControlar(controlar);
 		return clonada;
 	}
 
@@ -80,12 +92,36 @@ public class PiezaDimension extends AuditableEntity<Long> {
 		this.tipo = tipo;
 	}
 
-	public Integer getValor() {
+	public Double getValor() {
 		return valor;
 	}
 
-	public void setValor(Integer valor) {
+	public void setValor(Double valor) {
 		this.valor = valor;
+	}
+
+	public Boolean getControlar() {
+		return controlar;
+	}
+
+	public void setControlar(Boolean controlar) {
+		this.controlar = controlar;
+	}
+
+	public Double getMinimo() {
+		return minimo;
+	}
+
+	public void setMinimo(Double minimo) {
+		this.minimo = minimo;
+	}
+
+	public Double getMaximo() {
+		return maximo;
+	}
+
+	public void setMaximo(Double maximo) {
+		this.maximo = maximo;
 	}
 
 	public String getObservaciones() {
@@ -96,4 +132,6 @@ public class PiezaDimension extends AuditableEntity<Long> {
 		this.observaciones = observaciones;
 	}
 
+	
+	
 }

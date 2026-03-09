@@ -3,7 +3,7 @@
  */
 package ar.com.avaco.nitrophyl.ws.dto;
 
-import ar.com.avaco.nitrophyl.domain.entities.moldes.MoldeObservacion;
+import ar.com.avaco.nitrophyl.domain.entities.molde.MoldeObservacion;
 import ar.com.avaco.ws.rest.dto.DTOAuditableEntity;
 
 public class MoldeObservacionDTO extends DTOAuditableEntity<Long> {

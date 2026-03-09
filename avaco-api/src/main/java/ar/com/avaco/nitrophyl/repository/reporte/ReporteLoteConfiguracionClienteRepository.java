@@ -6,6 +6,6 @@ import ar.com.avaco.nitrophyl.domain.entities.reporte.ReporteLoteConfiguracionCl
 public interface ReporteLoteConfiguracionClienteRepository
 		extends NJRepository<Long, ReporteLoteConfiguracionCliente>, ReporteLoteConfiguracionClienteRepositoryCustom {
 
-	
+	boolean existsByFormulaId(Long idFormula);
 
 }

@@ -1,6 +1,6 @@
 package ar.com.avaco.nitrophyl.ws.dto;
 
-import ar.com.avaco.nitrophyl.domain.entities.moldes.MoldeFoto;
+import ar.com.avaco.nitrophyl.domain.entities.molde.MoldeFoto;
 import ar.com.avaco.utils.DateUtils;
 
 public class MoldeFotoListadoDTO {

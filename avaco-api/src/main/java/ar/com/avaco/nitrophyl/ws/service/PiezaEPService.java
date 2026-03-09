@@ -12,7 +12,7 @@ import ar.com.avaco.ws.rest.service.CRUDAuditableEPService;
 
 public interface PiezaEPService extends CRUDAuditableEPService<Long, PiezaDTO> {
 
-	void create(PiezaCreacionDTO dto);
+	PiezaCreacionDTO create(PiezaCreacionDTO dto);
 
 	void marcarVigente(Long piezaId);
 

@@ -5,7 +5,7 @@ import javax.persistence.EntityManager;
 import org.springframework.stereotype.Repository;
 
 import ar.com.avaco.arc.core.component.bean.repository.NJBaseRepository;
-import ar.com.avaco.nitrophyl.domain.entities.moldes.MoldeBoca;
+import ar.com.avaco.nitrophyl.domain.entities.molde.MoldeBoca;
 
 @Repository("moldeBocaRepository")
 public class MoldeBocaRepositoryImpl extends NJBaseRepository<Long, MoldeBoca> implements MoldeBocaRepositoryCustom {

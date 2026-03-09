@@ -1,6 +1,6 @@
 package ar.com.avaco.nitrophyl.ws.dto;
 
-import ar.com.avaco.nitrophyl.domain.entities.moldes.PlanoClasificacion;
+import ar.com.avaco.nitrophyl.domain.entities.molde.PlanoClasificacion;
 import ar.com.avaco.ws.rest.dto.DTOAuditableEntity;
 
 public class PiezaPlanoDTO extends DTOAuditableEntity<Long> {

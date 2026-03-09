@@ -5,7 +5,7 @@ import javax.persistence.EntityManager;
 import org.springframework.stereotype.Repository;
 
 import ar.com.avaco.arc.core.component.bean.repository.NJBaseRepository;
-import ar.com.avaco.nitrophyl.domain.entities.pieza.Adhesivo;
+import ar.com.avaco.nitrophyl.domain.entities.pieza.insumo.Adhesivo;
 
 @Repository("adhesivoRepository")
 public class AdhesivoRepositoryImpl extends NJBaseRepository<Long, Adhesivo> implements AdhesivoRepositoryCustom {

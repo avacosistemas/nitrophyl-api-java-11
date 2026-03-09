@@ -6,7 +6,7 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.Query;
 
 import ar.com.avaco.arc.core.component.bean.repository.NJRepository;
-import ar.com.avaco.nitrophyl.domain.entities.moldes.LoteGrafico;
+import ar.com.avaco.nitrophyl.domain.entities.molde.LoteGrafico;
 
 public interface LoteGraficoRepository extends NJRepository<Long, LoteGrafico>, LoteGraficoRepositoryCustom {
 

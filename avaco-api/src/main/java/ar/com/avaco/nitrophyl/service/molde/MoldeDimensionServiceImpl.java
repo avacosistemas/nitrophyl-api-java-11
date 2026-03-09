@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import ar.com.avaco.arc.core.component.bean.service.NJBaseService;
-import ar.com.avaco.nitrophyl.domain.entities.moldes.MoldeDimension;
+import ar.com.avaco.nitrophyl.domain.entities.molde.MoldeDimension;
 import ar.com.avaco.nitrophyl.repository.molde.MoldeDimensionRepository;
 
 @Transactional
@@ -27,7 +27,7 @@ public class MoldeDimensionServiceImpl extends NJBaseService<Long, MoldeDimensio
 
 	@Override
 	public List<MoldeDimension> getByMolde(Long idMolde) {
-		return this.repository.findByIdMolde(idMolde);
+		return this.repository.findByMoldeId(idMolde);
 	}
 
 	@Override

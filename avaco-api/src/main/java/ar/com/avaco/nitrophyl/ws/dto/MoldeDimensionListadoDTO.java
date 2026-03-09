@@ -3,7 +3,7 @@
  */
 package ar.com.avaco.nitrophyl.ws.dto;
 
-import ar.com.avaco.nitrophyl.domain.entities.moldes.TipoDimension;
+import ar.com.avaco.nitrophyl.domain.entities.molde.TipoDimension;
 
 public class MoldeDimensionListadoDTO {
 

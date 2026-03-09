@@ -13,8 +13,6 @@ public interface LoteService extends NJService<Long, Lote> {
 
 	void rechazar(Long idLote, String observaciones);
 	
-	void borrar(Long idLote);
-
 	boolean hasEnsayos(Long idLote);
 
 	Lote getLoteCompleto(Long idLote);
@@ -22,5 +20,7 @@ public interface LoteService extends NJService<Long, Lote> {
 	void revisiones();
 
 	List<RegistroEnsayoLotePorMaquinaDTO> getRegistrosEnsayosLotePorMaquina(ReporteEnsayoLotePorMaquinaFilterDTO filtro);
+
+	boolean existsByFormula(Long idFormula);
 
 }

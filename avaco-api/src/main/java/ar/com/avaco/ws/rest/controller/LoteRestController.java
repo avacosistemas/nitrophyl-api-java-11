@@ -38,6 +38,11 @@ public class LoteRestController extends AbstractDTORestController<LoteDTO, Long,
 		return super.get(idLote);
 	}
 
+	@RequestMapping(value = "/lote/{idLote}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<JSONResponse> delete(@PathVariable("idLote") Long idLote) throws BusinessException {
+		return super.delete(idLote);
+	}
+
 	@RequestMapping(value = "/lote", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<JSONResponse> list(LoteFilterDTO filter) {
 		List<LoteDTO> listFilter = super.service.listFilter(new LoteFilter(filter));
@@ -56,7 +61,7 @@ public class LoteRestController extends AbstractDTORestController<LoteDTO, Long,
 		response.setStatus(JSONResponse.OK);
 		return new ResponseEntity<JSONResponse>(response, HttpStatus.OK);
 	}
-	
+
 	@RequestMapping(value = "/lote/count", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<JSONResponse> listCount(LoteFilterDTO filter) {
 		int listCount = super.service.listCount(new LoteFilter(filter));
@@ -140,21 +145,6 @@ public class LoteRestController extends AbstractDTORestController<LoteDTO, Long,
 		return new ResponseEntity<JSONResponse>(response, HttpStatus.OK);
 	}
 
-	@RequestMapping(value = "/lote/delete/{idLote}", method = RequestMethod.DELETE)
-	public ResponseEntity<JSONResponse> borrar(@PathVariable("idLote") Long idLote) throws BusinessException {
-		JSONResponse response = new JSONResponse();
-		try {
-			this.service.borrar(idLote);
-			response.setStatus(JSONResponse.OK);
-		} catch (BusinessException e) {
-			ErrorResponse eresp = new ErrorResponse();
-			eresp.setStatus(JSONResponse.ERROR);
-			eresp.setError(e.getMessage());
-			response = eresp;
-		}
-		return new ResponseEntity<JSONResponse>(response, HttpStatus.OK);
-	}
-
 	@RequestMapping(value = "/lote/revisiones", method = RequestMethod.GET)
 	public ResponseEntity<JSONResponse> revisiones() throws BusinessException {
 		JSONResponse response = new JSONResponse();
@@ -169,7 +159,7 @@ public class LoteRestController extends AbstractDTORestController<LoteDTO, Long,
 		}
 		return new ResponseEntity<JSONResponse>(response, HttpStatus.OK);
 	}
-	
+
 	@RequestMapping(value = "/lote/hasEnsayos/{idLote}", method = RequestMethod.GET)
 	public ResponseEntity<JSONResponse> hasEnsayos(@PathVariable("idLote") Long idLote) throws BusinessException {
 		JSONResponse response = new JSONResponse();
@@ -185,6 +175,5 @@ public class LoteRestController extends AbstractDTORestController<LoteDTO, Long,
 		}
 		return new ResponseEntity<JSONResponse>(response, HttpStatus.OK);
 	}
-	
-	
+
 }

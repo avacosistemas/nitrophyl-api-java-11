@@ -5,7 +5,7 @@ import java.util.List;
 import ar.com.avaco.arc.core.component.bean.service.NJService;
 import ar.com.avaco.commons.exception.BusinessException;
 import ar.com.avaco.commons.exception.ErrorValidationException;
-import ar.com.avaco.nitrophyl.domain.entities.moldes.MoldePlano;
+import ar.com.avaco.nitrophyl.domain.entities.molde.MoldePlano;
 
 public interface MoldePlanoService extends NJService<Long, MoldePlano> {
 

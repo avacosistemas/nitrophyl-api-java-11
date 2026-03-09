@@ -22,8 +22,8 @@ import ar.com.avaco.ws.rest.service.AbstractConvertService;
  */
 @Transactional
 @Service("roleService")
-public class RoleServiceImpl extends AbstractConvertService<Role, Long, Rol> implements RoleService{
-	
+public class RoleServiceImpl extends AbstractConvertService<Role, Long, Rol> implements RoleService {
+
 	public Role convertToDto(Rol permiso) {
 		return new Role(permiso.getId(), permiso.getCodigo(), permiso.getNombre());
 	}
@@ -33,7 +33,7 @@ public class RoleServiceImpl extends AbstractConvertService<Role, Long, Rol> imp
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
+
 	@Resource(name = "rolService")
 	public void setRolService(RolService rolService) {
 		this.service = rolService;
@@ -50,4 +50,5 @@ public class RoleServiceImpl extends AbstractConvertService<Role, Long, Rol> imp
 		entity.setCodigo(dto.getCode());
 		return entity;
 	}
+
 }

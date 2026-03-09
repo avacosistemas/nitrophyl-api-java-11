@@ -33,5 +33,12 @@ public abstract class AbstractRestBaseController {
 		response.setStatus(JSONResponse.OK);
 		return new ResponseEntity<JSONResponse>(response, HttpStatus.OK);
 	}
+	
+	protected ResponseEntity<JSONResponse> returnOK(Object o) {
+		JSONResponse response = new JSONResponse();
+		response.setStatus(JSONResponse.OK);
+		response.setData(o);
+		return new ResponseEntity<JSONResponse>(response, HttpStatus.OK);
+	}
 
 }

@@ -115,4 +115,9 @@ public abstract class AbstractConvertService<DTO extends Entity<ID>, ID extends 
 		}
 		return dtos;
 	}	
+	
+	@Override
+	public DTO getDetached(ID id) {
+		throw new RuntimeException("Not implemented");
+	}
 }

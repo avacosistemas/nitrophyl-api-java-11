@@ -10,8 +10,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import ar.com.avaco.arc.core.component.bean.service.NJBaseService;
-import ar.com.avaco.nitrophyl.domain.entities.moldes.MoldeRegistro;
-import ar.com.avaco.nitrophyl.domain.entities.moldes.TipoRegistroMolde;
+import ar.com.avaco.nitrophyl.domain.entities.molde.MoldeRegistro;
+import ar.com.avaco.nitrophyl.domain.entities.molde.TipoRegistroMolde;
 import ar.com.avaco.nitrophyl.repository.molde.MoldeRegistroRepository;
 import ar.com.avaco.utils.DateUtils;
 

@@ -119,6 +119,11 @@ public class ConfiguracionPruebaServiceImpl extends
 
 	}
 
+	@Override
+	public void deleteByFormulaId(Long idFormula) {
+		this.repository.deleteByFormulaId(idFormula);
+	}
+	
 	@Resource(name = "configuracionPruebaRepository")
 	void setMoldeRepository(ConfiguracionPruebaRepository configuracionPruebaRepository) {
 		this.repository = configuracionPruebaRepository;

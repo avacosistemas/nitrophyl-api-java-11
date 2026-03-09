@@ -8,7 +8,7 @@ import ar.com.avaco.commons.exception.BusinessException;
 import ar.com.avaco.commons.exception.ErrorValidationException;
 import ar.com.avaco.nitrophyl.domain.entities.cliente.Cliente;
 import ar.com.avaco.nitrophyl.domain.entities.pieza.Pieza;
-import ar.com.avaco.nitrophyl.domain.entities.pieza.PiezaCliente;
+import ar.com.avaco.nitrophyl.domain.entities.pieza.cliente.PiezaCliente;
 import ar.com.avaco.nitrophyl.service.pieza.PiezaClienteService;
 import ar.com.avaco.nitrophyl.ws.dto.CotizacionDTO;
 import ar.com.avaco.nitrophyl.ws.dto.PiezaClienteDTO;

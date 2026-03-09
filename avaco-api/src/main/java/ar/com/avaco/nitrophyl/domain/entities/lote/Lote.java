@@ -21,12 +21,13 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.GenericGenerator;
 
+import ar.com.avaco.nitrophyl.domain.entities.AuditableEntity;
 import ar.com.avaco.nitrophyl.domain.entities.formula.Formula;
 import ar.com.avaco.nitrophyl.domain.entities.formula.RevisionParametros;
 
 @Entity
 @Table(name = "LOTE")
-public class Lote extends ar.com.avaco.arc.core.domain.Entity<Long> {
+public class Lote extends AuditableEntity<Long> {
 
 	private static final long serialVersionUID = -4128392123321814398L;
 
@@ -63,7 +64,7 @@ public class Lote extends ar.com.avaco.arc.core.domain.Entity<Long> {
 	@Column(name = "ESTADO")
 	private EstadoLote estado;
 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "lote")
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "lote", orphanRemoval = true)
 	private Set<Ensayo> ensayos = new HashSet<Ensayo>();
 
 	// FIXME CAMBIAR optional a false luego de setear todos los valores
@@ -150,6 +151,12 @@ public class Lote extends ar.com.avaco.arc.core.domain.Entity<Long> {
 
 	public void setRevisionParametros(RevisionParametros revisionParametros) {
 		this.revisionParametros = revisionParametros;
+	}
+
+	public static Lote ofId(Long idLote) {
+		Lote lote = new Lote();
+		lote.setId(idLote);
+		return lote;
 	}
 
 }

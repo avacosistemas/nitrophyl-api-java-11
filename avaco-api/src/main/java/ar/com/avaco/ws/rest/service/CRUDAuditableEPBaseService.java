@@ -8,14 +8,11 @@ import java.util.List;
 import javax.transaction.Transactional;
 
 import org.modelmapper.ModelMapper;
-import org.springframework.security.core.context.SecurityContextHolder;
-
 import ar.com.avaco.arc.core.component.bean.service.NJService;
 import ar.com.avaco.arc.core.domain.filter.AbstractFilter;
 import ar.com.avaco.commons.exception.BusinessException;
 import ar.com.avaco.nitrophyl.domain.entities.AuditableEntity;
 import ar.com.avaco.nitrophyl.ws.dto.PageDTO;
-import ar.com.avaco.utils.DateUtils;
 import ar.com.avaco.ws.rest.dto.DTOAuditableEntity;
 
 @Transactional
@@ -36,16 +33,16 @@ public abstract class CRUDAuditableEPBaseService<ID extends Serializable, DTO ex
 
 	@Override
 	public DTO save(DTO dto) throws BusinessException {
-		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+//		String username = SecurityContextHolder.getContext().getAuthentication().getName();
 		validationSave(dto);
 		T entity = convertToEntityForSave(dto);
-		entity.setUsuarioCreacion(username);
-		entity.setFechaCreacion(DateUtils.getFechaYHoraActual());
+//		entity.setUsuarioCreacion(username);
+//		entity.setFechaCreacion(DateUtils.getFechaYHoraActual());
 		entity = service.save(entity);
 		T saved = service.get(entity.getId());
 		DTO convertToDto = convertToDto(saved);
-		convertToDto.setUsuarioCreacion(saved.getUsuarioCreacion());
-		convertToDto.setFechaCreacion(saved.getFechaCreacion());
+//		convertToDto.setUsuarioCreacion(saved.getUsuarioCreacion());
+//		convertToDto.setFechaCreacion(saved.getFechaCreacion());
 		return convertToDto;
 	}
 
@@ -59,16 +56,16 @@ public abstract class CRUDAuditableEPBaseService<ID extends Serializable, DTO ex
 
 	@Override
 	public DTO update(DTO dto) throws BusinessException {
-		String username = SecurityContextHolder.getContext().getAuthentication().getName();
+//		String username = SecurityContextHolder.getContext().getAuthentication().getName();
 		T entity = convertToEntityForUpdate(dto);
-		entity.setUsuarioActualizacion(username);
-		entity.setFechaActualizacion(DateUtils.getFechaYHoraActual());
+//		entity.setUsuarioActualizacion(username);
+//		entity.setFechaActualizacion(DateUtils.getFechaYHoraActual());
 		entity = service.update(entity);
 		DTO convertToDto = convertToDto(entity);
-		convertToDto.setUsuarioCreacion(entity.getUsuarioCreacion());
-		convertToDto.setFechaCreacion(entity.getFechaCreacion());
-		convertToDto.setUsuarioActualizacion(entity.getUsuarioActualizacion());
-		convertToDto.setFechaActualizacion(entity.getFechaActualizacion());
+//		convertToDto.setUsuarioCreacion(entity.getUsuarioCreacion());
+//		convertToDto.setFechaCreacion(entity.getFechaCreacion());
+//		convertToDto.setUsuarioActualizacion(entity.getUsuarioActualizacion());
+//		convertToDto.setFechaActualizacion(entity.getFechaActualizacion());
 		return convertToDto;
 	}
 
@@ -76,10 +73,10 @@ public abstract class CRUDAuditableEPBaseService<ID extends Serializable, DTO ex
 	public DTO get(ID id) {
 		T t = service.get(id);
 		DTO convertToDto = convertToDto(t);
-		convertToDto.setUsuarioCreacion(t.getUsuarioCreacion());
-		convertToDto.setFechaCreacion(t.getFechaCreacion());
-		convertToDto.setUsuarioActualizacion(t.getUsuarioActualizacion());
-		convertToDto.setFechaActualizacion(t.getFechaActualizacion());
+//		convertToDto.setUsuarioCreacion(t.getUsuarioCreacion());
+//		convertToDto.setFechaCreacion(t.getFechaCreacion());
+//		convertToDto.setUsuarioActualizacion(t.getUsuarioActualizacion());
+//		convertToDto.setFechaActualizacion(t.getFechaActualizacion());
 		return convertToDto;
 	}
 
@@ -132,12 +129,9 @@ public abstract class CRUDAuditableEPBaseService<ID extends Serializable, DTO ex
 	}
 
 	public List<T> convertToEntities(Collection<DTO> dtos) {
-		String username = SecurityContextHolder.getContext().getAuthentication().getName();
 		List<T> entities = new ArrayList<T>();
 		for (DTO dto : dtos) {
 			T convertToEntity = convertToEntity(dto);
-			convertToEntity.setUsuarioActualizacion(username);
-			convertToEntity.setFechaActualizacion(DateUtils.getFechaYHoraActual());
 			entities.add(convertToEntity);
 		}
 		return entities;

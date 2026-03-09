@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import ar.com.avaco.arc.core.component.bean.service.NJBaseService;
-import ar.com.avaco.nitrophyl.domain.entities.moldes.LoteGrafico;
+import ar.com.avaco.nitrophyl.domain.entities.molde.LoteGrafico;
 import ar.com.avaco.nitrophyl.repository.lote.LoteGraficoRepository;
 import ar.com.avaco.nitrophyl.ws.dto.ArchivoDTO;
 import ar.com.avaco.nitrophyl.ws.dto.LoteGraficoSinArchivoDTO;

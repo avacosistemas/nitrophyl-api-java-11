@@ -1,7 +1,7 @@
 package ar.com.avaco.nitrophyl.repository.pieza;
 
 import ar.com.avaco.arc.core.component.bean.repository.NJRepository;
-import ar.com.avaco.nitrophyl.domain.entities.pieza.Esquema;
+import ar.com.avaco.nitrophyl.domain.entities.pieza.esquema.Esquema;
 
 public interface EsquemaRepository extends NJRepository<Long, Esquema>, EsquemaRepositoryCustom {
 

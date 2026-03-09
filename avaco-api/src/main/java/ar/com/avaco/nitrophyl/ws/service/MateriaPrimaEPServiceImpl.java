@@ -4,7 +4,7 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
-import ar.com.avaco.nitrophyl.domain.entities.pieza.MateriaPrima;
+import ar.com.avaco.nitrophyl.domain.entities.pieza.insumo.MateriaPrima;
 import ar.com.avaco.nitrophyl.service.pieza.MateriaPrimaService;
 import ar.com.avaco.nitrophyl.ws.dto.MateriaPrimaDTO;
 import ar.com.avaco.ws.rest.service.CRUDAuditableEPBaseService;

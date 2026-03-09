@@ -7,9 +7,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import ar.com.avaco.arc.core.component.bean.service.NJBaseService;
-import ar.com.avaco.nitrophyl.domain.entities.pieza.Insumo;
-import ar.com.avaco.nitrophyl.domain.entities.pieza.InsumoStockHistorial;
 import ar.com.avaco.nitrophyl.domain.entities.pieza.TipoMovimientoStock;
+import ar.com.avaco.nitrophyl.domain.entities.pieza.insumo.Insumo;
+import ar.com.avaco.nitrophyl.domain.entities.pieza.insumo.InsumoStockHistorial;
 import ar.com.avaco.nitrophyl.repository.pieza.InsumoStockHistorialRepository;
 
 @Transactional
@@ -25,7 +25,6 @@ public class InsumoStockHistorialServiceImpl extends NJBaseService<Long, InsumoS
 		Double stockActual = insumo.getCantidadStock();
 		Double nuevoStock = TipoMovimientoStock.calcularStock(stockActual, entity.getTipo(), entity.getCantidad());
 		insumo.setCantidadStock(nuevoStock);
-		super.updateUserDateModificacion(insumo);
 		entity.setInsumo(insumo);
 		return super.save(entity);
 	}

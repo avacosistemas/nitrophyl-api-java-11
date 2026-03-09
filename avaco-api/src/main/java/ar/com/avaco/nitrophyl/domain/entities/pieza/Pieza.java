@@ -25,12 +25,15 @@ import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.GenericGenerator;
 
 import ar.com.avaco.nitrophyl.domain.entities.AuditableEntity;
+import ar.com.avaco.nitrophyl.domain.entities.pieza.cliente.PiezaCliente;
+import ar.com.avaco.nitrophyl.domain.entities.pieza.insumo.InsumoTratado;
 import ar.com.avaco.nitrophyl.ws.dto.PiezaGrillaDTO;
 
 @SqlResultSetMapping(name = "PiezaGrillaDTOMapper", classes = {
 		@ConstructorResult(targetClass = PiezaGrillaDTO.class, columns = {
 				@ColumnResult(name = "rows", type = Integer.class),
 				@ColumnResult(name = "denominacion", type = String.class),
+				@ColumnResult(name = "faltantes", type = String.class),
 				@ColumnResult(name = "idPieza", type = Integer.class),
 				@ColumnResult(name = "codigo", type = String.class),
 				@ColumnResult(name = "vigente", type = Boolean.class),
@@ -40,11 +43,9 @@ import ar.com.avaco.nitrophyl.ws.dto.PiezaGrillaDTO;
 				@ColumnResult(name = "material", type = String.class),
 				@ColumnResult(name = "puedeGenerarRevision", type = Boolean.class),
 				@ColumnResult(name = "formula", type = String.class),
-				@ColumnResult(name = "puedeMarcarVigente", type = Boolean.class), 
+				@ColumnResult(name = "puedeMarcarVigente", type = Boolean.class),
 				@ColumnResult(name = "piezaPersonalizada", type = String.class),
-				@ColumnResult(name = "cliente", type = String.class) 
-			}) 
-		})
+				@ColumnResult(name = "cliente", type = String.class) }) })
 
 @Entity
 @Table(name = "PIEZA")
@@ -66,6 +67,39 @@ public class Pieza extends AuditableEntity<Long> {
 	 */
 	@Column(name = "DENOMINACION", nullable = false)
 	private String denominacion;
+
+	@Column(name = "REQUIERE_INSUMOS")
+	private Boolean requiereInsumos;
+
+	@Column(name = "CANTIDAD_INSUMOS")
+	private Integer cantidadInsumos;
+
+	@Column(name = "FALTANTES", insertable = false, updatable = false)
+	private String faltantes;
+
+	public String getFaltantes() {
+		return faltantes;
+	}
+
+	public void setFaltantes(String faltantes) {
+		this.faltantes = faltantes;
+	}
+
+	public Integer getCantidadInsumos() {
+		return cantidadInsumos;
+	}
+
+	public void setCantidadInsumos(Integer cantidadInsumos) {
+		this.cantidadInsumos = cantidadInsumos;
+	}
+
+	public Boolean getRequiereInsumos() {
+		return requiereInsumos;
+	}
+
+	public void setRequiereInsumos(Boolean requiereInsumos) {
+		this.requiereInsumos = requiereInsumos;
+	}
 
 	/**
 	 * Tipo de pieza.
@@ -104,7 +138,7 @@ public class Pieza extends AuditableEntity<Long> {
 	/**
 	 * Insumos de la pieza con su tratamiento y pegamento.
 	 */
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "pieza")
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "pieza", orphanRemoval = true)
 	@Fetch(FetchMode.SELECT)
 	private Set<InsumoTratado> insumos = new HashSet<>();
 

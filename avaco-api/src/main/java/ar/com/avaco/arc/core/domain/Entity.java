@@ -23,7 +23,8 @@ public abstract class Entity<ID extends Serializable> implements Serializable {
 
 	@Override
 	public String toString() {
-		return getClass().getSimpleName() + ": " + getId();
+	    return getClass().getSimpleName() +
+	           "[id=" + (getId() != null ? getId().toString() : "null") + "]";
 	}
 
 	@Override
@@ -35,21 +36,13 @@ public abstract class Entity<ID extends Serializable> implements Serializable {
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (Hibernate.getClass(this) != Hibernate.getClass(obj))
-			return false;
-		Entity<ID> other = (Entity<ID>) obj;
-		if (getId() == null) {
-//			if (other.getId() != null)
-			return false;
-		} else if (!getId().equals(other.getId()))
-			return false;
-		return true;
+	public boolean equals(Object o) {
+	    if (this == o) return true;
+	    if (o == null) return false;
+	    if (Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+
+	    Entity<?> other = (Entity<?>) o;
+	    return getId() != null && getId().equals(other.getId());
 	}
 
 }

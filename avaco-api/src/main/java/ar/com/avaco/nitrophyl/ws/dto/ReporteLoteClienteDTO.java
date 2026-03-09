@@ -1,13 +1,24 @@
 package ar.com.avaco.nitrophyl.ws.dto;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ReporteLoteClienteDTO {
 
 	private Long idCliente;
-	private Long idLote;
-	private byte[] archivo;
+	private String idLote;
 	private String observaciones;
-	private String nombreArchivo;
 	private String observacionesInforme;
+
+	private List<ArchivoAdjuntoReporteDTO> archivos = new ArrayList<ArchivoAdjuntoReporteDTO>();
+
+	public List<ArchivoAdjuntoReporteDTO> getArchivos() {
+		return archivos;
+	}
+
+	public void setArchivos(List<ArchivoAdjuntoReporteDTO> archivos) {
+		this.archivos = archivos;
+	}
 
 	public String getObservacionesInforme() {
 		return observacionesInforme;
@@ -25,20 +36,12 @@ public class ReporteLoteClienteDTO {
 		this.idCliente = idCliente;
 	}
 
-	public Long getIdLote() {
+	public String getIdLote() {
 		return idLote;
 	}
 
-	public void setIdLote(Long idLote) {
+	public void setIdLote(String idLote) {
 		this.idLote = idLote;
-	}
-
-	public byte[] getArchivo() {
-		return archivo;
-	}
-
-	public void setArchivo(byte[] archivo) {
-		this.archivo = archivo;
 	}
 
 	public String getObservaciones() {
@@ -47,14 +50,6 @@ public class ReporteLoteClienteDTO {
 
 	public void setObservaciones(String observaciones) {
 		this.observaciones = observaciones;
-	}
-
-	public String getNombreArchivo() {
-		return nombreArchivo;
-	}
-
-	public void setNombreArchivo(String nombreArchivo) {
-		this.nombreArchivo = nombreArchivo;
 	}
 
 }
