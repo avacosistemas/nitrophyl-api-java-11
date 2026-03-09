@@ -10,13 +10,13 @@ public class PiezaDimensionDTO extends DTOAuditableEntity<Long> {
 
 	private String tipo;
 
-	private Integer valor;
+	private Double valor;
 
 	private Boolean controlar;
 
-	private Integer minimo;
+	private Double minimo;
 
-	private Integer maximo;
+	private Double maximo;
 
 	private String observaciones;
 
@@ -26,22 +26,6 @@ public class PiezaDimensionDTO extends DTOAuditableEntity<Long> {
 
 	public void setControlar(Boolean controlar) {
 		this.controlar = controlar;
-	}
-
-	public Integer getMinimo() {
-		return minimo;
-	}
-
-	public void setMinimo(Integer minimo) {
-		this.minimo = minimo;
-	}
-
-	public Integer getMaximo() {
-		return maximo;
-	}
-
-	public void setMaximo(Integer maximo) {
-		this.maximo = maximo;
 	}
 
 	public Long getId() {
@@ -60,12 +44,28 @@ public class PiezaDimensionDTO extends DTOAuditableEntity<Long> {
 		this.tipo = tipo;
 	}
 
-	public Integer getValor() {
+	public Double getValor() {
 		return valor;
 	}
 
-	public void setValor(Integer valor) {
+	public void setValor(Double valor) {
 		this.valor = valor;
+	}
+
+	public Double getMinimo() {
+		return minimo;
+	}
+
+	public void setMinimo(Double minimo) {
+		this.minimo = minimo;
+	}
+
+	public Double getMaximo() {
+		return maximo;
+	}
+
+	public void setMaximo(Double maximo) {
+		this.maximo = maximo;
 	}
 
 	public String getObservaciones() {

@@ -41,16 +41,16 @@ public class PiezaDimension extends AuditableEntity<Long> {
 	private TipoDimension tipo;
 
 	@Column(name = "VALOR")
-	private Integer valor;
+	private Double valor;
 	
 	@Column(name = "CONTROLAR")
 	private Boolean controlar;
 	
 	@Column(name = "MINIMO")
-	private Integer minimo;
+	private Double minimo;
 	
 	@Column(name = "MAXIMO")
-	private Integer maximo;
+	private Double maximo;
 
 	@Column(name = "OBSERVACIONES")
 	private String observaciones;
@@ -67,44 +67,6 @@ public class PiezaDimension extends AuditableEntity<Long> {
 		clonada.setControlar(controlar);
 		return clonada;
 	}
-
-	
-	
-	public Boolean getControlar() {
-		return controlar;
-	}
-
-
-
-	public void setControlar(Boolean controlar) {
-		this.controlar = controlar;
-	}
-
-
-
-	public Integer getMinimo() {
-		return minimo;
-	}
-
-
-
-	public void setMinimo(Integer minimo) {
-		this.minimo = minimo;
-	}
-
-
-
-	public Integer getMaximo() {
-		return maximo;
-	}
-
-
-
-	public void setMaximo(Integer maximo) {
-		this.maximo = maximo;
-	}
-
-
 
 	public Long getId() {
 		return id;
@@ -130,12 +92,36 @@ public class PiezaDimension extends AuditableEntity<Long> {
 		this.tipo = tipo;
 	}
 
-	public Integer getValor() {
+	public Double getValor() {
 		return valor;
 	}
 
-	public void setValor(Integer valor) {
+	public void setValor(Double valor) {
 		this.valor = valor;
+	}
+
+	public Boolean getControlar() {
+		return controlar;
+	}
+
+	public void setControlar(Boolean controlar) {
+		this.controlar = controlar;
+	}
+
+	public Double getMinimo() {
+		return minimo;
+	}
+
+	public void setMinimo(Double minimo) {
+		this.minimo = minimo;
+	}
+
+	public Double getMaximo() {
+		return maximo;
+	}
+
+	public void setMaximo(Double maximo) {
+		this.maximo = maximo;
 	}
 
 	public String getObservaciones() {
@@ -146,4 +132,6 @@ public class PiezaDimension extends AuditableEntity<Long> {
 		this.observaciones = observaciones;
 	}
 
+	
+	
 }
