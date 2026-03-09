@@ -19,23 +19,21 @@ import ar.com.avaco.nitrophyl.domain.entities.AuditableEntity;
 import ar.com.avaco.nitrophyl.domain.entities.cliente.Cliente;
 
 @Entity
-@Table(name = "ORDEN_COMPRA")
-public class OrdenCompra extends AuditableEntity<Long> {
-
-	private static final long serialVersionUID = -1168818575560524811L;
+@Table(name = "ORDEN_COMPRA_DETALLE")
+public class OrdenCompraDetalle extends AuditableEntity<Long> {
 
 	@Id
-	@GeneratedValue(generator = "ORDEN_COMPRA_SEQ")
-	@GenericGenerator(name = "ORDEN_COMPRA_SEQ", strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator", parameters = {
-			@org.hibernate.annotations.Parameter(name = "sequence_name", value = "ORDEN_COMPRA_SEQ"),
+	@GeneratedValue(generator = "ORDEN_COMPRA_DETALLE_SEQ")
+	@GenericGenerator(name = "ORDEN_COMPRA_DETALLE_SEQ", strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator", parameters = {
+			@org.hibernate.annotations.Parameter(name = "sequence_name", value = "ORDEN_COMPRA_DETALLE_SEQ"),
 			@org.hibernate.annotations.Parameter(name = "initial_value", value = "1"),
 			@org.hibernate.annotations.Parameter(name = "increment_size", value = "1") })
-	@Column(name = "ID_ORDEN_COMPRA", unique = true, nullable = false)
+	@Column(name = "ID_ORDEN_COMPRA_DETALLE", unique = true, nullable = false)
 	private Long id;
 
 	@ManyToOne
-	@JoinColumn(name = "ID_CLIENTE", nullable = false)
-	private Cliente cliente;
+	@JoinColumn(name = "ID_ORDEN_COMPRA", nullable = false)
+	private OrdenCompra ordenCompra;
 
 	@Column(name = "ESTADO")
 	private OrdenCompraEstado estado;
@@ -55,14 +53,6 @@ public class OrdenCompra extends AuditableEntity<Long> {
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public Cliente getCliente() {
-		return cliente;
-	}
-
-	public void setCliente(Cliente cliente) {
-		this.cliente = cliente;
 	}
 
 	public Date getFecha() {
