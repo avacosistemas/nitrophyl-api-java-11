@@ -1,5 +1,7 @@
 package ar.com.avaco.nitrophyl.service.pieza;
 
+import java.util.Optional;
+
 import javax.annotation.Resource;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import ar.com.avaco.arc.core.component.bean.service.NJBaseService;
+import ar.com.avaco.nitrophyl.domain.entities.pieza.Pieza;
 import ar.com.avaco.nitrophyl.domain.entities.pieza.PiezaDimension;
 import ar.com.avaco.nitrophyl.repository.pieza.PiezaDimensionRepository;
 
@@ -25,15 +28,17 @@ public class PiezaDimensionServiceImpl extends NJBaseService<Long, PiezaDimensio
 	@Override
 	public PiezaDimension save(PiezaDimension entity) {
 		PiezaDimension save = super.save(entity);
-		this.piezaService.actualizarFaltantes(entity.getPieza().getId());
+		this.piezaService.actualizarFaltantes(entity.getPieza());
 		return save;
 	}
 	
 	@Override
 	public void remove(Long id) {
 		PiezaDimension piezaDimension = this.get(id);
-		Long idPieza = piezaDimension.getPieza().getId();
-		super.remove(id);
-		this.piezaService.actualizarFaltantes(idPieza);
+		Pieza pieza = piezaDimension.getPieza();
+		PiezaDimension first = pieza.getDimensiones().stream().filter(dim -> dim.getId().equals(id)).findFirst().get();
+		pieza.getDimensiones().remove(first);
+		this.piezaService.update(pieza);
+		this.piezaService.actualizarFaltantes(pieza);
 	}
 }

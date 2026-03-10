@@ -25,16 +25,16 @@ public class InsumoTratadoServiceImpl extends NJBaseService<Long, InsumoTratado,
 	@Override
 	public InsumoTratado save(InsumoTratado entity) {
 		InsumoTratado save = super.save(entity);
-		piezaService.actualizarFaltantes(entity.getPieza().getId());
+		piezaService.actualizarFaltantes(entity.getPieza());
 		return save;
 	}
 	
 	@Override
 	public void remove(Long id) {
 		InsumoTratado insumoTratado = this.get(id);
-		Long idPieza = insumoTratado.getPieza().getId();
-		super.remove(id);
-		piezaService.actualizarFaltantes(idPieza);
+		insumoTratado.getPieza().getInsumos().remove(insumoTratado);
+		this.piezaService.update(insumoTratado.getPieza());
+		piezaService.actualizarFaltantes(insumoTratado.getPieza());
 	}
 	
 }

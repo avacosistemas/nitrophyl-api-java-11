@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import ar.com.avaco.arc.core.component.bean.service.NJBaseService;
+import ar.com.avaco.nitrophyl.domain.entities.pieza.Pieza;
 import ar.com.avaco.nitrophyl.domain.entities.pieza.esquema.Esquema;
 import ar.com.avaco.nitrophyl.repository.pieza.EsquemaRepository;
 
@@ -25,16 +26,18 @@ public class EsquemaServiceImpl extends NJBaseService<Long, Esquema, EsquemaRepo
 	@Override
 	public Esquema save(Esquema entity) {
 		Esquema save = super.save(entity);
-		this.piezaService.actualizarFaltantes(entity.getProceso().getId());
+		Pieza pieza = save.getProceso().getPieza();
+		pieza.setProceso(save.getProceso());
+		this.piezaService.actualizarFaltantes(pieza);
 		return save;
 	}
 	
 	@Override
 	public void remove(Long id) {
 		Esquema esquema = this.get(id);
-		Long idProceso = esquema.getProceso().getId();
-		super.remove(id);
-		piezaService.actualizarFaltantes(idProceso);
+		esquema.getProceso().getEsquema().remove(esquema);
+		this.piezaService.update(esquema.getProceso().getPieza());
+		piezaService.actualizarFaltantes(esquema.getProceso().getPieza());
 	}
 
 }

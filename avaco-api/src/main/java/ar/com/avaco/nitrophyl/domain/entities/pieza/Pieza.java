@@ -112,7 +112,7 @@ public class Pieza extends AuditableEntity<Long> {
 	/**
 	 * Listado de dimensiones de la pieza.
 	 */
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "pieza")
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "pieza", orphanRemoval = true)
 	@Fetch(FetchMode.SELECT)
 	private Set<PiezaDimension> dimensiones = new HashSet<>();
 
@@ -131,7 +131,7 @@ public class Pieza extends AuditableEntity<Long> {
 	/**
 	 * Planos asociados a la pieza
 	 */
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "pieza")
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "pieza", orphanRemoval = true)
 	@Fetch(FetchMode.SELECT)
 	private Set<PiezaPlano> planos = new HashSet<>();
 
@@ -145,7 +145,7 @@ public class Pieza extends AuditableEntity<Long> {
 	/**
 	 * Listado de moldes asociados de la pieza.
 	 */
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "pieza")
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "pieza", orphanRemoval = true)
 	private Set<PiezaMolde> moldes = new HashSet<>();
 
 	/**
@@ -160,7 +160,7 @@ public class Pieza extends AuditableEntity<Long> {
 	@OneToOne(mappedBy = "pieza", cascade = CascadeType.ALL, orphanRemoval = true)
 	private Proceso proceso;
 
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "pieza")
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "pieza", orphanRemoval = true)
 	private Set<PiezaCliente> clientes = new HashSet<>();
 
 	/**

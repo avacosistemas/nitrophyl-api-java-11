@@ -27,22 +27,20 @@ public class PiezaServiceImpl extends NJBaseService<Long, Pieza, PiezaRepository
 	@Override
 	public Pieza save(Pieza entity) {
 		Pieza save = super.save(entity);
-		actualizarFaltantes(save.getId());
+		actualizarFaltantes(save);
 		return save;
 	}
 
 	@Override
 	public Pieza update(Pieza entity) {
 		Pieza update = super.update(entity);
-		actualizarFaltantes(entity.getId());
+		actualizarFaltantes(entity);
 		return update;
 	}
 	
 	@Override
-	public void actualizarFaltantes(Long idPieza) {
+	public void actualizarFaltantes(Pieza pieza) {
 		StringBuilder sb = new StringBuilder();
-
-		Pieza pieza = this.repository.findById(idPieza).get();
 
 		Proceso proceso = pieza.getProceso();
 		if (proceso.getPrensas() == null || proceso.getPrensas().isEmpty()) {
@@ -83,7 +81,7 @@ public class PiezaServiceImpl extends NJBaseService<Long, Pieza, PiezaRepository
 		}
 		
 		Integer cantinsumos = pieza.getCantidadInsumos();
-		if (pieza.getRequiereInsumos() && (cantinsumos == null || cantinsumos == 0 || (!cantinsumos.equals(pieza.getInsumos().size())))) {
+		if (pieza.getRequiereInsumos() != null && pieza.getRequiereInsumos().booleanValue() && (cantinsumos == null || cantinsumos == 0 || (!cantinsumos.equals(pieza.getInsumos().size())))) {
 			sb.append("Faltan cargar insumos,");
 		}
 
@@ -91,7 +89,7 @@ public class PiezaServiceImpl extends NJBaseService<Long, Pieza, PiezaRepository
 		    sb.setLength(sb.length() - 1);
 		}
 		
-		this.repository.actualizarFaltantes(idPieza, sb.toString());
+		this.repository.actualizarFaltantes(pieza.getId(), sb.toString());
 	}
 
 	@Override

@@ -15,6 +15,6 @@ public interface PiezaService extends NJService<Long, Pieza> {
 
 	boolean existsByFormula(Long idFormula);
 
-	void actualizarFaltantes(Long idPieza);
+	void actualizarFaltantes(Pieza pieza);
 
 }

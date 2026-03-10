@@ -245,7 +245,7 @@ public class NJBaseRepository<ID extends Serializable, E extends ar.com.avaco.ar
 
 	@Override
 	public E getDetachedById(ID id) {
-		E byId = this.getById(id);
+		E byId = this.findById(id).orElse(null);
 		entityManager.detach(byId);
 		return byId;
 	}

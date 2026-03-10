@@ -25,14 +25,14 @@ public class ProcesoServiceImpl extends NJBaseService<Long, Proceso, ProcesoRepo
 	@Override
 	public Proceso save(Proceso entity) {
 		Proceso save = super.save(entity);
-		this.piezaService.actualizarFaltantes(save.getId());
+		this.piezaService.actualizarFaltantes(save.getPieza());
 		return save;
 	}
 	
 	@Override
 	public Proceso update(Proceso entity) {
 		Proceso update = super.update(entity);
-		this.piezaService.actualizarFaltantes(update.getId());
+		this.piezaService.actualizarFaltantes(update.getPieza());
 		return update;
 	}
 
