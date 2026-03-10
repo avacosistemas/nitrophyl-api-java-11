@@ -26,14 +26,14 @@ public class TerminacionServiceImpl extends NJBaseService<Long, Terminacion, Ter
 	@Override
 	public Terminacion save(Terminacion entity) {
 		Terminacion save = super.save(entity);
-		piezaService.actualizarFaltantes(entity.getProceso().getId());
+		piezaService.actualizarFaltantes(entity.getProceso().getPieza());
 		return save;
 	}
 
 	@Override
 	public Terminacion update(Terminacion entity) {
 		Terminacion update = super.update(entity);
-		piezaService.actualizarFaltantes(entity.getProceso().getId());
+		piezaService.actualizarFaltantes(entity.getProceso().getPieza());
 		return update;
 	}
 

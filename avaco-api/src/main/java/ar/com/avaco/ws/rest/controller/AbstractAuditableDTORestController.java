@@ -148,8 +148,8 @@ public abstract class AbstractAuditableDTORestController<RDTO extends DTOAuditab
         } catch (Exception e) {
         	e.printStackTrace();
         	JSONResponse response = new JSONResponse();
-            response.setData("No se puede borrar el elemento seleccionado. Es probable que est asociado por otra seccin de la aplicacin.");
-       		response.setStatus(JSONResponse.OK);
+            response.setData(e.getMessage());
+       		response.setStatus(JSONResponse.ERROR);
        		return new ResponseEntity<JSONResponse>(response, HttpStatus.CONFLICT);
         }
         return new ResponseEntity<JSONResponse>(getResponseOK(null),HttpStatus.OK);
