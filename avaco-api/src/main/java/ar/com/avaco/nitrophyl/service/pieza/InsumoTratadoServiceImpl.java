@@ -34,7 +34,6 @@ public class InsumoTratadoServiceImpl extends NJBaseService<Long, InsumoTratado,
 		InsumoTratado insumoTratado = this.get(id);
 		insumoTratado.getPieza().getInsumos().remove(insumoTratado);
 		this.piezaService.update(insumoTratado.getPieza());
-		piezaService.actualizarFaltantes(insumoTratado.getPieza());
 	}
 	
 }

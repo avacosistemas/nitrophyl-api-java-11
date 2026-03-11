@@ -3,6 +3,7 @@ package ar.com.avaco.nitrophyl.service.pieza;
 import java.util.List;
 
 import javax.annotation.Resource;
+import javax.transaction.Transactional;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,7 @@ import ar.com.avaco.nitrophyl.repository.pieza.PiezaRepository;
 import ar.com.avaco.nitrophyl.ws.dto.PiezaFilterDTO;
 import ar.com.avaco.nitrophyl.ws.dto.PiezaGrillaDTO;
 
+@Transactional
 @Service("piezaService")
 public class PiezaServiceImpl extends NJBaseService<Long, Pieza, PiezaRepository> implements PiezaService {
 
