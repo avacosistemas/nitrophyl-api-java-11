@@ -1,5 +1,8 @@
 package ar.com.avaco.nitrophyl.ws.service;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 import javax.annotation.Resource;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,7 +53,7 @@ public class OrdenCompraEPServiceImpl extends CRUDAuditableEPBaseService<Long, O
 		ordenCompra.setCliente(cliente);
 		ordenCompra.setComprobante(dto.getComprobante());
 		ordenCompra.setEstado(OrdenCompraEstado.PENDIENTE);
-		ordenCompra.setFecha(DateUtils.toDate(dto.getFecha(), DateUtils.dd_MM_yyyy));
+		ordenCompra.setFecha(LocalDate.parse(dto.getFecha(), DateTimeFormatter.ofPattern(DateUtils.dd_MM_yyyy)));
 
 		ordenCompra.setArchivo(oca);
 
@@ -96,7 +99,7 @@ public class OrdenCompraEPServiceImpl extends CRUDAuditableEPBaseService<Long, O
 					// Armo el pedido, seteo cantidad y fecha estimada de entrega
 					OrdenCompraDetallePedido pedido = new OrdenCompraDetallePedido();
 					pedido.setCantidad(pedidoDTO.getCantidad());
-					pedido.setFechaEntregaSolicitada(DateUtils.toDate(pedidoDTO.getFechaEntregaSolicitada(), DateUtils.dd_MM_yyyy));
+					pedido.setFechaEntregaSolicitada(LocalDate.parse(pedidoDTO.getFechaEntregaSolicitada(), DateTimeFormatter.ofPattern(DateUtils.dd_MM_yyyy)));
 					pedido.setOrdenCompraDetalle(detalle);
 					
 					// Le agrego al detalle el pedido

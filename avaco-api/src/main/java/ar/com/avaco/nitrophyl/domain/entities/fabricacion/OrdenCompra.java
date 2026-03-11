@@ -1,6 +1,6 @@
 package ar.com.avaco.nitrophyl.domain.entities.fabricacion;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -47,7 +47,7 @@ public class OrdenCompra extends AuditableEntity<Long> {
 	private String comprobante;
 
 	@Column(name = "FECHA")
-	private Date fecha;
+	private LocalDate fecha;
 
 	@OneToOne(mappedBy = "ordenDeCompra", cascade = CascadeType.ALL, optional = false, fetch = FetchType.LAZY)
 	private OrdenCompraArchivo archivo;
@@ -71,11 +71,11 @@ public class OrdenCompra extends AuditableEntity<Long> {
 		this.cliente = cliente;
 	}
 
-	public Date getFecha() {
+	public LocalDate getFecha() {
 		return fecha;
 	}
 
-	public void setFecha(Date fecha) {
+	public void setFecha(LocalDate fecha) {
 		this.fecha = fecha;
 	}
 

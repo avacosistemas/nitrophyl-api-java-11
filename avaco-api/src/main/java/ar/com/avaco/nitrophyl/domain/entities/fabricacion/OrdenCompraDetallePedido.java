@@ -1,5 +1,6 @@
 package ar.com.avaco.nitrophyl.domain.entities.fabricacion;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -37,7 +38,7 @@ public class OrdenCompraDetallePedido extends AuditableEntity<Long> {
 	private Integer cantidad;
 
 	@Column(name = "FECHA_ENTREGA_SOLICITADA", nullable = false)
-	private Date fechaEntregaSolicitada;
+	private LocalDate fechaEntregaSolicitada;
 
 	public Long getId() {
 		return id;
@@ -63,11 +64,11 @@ public class OrdenCompraDetallePedido extends AuditableEntity<Long> {
 		this.cantidad = cantidad;
 	}
 
-	public Date getFechaEntregaSolicitada() {
+	public LocalDate getFechaEntregaSolicitada() {
 		return fechaEntregaSolicitada;
 	}
 
-	public void setFechaEntregaSolicitada(Date fechaEntregaSolicitada) {
+	public void setFechaEntregaSolicitada(LocalDate fechaEntregaSolicitada) {
 		this.fechaEntregaSolicitada = fechaEntregaSolicitada;
 	}
 
