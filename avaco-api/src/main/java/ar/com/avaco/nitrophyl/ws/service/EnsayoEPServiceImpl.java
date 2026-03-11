@@ -6,7 +6,9 @@ import java.util.List;
 import java.util.Set;
 
 import javax.annotation.Resource;
+import javax.transaction.Transactional;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import ar.com.avaco.commons.exception.BusinessException;
@@ -22,6 +24,7 @@ import ar.com.avaco.nitrophyl.ws.dto.EnsayoDTO;
 import ar.com.avaco.utils.DateUtils;
 import ar.com.avaco.ws.rest.service.CRUDEPBaseService;
 
+@Transactional
 @Service("ensayoEPService")
 public class EnsayoEPServiceImpl extends CRUDEPBaseService<Long, EnsayoDTO, Ensayo, EnsayoService>
 		implements EnsayoEPService {
@@ -48,6 +51,10 @@ public class EnsayoEPServiceImpl extends CRUDEPBaseService<Long, EnsayoDTO, Ensa
 		ensayo.setLote(lote);
 		ensayo.setObservaciones(dto.getObservaciones());
 		Set<EnsayoResultado> resultados = new HashSet<>();
+		ConfiguracionPrueba configuracionPrueba = configuracionPruebaService.get(dto.getIdConfiguracionPrueba());
+		ensayo.setConfiguracionPrueba(configuracionPrueba);
+		if (StringUtils.isNotBlank(dto.getEstado()))
+			ensayo.setEstado(EstadoEnsayo.valueOf(dto.getEstado()));
 		dto.getResultados().forEach(res -> {
 			EnsayoResultado er = new EnsayoResultado();
 			er.setConfiguracionPruebaParametro(
@@ -58,6 +65,7 @@ public class EnsayoEPServiceImpl extends CRUDEPBaseService<Long, EnsayoDTO, Ensa
 			resultados.add(er);
 		});
 		ensayo.setResultados(resultados);
+		ensayo.setFecha(DateUtils.toDate(dto.getFecha().split("T")[0], "yyyy-MM-dd"));
 		return ensayo;
 	}
 
@@ -70,6 +78,7 @@ public class EnsayoEPServiceImpl extends CRUDEPBaseService<Long, EnsayoDTO, Ensa
 		dto.setMaquina(entity.getConfiguracionPrueba().getMaquina().getNombre());
 		dto.setObservaciones(entity.getObservaciones());
 		dto.setEstado(entity.getEstado().toString());
+		dto.setIdConfiguracionPrueba(entity.getConfiguracionPrueba().getId());
 		return dto;
 	}
 
@@ -89,14 +98,8 @@ public class EnsayoEPServiceImpl extends CRUDEPBaseService<Long, EnsayoDTO, Ensa
 		// Obtengo la configuracion de la prueba
 		ConfiguracionPrueba configuracionPrueba = configuracionPruebaService.get(dto.getIdConfiguracionPrueba());
 
-		// Limpio el ID
-		ensayo.setId(null);
-
 		// Seteo la configuracion
 		ensayo.setConfiguracionPrueba(configuracionPrueba);
-
-		// Seteo la fecha
-		ensayo.setFecha(DateUtils.toDate(dto.getFecha(), DateUtils.dd_MM_yyyy));
 
 		// Seteo la fecha
 		ensayo.setEstado(EstadoEnsayo.valueOf(dto.getEstado()));

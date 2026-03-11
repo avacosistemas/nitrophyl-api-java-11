@@ -44,7 +44,7 @@ public class Ensayo extends AuditableEntity<Long> {
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private Lote lote;
 
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@ManyToOne(fetch = FetchType.EAGER, optional = false)
 	@JoinColumn(name = "ID_CONF_PRUEBA", updatable = false)
 	private ConfiguracionPrueba configuracionPrueba;
 

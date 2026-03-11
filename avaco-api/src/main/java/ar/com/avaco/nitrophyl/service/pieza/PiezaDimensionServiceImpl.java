@@ -1,7 +1,5 @@
 package ar.com.avaco.nitrophyl.service.pieza;
 
-import java.util.Optional;
-
 import javax.annotation.Resource;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,9 +25,10 @@ public class PiezaDimensionServiceImpl extends NJBaseService<Long, PiezaDimensio
 	
 	@Override
 	public PiezaDimension save(PiezaDimension entity) {
-		PiezaDimension save = super.save(entity);
-		this.piezaService.actualizarFaltantes(entity.getPieza());
-		return save;
+		Pieza pieza = piezaService.get(entity.getPieza().getId());
+		pieza.getDimensiones().add(entity);
+		this.piezaService.update(pieza);
+		return entity;
 	}
 	
 	@Override
@@ -39,6 +38,5 @@ public class PiezaDimensionServiceImpl extends NJBaseService<Long, PiezaDimensio
 		PiezaDimension first = pieza.getDimensiones().stream().filter(dim -> dim.getId().equals(id)).findFirst().get();
 		pieza.getDimensiones().remove(first);
 		this.piezaService.update(pieza);
-		this.piezaService.actualizarFaltantes(pieza);
 	}
 }

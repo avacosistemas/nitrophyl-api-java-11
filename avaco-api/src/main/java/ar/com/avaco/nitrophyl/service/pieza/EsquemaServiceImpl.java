@@ -37,7 +37,6 @@ public class EsquemaServiceImpl extends NJBaseService<Long, Esquema, EsquemaRepo
 		Esquema esquema = this.get(id);
 		esquema.getProceso().getEsquema().remove(esquema);
 		this.piezaService.update(esquema.getProceso().getPieza());
-		piezaService.actualizarFaltantes(esquema.getProceso().getPieza());
 	}
 
 }
