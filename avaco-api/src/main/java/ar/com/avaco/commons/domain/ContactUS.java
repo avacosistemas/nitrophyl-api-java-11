@@ -9,10 +9,11 @@ import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.GenericGenerator;
 
 /**
  * @author avaco
@@ -20,7 +21,6 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name="CONTACT_US")
-@SequenceGenerator(name = "CONTACT_US_SEQ", sequenceName = "CONTACT_US_SEQ", allocationSize = 1)
 public class ContactUS extends ar.com.avaco.arc.core.domain.Entity<Long> implements Serializable{
 
 	/**
@@ -29,7 +29,11 @@ public class ContactUS extends ar.com.avaco.arc.core.domain.Entity<Long> impleme
 	private static final long serialVersionUID = 8168268668794827990L;
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "CONTACT_US_SEQ")
+	@GeneratedValue(generator = "CONTACT_US_SEQ")
+	@GenericGenerator(name = "CONTACT_US_SEQ", strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator", parameters = {
+			@org.hibernate.annotations.Parameter(name = "sequence_name", value = "CONTACT_US_SEQ"),
+			@org.hibernate.annotations.Parameter(name = "initial_value", value = "1"),
+			@org.hibernate.annotations.Parameter(name = "increment_size", value = "1") })
 	@Column(name = "ID_CONTACT")
     private Long id;
 	

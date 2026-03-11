@@ -41,6 +41,7 @@ import ar.com.avaco.nitrophyl.service.pieza.PiezaTipoService;
 import ar.com.avaco.nitrophyl.ws.dto.BombeoDTO;
 import ar.com.avaco.nitrophyl.ws.dto.EspesorDTO;
 import ar.com.avaco.nitrophyl.ws.dto.PageDTO;
+import ar.com.avaco.nitrophyl.ws.dto.PiezaComboDTO;
 import ar.com.avaco.nitrophyl.ws.dto.PiezaCreacionDTO;
 import ar.com.avaco.nitrophyl.ws.dto.PiezaDTO;
 import ar.com.avaco.nitrophyl.ws.dto.PiezaEdicionDTO;
@@ -328,4 +329,9 @@ public class PiezaEPServiceImpl extends CRUDAuditableEPBaseService<Long, PiezaDT
 		this.service.update(pieza);
 	}
 
+	@Override
+	public List<PiezaComboDTO> listCombo(String nombre, Long idCliente) {
+		return this.service.listCombo(nombre, idCliente);
+	}
+	
 }

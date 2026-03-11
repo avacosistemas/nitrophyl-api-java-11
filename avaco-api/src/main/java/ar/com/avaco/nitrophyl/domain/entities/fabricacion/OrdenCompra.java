@@ -1,6 +1,8 @@
 package ar.com.avaco.nitrophyl.domain.entities.fabricacion;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -10,6 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -48,6 +51,9 @@ public class OrdenCompra extends AuditableEntity<Long> {
 
 	@OneToOne(mappedBy = "ordenDeCompra", cascade = CascadeType.ALL, optional = false, fetch = FetchType.LAZY)
 	private OrdenCompraArchivo archivo;
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "ordenCompra", orphanRemoval = true)
+	private Set<OrdenCompraDetalle> detalle = new HashSet<OrdenCompraDetalle>();
 
 	public Long getId() {
 		return id;
@@ -95,6 +101,14 @@ public class OrdenCompra extends AuditableEntity<Long> {
 
 	public void setArchivo(OrdenCompraArchivo archivo) {
 		this.archivo = archivo;
+	}
+
+	public Set<OrdenCompraDetalle> getDetalle() {
+		return detalle;
+	}
+
+	public void setDetalle(Set<OrdenCompraDetalle> detalle) {
+		this.detalle = detalle;
 	}
 
 }

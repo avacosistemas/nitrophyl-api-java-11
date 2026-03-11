@@ -1,6 +1,7 @@
 package ar.com.avaco.nitrophyl.domain.entities.fabricacion;
 
-import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -10,17 +11,23 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 
 import ar.com.avaco.nitrophyl.domain.entities.AuditableEntity;
-import ar.com.avaco.nitrophyl.domain.entities.cliente.Cliente;
+import ar.com.avaco.nitrophyl.domain.entities.pieza.Pieza;
+import ar.com.avaco.nitrophyl.domain.entities.pieza.cliente.Cotizacion;
 
 @Entity
 @Table(name = "ORDEN_COMPRA_DETALLE")
 public class OrdenCompraDetalle extends AuditableEntity<Long> {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8702524794147610427L;
 
 	@Id
 	@GeneratedValue(generator = "ORDEN_COMPRA_DETALLE_SEQ")
@@ -35,17 +42,16 @@ public class OrdenCompraDetalle extends AuditableEntity<Long> {
 	@JoinColumn(name = "ID_ORDEN_COMPRA", nullable = false)
 	private OrdenCompra ordenCompra;
 
-	@Column(name = "ESTADO")
-	private OrdenCompraEstado estado;
+	@ManyToOne
+	@JoinColumn(name = "ID_PIEZA", nullable = false)
+	private Pieza pieza;
 
-	@Column(name = "COMPROBANTE")
-	private String comprobante;
+	@ManyToOne(cascade = CascadeType.PERSIST)
+	@JoinColumn(name = "ID_COTIZACION", nullable = false)
+	private Cotizacion cotizacion;
 
-	@Column(name = "FECHA")
-	private Date fecha;
-
-	@OneToOne(mappedBy = "ordenDeCompra", cascade = CascadeType.ALL, optional = false, fetch = FetchType.LAZY)
-	private OrdenCompraArchivo archivo;
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "ordenCompraDetalle", orphanRemoval = true)
+	private Set<OrdenCompraDetallePedido> entregasSolicitadas = new HashSet<OrdenCompraDetallePedido>();
 
 	public Long getId() {
 		return id;
@@ -55,36 +61,36 @@ public class OrdenCompraDetalle extends AuditableEntity<Long> {
 		this.id = id;
 	}
 
-	public Date getFecha() {
-		return fecha;
+	public OrdenCompra getOrdenCompra() {
+		return ordenCompra;
 	}
 
-	public void setFecha(Date fecha) {
-		this.fecha = fecha;
+	public void setOrdenCompra(OrdenCompra ordenCompra) {
+		this.ordenCompra = ordenCompra;
 	}
 
-	public OrdenCompraEstado getEstado() {
-		return estado;
+	public Pieza getPieza() {
+		return pieza;
 	}
 
-	public void setEstado(OrdenCompraEstado estado) {
-		this.estado = estado;
+	public void setPieza(Pieza pieza) {
+		this.pieza = pieza;
 	}
 
-	public String getComprobante() {
-		return comprobante;
+	public Cotizacion getCotizacion() {
+		return cotizacion;
 	}
 
-	public void setComprobante(String comprobante) {
-		this.comprobante = comprobante;
+	public void setCotizacion(Cotizacion cotizacion) {
+		this.cotizacion = cotizacion;
 	}
 
-	public OrdenCompraArchivo getArchivo() {
-		return archivo;
+	public Set<OrdenCompraDetallePedido> getEntregasSolicitadas() {
+		return entregasSolicitadas;
 	}
 
-	public void setArchivo(OrdenCompraArchivo archivo) {
-		this.archivo = archivo;
+	public void setEntregasSolicitadas(Set<OrdenCompraDetallePedido> entregasSolicitadas) {
+		this.entregasSolicitadas = entregasSolicitadas;
 	}
 
 }

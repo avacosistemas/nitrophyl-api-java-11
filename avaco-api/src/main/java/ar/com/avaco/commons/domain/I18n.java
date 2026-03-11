@@ -11,12 +11,11 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
@@ -26,7 +25,6 @@ import org.hibernate.annotations.LazyCollectionOption;
 
 @Entity
 @Table(name="I18N")
-@SequenceGenerator(name = "I18N_SEQ", sequenceName = "I18N_SEQ", allocationSize = 1)
 public class I18n extends ar.com.avaco.arc.core.domain.Entity<Long> implements Serializable{
 
 	/**
@@ -35,7 +33,11 @@ public class I18n extends ar.com.avaco.arc.core.domain.Entity<Long> implements S
 	private static final long serialVersionUID = 8168268668794827990L;
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "I18N_SEQ")
+	@GeneratedValue(generator = "I18N_SEQ")
+	@GenericGenerator(name = "I18N_SEQ", strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator", parameters = {
+			@org.hibernate.annotations.Parameter(name = "sequence_name", value = "I18N_SEQ"),
+			@org.hibernate.annotations.Parameter(name = "initial_value", value = "1"),
+			@org.hibernate.annotations.Parameter(name = "increment_size", value = "1") })
 	@Column(name = "ID_I18N")
     private Long id;
 	
