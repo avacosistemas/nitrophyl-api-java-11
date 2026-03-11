@@ -8,6 +8,7 @@ import java.util.Set;
 import javax.annotation.Resource;
 import javax.transaction.Transactional;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import ar.com.avaco.commons.exception.BusinessException;
@@ -50,6 +51,10 @@ public class EnsayoEPServiceImpl extends CRUDEPBaseService<Long, EnsayoDTO, Ensa
 		ensayo.setLote(lote);
 		ensayo.setObservaciones(dto.getObservaciones());
 		Set<EnsayoResultado> resultados = new HashSet<>();
+		ConfiguracionPrueba configuracionPrueba = configuracionPruebaService.get(dto.getIdConfiguracionPrueba());
+		ensayo.setConfiguracionPrueba(configuracionPrueba);
+		if (StringUtils.isNotBlank(dto.getEstado()))
+			ensayo.setEstado(EstadoEnsayo.valueOf(dto.getEstado()));
 		dto.getResultados().forEach(res -> {
 			EnsayoResultado er = new EnsayoResultado();
 			er.setConfiguracionPruebaParametro(
@@ -73,6 +78,7 @@ public class EnsayoEPServiceImpl extends CRUDEPBaseService<Long, EnsayoDTO, Ensa
 		dto.setMaquina(entity.getConfiguracionPrueba().getMaquina().getNombre());
 		dto.setObservaciones(entity.getObservaciones());
 		dto.setEstado(entity.getEstado().toString());
+		dto.setIdConfiguracionPrueba(entity.getConfiguracionPrueba().getId());
 		return dto;
 	}
 
