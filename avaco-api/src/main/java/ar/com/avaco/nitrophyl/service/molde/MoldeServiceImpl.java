@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 
 import ar.com.avaco.arc.core.component.bean.service.NJBaseService;
 import ar.com.avaco.nitrophyl.domain.entities.molde.Molde;
+import ar.com.avaco.nitrophyl.domain.entities.molde.MoldeDimension;
+import ar.com.avaco.nitrophyl.domain.entities.molde.TipoMolde;
 import ar.com.avaco.nitrophyl.repository.molde.MoldeFotoRepository;
 import ar.com.avaco.nitrophyl.repository.molde.MoldePlanoRepository;
 import ar.com.avaco.nitrophyl.repository.molde.MoldeRepository;
@@ -74,6 +76,19 @@ public class MoldeServiceImpl extends NJBaseService<Long, Molde, MoldeRepository
 		if (!foto) {
 			sb.append("Falta cargar una foto,");
 		}
+
+		Molde molde = this.get(idMolde);
+		
+		boolean faltanDimensiones = false;
+		for (MoldeDimension dimension : molde.getDimensiones()) {
+			if (dimension.getValordimension() == null) {
+				faltanDimensiones = true;
+				break;
+			}
+		}
+		
+		if (faltanDimensiones)
+			sb.append("Faltan cargar dimensiones,");
 		
 		if (sb.length() > 0 && sb.charAt(sb.length() - 1) == ',') {
 		    sb.setLength(sb.length() - 1);

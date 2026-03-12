@@ -1,6 +1,7 @@
 package ar.com.avaco.nitrophyl.ws.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -183,8 +184,10 @@ public class MoldeEPServiceImpl extends CRUDAuditableEPBaseService<Long, MoldeDT
 			moldeDto.setIdClienteDuenio(entity.getDuenio().getId());
 		}
 		
-		Map<TipoDimension, Integer> dimensiones = entity.getDimensiones().stream().collect(Collectors.toMap(MoldeDimension::getTipodimension, MoldeDimension::getValordimension));
-		
+		Map<TipoDimension, Integer> dimensiones = new HashMap<>();
+		entity.getDimensiones().forEach(d ->
+		    dimensiones.put(d.getTipodimension(), d.getValordimension())
+		);
 		moldeDto.setAlto(dimensiones.get(TipoDimension.ALTO));
 		moldeDto.setAncho(dimensiones.get(TipoDimension.ANCHO));
 		moldeDto.setProfundidad(dimensiones.get(TipoDimension.PROFUNDIDAD));
