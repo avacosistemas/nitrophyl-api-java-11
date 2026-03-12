@@ -14,6 +14,7 @@ import ar.com.avaco.commons.exception.BusinessException;
 import ar.com.avaco.nitrophyl.domain.entities.AuditableEntity;
 import ar.com.avaco.nitrophyl.ws.dto.PageDTO;
 import ar.com.avaco.ws.rest.dto.DTOAuditableEntity;
+import ar.com.avaco.ws.rest.dto.DTOEntity;
 
 @Transactional
 public abstract class CRUDAuditableEPBaseService<ID extends Serializable, DTO extends DTOAuditableEntity<ID>, T extends AuditableEntity<ID>, S extends NJService<ID, T>>
@@ -164,6 +165,17 @@ public abstract class CRUDAuditableEPBaseService<ID extends Serializable, DTO ex
 		page.setPage(listFilter);
 		page.setTotalReg(listCount);
 		return page;
+	}
+	
+	@Override
+	public <ID extends Serializable, D extends DTOEntity<ID>>
+	PageDTO<D> listFilterCount(AbstractFilter abstractFilter, Class<D> targetDTO) {
+	    PageDTO<D> page = new PageDTO<>();
+	    List<D> listFilter = this.service.listFilter(abstractFilter, targetDTO);
+	    int listCount = listCount(abstractFilter);
+	    page.setPage(listFilter);
+	    page.setTotalReg(listCount);
+	    return page;
 	}
 
 }

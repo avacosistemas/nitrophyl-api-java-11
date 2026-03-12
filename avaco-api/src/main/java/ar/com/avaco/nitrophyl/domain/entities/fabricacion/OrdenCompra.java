@@ -7,6 +7,8 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -41,6 +43,7 @@ public class OrdenCompra extends AuditableEntity<Long> {
 	private Cliente cliente;
 
 	@Column(name = "ESTADO")
+	@Enumerated(EnumType.STRING)
 	private OrdenCompraEstado estado;
 
 	@Column(name = "COMPROBANTE")
@@ -101,6 +104,9 @@ public class OrdenCompra extends AuditableEntity<Long> {
 
 	public void setArchivo(OrdenCompraArchivo archivo) {
 		this.archivo = archivo;
+		if (archivo != null) {
+	        archivo.setOrdenDeCompra(this);
+	    }
 	}
 
 	public Set<OrdenCompraDetalle> getDetalle() {

@@ -4,24 +4,24 @@ import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 
+import ar.com.avaco.arc.core.component.bean.repository.NJRepository;
 import ar.com.avaco.arc.core.domain.Entity;
 import ar.com.avaco.arc.core.domain.filter.AbstractFilter;
+import ar.com.avaco.ws.rest.dto.DTOEntity;
 
 /**
  * Generic interface that provides basic CRUD methods.
  * 
  * @author GOrtiz
  *
- * @param <T>
- *            The type {@link Entity} that is handled on this service.
+ * @param <T> The type {@link Entity} that is handled on this service.
  */
 public interface NJService<ID extends Serializable, T extends Entity<ID>> {
 
 	/**
 	 * Saves an {@link Entity} into the {@link NJRepository}.
 	 * 
-	 * @param entity
-	 *            The {@link Entity} to save.
+	 * @param entity The {@link Entity} to save.
 	 * @return {@link Serializable} The ID of the entity.
 	 */
 	T save(T entity);
@@ -29,25 +29,22 @@ public interface NJService<ID extends Serializable, T extends Entity<ID>> {
 	/**
 	 * Updates an {@link Entity} into the {@link NJRepository}.
 	 * 
-	 * @param entity
-	 *            The {@link Entity} to update.
+	 * @param entity The {@link Entity} to update.
 	 */
 	T update(T entity);
-	
+
 	/**
 	 * Saves a {@link Collection} of {@link Entity Entities} into the
 	 * {@link NJRepository}.
 	 * 
-	 * @param entities
-	 *            The {@link Entity Entities} to save.
+	 * @param entities The {@link Entity Entities} to save.
 	 */
 	List<T> save(Collection<T> entities);
 
 	/**
 	 * Gets an {@link Entity} from the {@link NJRepository} by it's ID.
 	 * 
-	 * @param id
-	 *            The ID of the {@link Entity}.
+	 * @param id The ID of the {@link Entity}.
 	 * @return {@link Entity} The retrieved entity.
 	 */
 	T get(ID id);
@@ -58,12 +55,11 @@ public interface NJService<ID extends Serializable, T extends Entity<ID>> {
 	 * @return {@link List} The entities.
 	 */
 	List<T> list();
-	
+
 	/**
 	 * Removes an {@link Entity} using it's ID.
 	 * 
-	 * @param id
-	 *            The ID of the entity to remove.
+	 * @param id The ID of the entity to remove.
 	 * @return {@link Entity} The removed entity.
 	 */
 	void remove(ID id);
@@ -71,11 +67,14 @@ public interface NJService<ID extends Serializable, T extends Entity<ID>> {
 	int listCount(AbstractFilter abstractFilter);
 
 	List<T> listFilter(AbstractFilter abstractFilter);
-	
+
 	List<T> listPattern(String field, String pattern);
-	
+
 	List<T> listEqField(String field, Object pattern);
-	
+
 	T getDetached(ID id);
+
+	<ID extends Serializable, D extends DTOEntity<ID>> List<D> listFilter(AbstractFilter abstractFilter,
+			Class<D> targetDTO);
 
 }

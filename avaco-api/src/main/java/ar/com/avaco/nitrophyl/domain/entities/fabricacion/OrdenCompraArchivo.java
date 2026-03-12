@@ -23,10 +23,10 @@ public class OrdenCompraArchivo extends AuditableEntity<Long> {
 	private Long id;
 
 	@OneToOne
-    @MapsId
-    @JoinColumn(name = "ID_OC_ARCHIVO")
-    private OrdenCompra ordenDeCompra;
-	
+	@MapsId
+	@JoinColumn(name = "ID_OC_ARCHIVO")
+	private OrdenCompra ordenDeCompra;
+
 	@Column(name = "ARCHIVO", nullable = true)
 	@Type(type = "org.hibernate.type.BinaryType")
 	private byte[] archivo;
@@ -56,6 +56,14 @@ public class OrdenCompraArchivo extends AuditableEntity<Long> {
 
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
+	}
+
+	public OrdenCompra getOrdenDeCompra() {
+		return ordenDeCompra;
+	}
+
+	public void setOrdenDeCompra(OrdenCompra ordenDeCompra) {
+		this.ordenDeCompra = ordenDeCompra;
 	}
 
 }

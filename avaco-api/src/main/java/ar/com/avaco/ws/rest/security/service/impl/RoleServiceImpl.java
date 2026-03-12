@@ -3,6 +3,7 @@
  */
 package ar.com.avaco.ws.rest.security.service.impl;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -10,8 +11,10 @@ import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
 
+import ar.com.avaco.arc.core.domain.filter.AbstractFilter;
 import ar.com.avaco.arc.sec.domain.Rol;
 import ar.com.avaco.arc.sec.service.RolService;
+import ar.com.avaco.ws.rest.dto.DTOEntity;
 import ar.com.avaco.ws.rest.security.dto.Role;
 import ar.com.avaco.ws.rest.security.service.RoleService;
 import ar.com.avaco.ws.rest.service.AbstractConvertService;
@@ -50,5 +53,13 @@ public class RoleServiceImpl extends AbstractConvertService<Role, Long, Rol> imp
 		entity.setCodigo(dto.getCode());
 		return entity;
 	}
+
+	@Override
+	public <ID extends Serializable, D extends DTOEntity<ID>> List<D> listFilter(AbstractFilter abstractFilter,
+			Class<D> targetDTO) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 
 }

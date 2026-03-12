@@ -12,9 +12,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import ar.com.avaco.commons.exception.BusinessException;
+import ar.com.avaco.nitrophyl.domain.entities.lote.EstadoLote;
 import ar.com.avaco.nitrophyl.ws.dto.ComboDTO;
 import ar.com.avaco.nitrophyl.ws.dto.LoteAprobarDTO;
 import ar.com.avaco.nitrophyl.ws.dto.LoteDTO;
@@ -47,6 +49,20 @@ public class LoteRestController extends AbstractDTORestController<LoteDTO, Long,
 	public ResponseEntity<JSONResponse> list(LoteFilterDTO filter) {
 		List<LoteDTO> listFilter = super.service.listFilter(new LoteFilter(filter));
 		return OK(listFilter);
+	}
+
+	@RequestMapping(value = "/lote/formula", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<JSONResponse> listByFormula(@RequestParam Long idFormula, @RequestParam(required = false) String nroLote) {
+		LoteFilterDTO filter = new LoteFilterDTO();
+		filter.setAsc(true);
+		filter.setIdx("nroLote");
+		filter.setEstados(List.of(EstadoLote.APROBADO.name(), EstadoLote.APROBADO_OBSERVADO.name()));
+		filter.setIdFormula(idFormula);
+		filter.setNroLote(nroLote);
+		List<LoteDTO> listFilter = super.service.listFilter(new LoteFilter(filter));
+		List<ComboDTO> lotes = new ArrayList<ComboDTO>();
+		listFilter.forEach(x -> lotes.add(new ComboDTO(x.getNroLote(), x.getId().toString())));
+		return OK(lotes);
 	}
 
 	@RequestMapping(value = "/lotes/autocomplete", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)

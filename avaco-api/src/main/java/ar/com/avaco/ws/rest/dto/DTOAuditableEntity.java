@@ -57,5 +57,5 @@ public abstract class DTOAuditableEntity<ID extends Serializable> extends DTOEnt
 	public void setFechaActualizacion(Date fechaActualizacion) {
 		this.fechaActualizacion = fechaActualizacion;
 	}
-
+	
 }

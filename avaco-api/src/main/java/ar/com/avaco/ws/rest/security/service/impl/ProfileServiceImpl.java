@@ -3,6 +3,7 @@
  */
 package ar.com.avaco.ws.rest.security.service.impl;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,10 +12,12 @@ import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
 
+import ar.com.avaco.arc.core.domain.filter.AbstractFilter;
 import ar.com.avaco.arc.sec.domain.Perfil;
 import ar.com.avaco.arc.sec.domain.Permiso;
 import ar.com.avaco.arc.sec.domain.Rol;
 import ar.com.avaco.arc.sec.service.PerfilService;
+import ar.com.avaco.ws.rest.dto.DTOEntity;
 import ar.com.avaco.ws.rest.security.dto.Permission;
 import ar.com.avaco.ws.rest.security.dto.Profile;
 import ar.com.avaco.ws.rest.security.dto.Role;
@@ -85,5 +88,13 @@ public class ProfileServiceImpl extends AbstractConvertService<Profile, Long, Pe
 	public void setPermisoService(PerfilService perfilService) {
 		this.service = perfilService;
 	}
+
+	@Override
+	public <ID extends Serializable, D extends DTOEntity<ID>> List<D> listFilter(AbstractFilter abstractFilter,
+			Class<D> targetDTO) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 
 }

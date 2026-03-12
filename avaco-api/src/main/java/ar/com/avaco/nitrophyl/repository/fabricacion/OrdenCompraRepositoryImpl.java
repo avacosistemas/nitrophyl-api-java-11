@@ -14,4 +14,6 @@ public class OrdenCompraRepositoryImpl extends NJBaseRepository<Long, OrdenCompr
 		super(OrdenCompra.class, entityManager);
 	}
 
+	
+	
 }
