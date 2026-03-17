@@ -22,30 +22,10 @@ import ar.com.avaco.nitrophyl.ws.dto.PiezaFilterDTO;
 import ar.com.avaco.nitrophyl.ws.dto.PiezaPUTDTO;
 import ar.com.avaco.nitrophyl.ws.dto.PiezaGrillaDTO;
 import ar.com.avaco.nitrophyl.ws.service.PiezaEPService;
-import ar.com.avaco.nitrophyl.ws.service.filter.PiezaFilter;
 import ar.com.avaco.ws.rest.dto.JSONResponse;
 
 @RestController
 public class PiezaRestController extends AbstractAuditableDTORestController<PiezaDTO, Long, PiezaEPService> {
-
-	@RequestMapping(value = "/pieza/cliente", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<JSONResponse> piezaByCliente(@RequestParam(required = false) Long idCliente, @RequestParam(required = false) String denominacion) {
-		PiezaFilterDTO filterDTO = new PiezaFilterDTO();
-		filterDTO.setAsc(true);
-		filterDTO.setIdx("codigo");
-		filterDTO.setIdCliente(idCliente);
-		filterDTO.setNombre(denominacion);
-		filterDTO.setSoloVigentes(true);
-		filterDTO.setRows(10);
-		filterDTO.setFirst(1);
-		
-		List<PiezaDTO> list= this.service.listFilter(new PiezaFilter(filterDTO));
-		
-		JSONResponse response = new JSONResponse();
-		response.setStatus(JSONResponse.OK);
-		response.setData(list);
-		return new ResponseEntity<JSONResponse>(response, HttpStatus.OK);
-	}
 
 	@RequestMapping(value = "/pieza/hojadeproceso", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<JSONResponse> hojadeproceso(@RequestParam Long idPieza) {
