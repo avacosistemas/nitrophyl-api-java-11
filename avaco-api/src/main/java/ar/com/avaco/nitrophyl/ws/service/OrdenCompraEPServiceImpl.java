@@ -22,6 +22,7 @@ import ar.com.avaco.nitrophyl.domain.entities.pieza.cliente.PiezaCliente;
 import ar.com.avaco.nitrophyl.service.fabricacion.OrdenCompraService;
 import ar.com.avaco.nitrophyl.service.pieza.CotizacionService;
 import ar.com.avaco.nitrophyl.service.pieza.PiezaClienteService;
+import ar.com.avaco.nitrophyl.service.pieza.PiezaService;
 import ar.com.avaco.nitrophyl.ws.dto.OrdenCompraDTO;
 import ar.com.avaco.nitrophyl.ws.dto.OrdenCompraDetalleDTO;
 import ar.com.avaco.nitrophyl.ws.dto.OrdenCompraDetallePedidoDTO;
@@ -42,6 +43,9 @@ public class OrdenCompraEPServiceImpl extends CRUDAuditableEPBaseService<Long, O
 	
 	@Autowired
 	private CotizacionService cotizacionService;
+
+	@Autowired
+	private PiezaService piezaService;
 	
 	@Override
 	public OrdenCompraDTO save(OrdenCompraDTO dto) throws BusinessException {
@@ -68,7 +72,7 @@ public class OrdenCompraEPServiceImpl extends CRUDAuditableEPBaseService<Long, O
 			
 			
 			// Armo la pieza
-			Pieza pieza = Pieza.ofId(detalleDTO.getIdPieza());
+			Pieza pieza = piezaService.get(detalleDTO.getIdPieza());
 			
 			// Armo el detalle
 			OrdenCompraDetalle detalle = new OrdenCompraDetalle();
@@ -121,6 +125,18 @@ public class OrdenCompraEPServiceImpl extends CRUDAuditableEPBaseService<Long, O
 		// Guardo la nueva orden de compra
 		this.service.save(ordenCompra);
 		
+		return dto;
+		
+	}
+	
+	@Override
+	protected OrdenCompraDTO convertToDto(OrdenCompra entity) {
+		OrdenCompraDTO dto = super.convertToDto(entity);
+		dto.setCliente(entity.getCliente().getNombre());
+		dto.getDetalle().forEach(x -> {
+			Pieza pieza = entity.getDetalle().stream().filter(p->p.getPieza().getId().equals(x.getIdPieza())).findAny().get().getPieza();
+			x.setPieza(pieza.getDenominacion());
+		});
 		return dto;
 		
 	}
