@@ -16,6 +16,16 @@ public class EsquemaDTO extends DTOAuditableEntity<Long> {
 
 	private byte[] imagen;
 
+	private Integer posicion;
+
+	public Integer getPosicion() {
+		return posicion;
+	}
+
+	public void setPosicion(Integer posicion) {
+		this.posicion = posicion;
+	}
+
 	public String getTitulo() {
 		return titulo;
 	}

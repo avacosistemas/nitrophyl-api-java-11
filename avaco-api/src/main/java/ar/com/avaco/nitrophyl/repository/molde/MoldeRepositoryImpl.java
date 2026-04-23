@@ -88,7 +88,7 @@ public class MoldeRepositoryImpl extends NJBaseRepository<Long, Molde> implement
 			query += " and molde.nombre like '%" + filtro.getNombre() + "%' ";
 
 		if (StringUtils.isNotEmpty(filtro.getIdx()))
-			query += " order by molde." + filtro.getIdx();
+			query += " order by molde." + filtro.getIdx() + (filtro.getAsc() ? " asc " : " desc ");  
 
 		query += " limit " + filtro.getRows();
 		Integer first = filtro.getFirst() != null ? filtro.getFirst() : 1;

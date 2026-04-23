@@ -39,6 +39,9 @@ public class EsquemaPaso extends AuditableEntity<Long> {
 	@Column(name = "DESCRIPCION")
 	private String descripcion;
 
+	@Column(name = "POSICION")
+	private Integer posicion;
+	
 	public Esquema getEsquema() {
 		return esquema;
 	}

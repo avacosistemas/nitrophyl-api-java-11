@@ -5,4 +5,6 @@ import ar.com.avaco.ws.rest.service.CRUDAuditableEPService;
 
 public interface EsquemaEPService extends CRUDAuditableEPService<Long, EsquemaDTO> {
 
+	void reordenar(Long idEsquema, Integer posicion);
+
 }

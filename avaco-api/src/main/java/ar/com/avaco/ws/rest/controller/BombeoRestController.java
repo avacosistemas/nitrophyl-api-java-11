@@ -1,5 +1,6 @@
 package ar.com.avaco.ws.rest.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import ar.com.avaco.commons.exception.BusinessException;
+import ar.com.avaco.nitrophyl.domain.entities.pieza.moldeo.TipoBombeo;
 import ar.com.avaco.nitrophyl.ws.dto.BombeoDTO;
 import ar.com.avaco.nitrophyl.ws.service.BombeoEPService;
 import ar.com.avaco.ws.rest.dto.JSONResponse;
@@ -55,6 +57,22 @@ public class BombeoRestController extends AbstractAuditableDTORestController<Bom
 		return super.delete(id);
 	}
 
+	@RequestMapping(value = "/bombeo/tipos", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<JSONResponse> tipos() {
+		List<TipoBombeo> tipos = new ArrayList<TipoBombeo>();
+		tipos.add(TipoBombeo.AUTOMATICO);
+		tipos.add(TipoBombeo.ESCALONADO);
+		tipos.add(TipoBombeo.ESCALONADO_SUAVE);
+		tipos.add(TipoBombeo.FONDO);
+		tipos.add(TipoBombeo.SUAVE);
+		tipos.add(TipoBombeo.TRANSFERENCIA_GRADUAL);
+		JSONResponse response = new JSONResponse();
+		response.setData(tipos);
+		response.setStatus(JSONResponse.OK);
+		return new ResponseEntity<JSONResponse>(response, HttpStatus.OK);
+	}
+
+	
 	@Resource(name = "bombeoEPService")
 	public void setService(BombeoEPService bombeoEPService) {
 		super.service = bombeoEPService;

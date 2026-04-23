@@ -25,6 +25,11 @@ public class EsquemaEPServiceImpl extends CRUDAuditableEPBaseService<Long, Esque
 		entity.getPasos().forEach(paso -> paso.setEsquema(entity));
 		return entity;
 	}
+	
+	@Override
+	public void reordenar(Long idEsquema, Integer posicion) {
+		this.service.reordenar(idEsquema, posicion);
+	}
 
 	@Override
 	@Resource(name = "esquemaService")

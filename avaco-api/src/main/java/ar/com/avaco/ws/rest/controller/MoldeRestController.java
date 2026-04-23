@@ -1,7 +1,6 @@
 package ar.com.avaco.ws.rest.controller;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import javax.annotation.Resource;
 
@@ -221,7 +220,7 @@ public class MoldeRestController extends AbstractAuditableDTORestController<Mold
 	@RequestMapping(value = "/molde/combo", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<JSONResponse> getCombo(MoldeFilterDTO filter) throws Exception {
 		filter.setAsc(true);
-		filter.setIdx("nombre");
+		filter.setIdx("codigo");
 		filter.setFirst(1);
 		filter.setRows(50);
 		PageDTO<MoldeListadoDTO> page = this.service.list(filter);

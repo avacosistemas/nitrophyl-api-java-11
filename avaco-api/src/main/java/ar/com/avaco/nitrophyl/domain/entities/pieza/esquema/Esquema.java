@@ -50,6 +50,9 @@ public class Esquema extends AuditableEntity<Long> {
 	@Type(type = "org.hibernate.type.BinaryType")
 	private byte[] imagen;
 
+	@Column(name = "POSICION")
+	private Integer posicion;
+
 	public String getTitulo() {
 		return titulo;
 	}
@@ -90,6 +93,14 @@ public class Esquema extends AuditableEntity<Long> {
 		this.id = id;
 	}
 
+	public Integer getPosicion() {
+		return posicion;
+	}
+
+	public void setPosicion(Integer posicion) {
+		this.posicion = posicion;
+	}
+
 	public Esquema clonar(String username, Date fechaHora, Proceso proceso) {
 		Esquema clonada = new Esquema();
 		clonada.resetearCreacion(username, fechaHora);
@@ -97,6 +108,7 @@ public class Esquema extends AuditableEntity<Long> {
 		this.pasos.forEach(paso -> clonada.getPasos().add(paso.clonar(username, fechaHora, clonada)));
 		clonada.setProceso(proceso);
 		clonada.setTitulo(titulo);
+		clonada.setPosicion(posicion);
 		return clonada;
 	}
 

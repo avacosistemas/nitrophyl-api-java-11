@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import ar.com.avaco.arc.core.component.bean.service.NJBaseService;
 import ar.com.avaco.nitrophyl.domain.entities.molde.Molde;
 import ar.com.avaco.nitrophyl.domain.entities.molde.MoldeDimension;
-import ar.com.avaco.nitrophyl.domain.entities.molde.TipoMolde;
 import ar.com.avaco.nitrophyl.repository.molde.MoldeFotoRepository;
 import ar.com.avaco.nitrophyl.repository.molde.MoldePlanoRepository;
 import ar.com.avaco.nitrophyl.repository.molde.MoldeRepository;

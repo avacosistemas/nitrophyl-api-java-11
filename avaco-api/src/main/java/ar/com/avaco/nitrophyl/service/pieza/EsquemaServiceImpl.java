@@ -38,5 +38,10 @@ public class EsquemaServiceImpl extends NJBaseService<Long, Esquema, EsquemaRepo
 		esquema.getProceso().getEsquema().remove(esquema);
 		this.piezaService.update(esquema.getProceso().getPieza());
 	}
+	
+	@Override
+	public void reordenar(Long idEsquema, Integer posicion) {
+		this.repository.moverEsquema(idEsquema, posicion);
+	}
 
 }

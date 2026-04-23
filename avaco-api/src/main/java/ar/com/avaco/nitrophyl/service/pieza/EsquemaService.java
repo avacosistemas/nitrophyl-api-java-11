@@ -5,4 +5,6 @@ import ar.com.avaco.nitrophyl.domain.entities.pieza.esquema.Esquema;
 
 public interface EsquemaService extends NJService<Long, Esquema> {
 
+	void reordenar(Long idEsquema, Integer posicion);
+
 }
