@@ -42,6 +42,16 @@ public class EsquemaPaso extends AuditableEntity<Long> {
 	@Column(name = "POSICION")
 	private Integer posicion;
 	
+	
+	
+	public Integer getPosicion() {
+		return posicion;
+	}
+
+	public void setPosicion(Integer posicion) {
+		this.posicion = posicion;
+	}
+
 	public Esquema getEsquema() {
 		return esquema;
 	}
@@ -80,6 +90,7 @@ public class EsquemaPaso extends AuditableEntity<Long> {
 		clonada.setDescripcion(descripcion);
 		clonada.setEsquema(esquema);
 		clonada.setPaso(paso);
+		clonada.setPosicion(posicion);
 		return clonada;
 	}
 

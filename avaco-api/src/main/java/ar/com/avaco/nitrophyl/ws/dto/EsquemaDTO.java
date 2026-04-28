@@ -1,5 +1,6 @@
 package ar.com.avaco.nitrophyl.ws.dto;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ar.com.avaco.ws.rest.dto.DTOAuditableEntity;
@@ -12,7 +13,7 @@ public class EsquemaDTO extends DTOAuditableEntity<Long> {
 
 	private String titulo;
 
-	private List<EsquemaPasoDTO> pasos;
+	private List<EsquemaPasoDTO> pasos = new ArrayList<EsquemaPasoDTO>();
 
 	private byte[] imagen;
 

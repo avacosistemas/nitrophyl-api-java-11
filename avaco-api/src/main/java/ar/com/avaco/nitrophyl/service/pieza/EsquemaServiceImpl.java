@@ -1,5 +1,7 @@
 package ar.com.avaco.nitrophyl.service.pieza;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +44,11 @@ public class EsquemaServiceImpl extends NJBaseService<Long, Esquema, EsquemaRepo
 	@Override
 	public void reordenar(Long idEsquema, Integer posicion) {
 		this.repository.moverEsquema(idEsquema, posicion);
+	}
+
+	@Override
+	public List<Esquema> listEsquemas(Long idProceso) {
+		return this.repository.findByProcesoIdOrderByPosicionAsc(idProceso);
 	}
 
 }

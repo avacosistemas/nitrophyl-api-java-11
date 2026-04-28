@@ -24,7 +24,7 @@ public class EsquemaRestController extends AbstractAuditableDTORestController<Es
 
 	@RequestMapping(value = "/esquema/{idProceso}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<JSONResponse> list(@PathVariable Long idProceso) {
-		List<EsquemaDTO> list = this.service.listEq("proceso.id", idProceso);
+		List<EsquemaDTO> list = this.service.listEsquemas(idProceso);
 		JSONResponse response = new JSONResponse();
 		response.setData(list);
 		response.setStatus(JSONResponse.OK);

@@ -1,5 +1,7 @@
 package ar.com.avaco.nitrophyl.repository.pieza;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -12,8 +14,10 @@ public interface EsquemaRepository extends NJRepository<Long, Esquema>, EsquemaR
 
 	@Modifying
 	@Transactional
-	@Query(value = "SELECT mover_esquema(:idEsquema, :nuevaPos)", nativeQuery = true)
+	@Query(value = "CALL mover_esquema(:idEsquema, :nuevaPos)", nativeQuery = true)
 	void moverEsquema(@Param("idEsquema") Long idEsquema,
 	                  @Param("nuevaPos") Integer nuevaPos);
+	
+	List<Esquema> findByProcesoIdOrderByPosicionAsc(Long idProceso);
 	
 }

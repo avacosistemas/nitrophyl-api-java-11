@@ -1,5 +1,7 @@
 package ar.com.avaco.nitrophyl.ws.service;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
@@ -35,6 +37,12 @@ public class EsquemaEPServiceImpl extends CRUDAuditableEPBaseService<Long, Esque
 	@Resource(name = "esquemaService")
 	protected void setService(EsquemaService service) {
 		this.service = service;
+	}
+
+	@Override
+	public List<EsquemaDTO> listEsquemas(Long idProceso) {
+		List<Esquema> listEsquemas = this.service.listEsquemas(idProceso);
+		return convertToDtos(listEsquemas);
 	}
 
 }
