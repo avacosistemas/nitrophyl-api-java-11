@@ -2,15 +2,20 @@ package ar.com.avaco.nitrophyl.ws.service;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import javax.annotation.Resource;
 import javax.transaction.Transactional;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ar.com.avaco.commons.exception.BusinessException;
+import ar.com.avaco.nitrophyl.domain.entities.administracion.EmpresaTransporte;
 import ar.com.avaco.nitrophyl.domain.entities.cliente.Cliente;
+import ar.com.avaco.nitrophyl.domain.entities.cliente.ClienteDomicilio;
 import ar.com.avaco.nitrophyl.domain.entities.fabricacion.OrdenCompra;
 import ar.com.avaco.nitrophyl.domain.entities.fabricacion.OrdenCompraArchivo;
 import ar.com.avaco.nitrophyl.domain.entities.fabricacion.OrdenCompraDetalle;
@@ -53,6 +58,15 @@ public class OrdenCompraEPServiceImpl extends CRUDAuditableEPBaseService<Long, O
 		// Armo el cliente
 		Cliente cliente = Cliente.ofId(dto.getIdCliente());
 		
+		// Busco el domicilio seleccionado si es que lo hay
+		ClienteDomicilio domicilio = dto.getIdDomicilioEnvio() != null ? ClienteDomicilio.ofId(dto.getIdDomicilioEnvio()) : null;
+		
+		// Busco la empres de transporte si es que la hay
+		EmpresaTransporte transporte = dto.getIdEmpresaTransporte() != null ? EmpresaTransporte.ofId(dto.getIdEmpresaTransporte()) : null;
+		
+		String mediosEnvio = dto.getMediosEnvio() != null && dto.getMediosEnvio().isEmpty() ? String.join(",", dto.getMediosEnvio()) : null;
+		
+		
 		// Armo el archivo adjunto
 		OrdenCompraArchivo oca = new OrdenCompraArchivo();
 		oca.setArchivo(dto.getArchivo().getArchivo());
@@ -64,7 +78,11 @@ public class OrdenCompraEPServiceImpl extends CRUDAuditableEPBaseService<Long, O
 		ordenCompra.setComprobante(dto.getComprobante());
 		ordenCompra.setEstado(OrdenCompraEstado.PENDIENTE);
 		ordenCompra.setFecha(LocalDate.parse(dto.getFecha(), DateTimeFormatter.ofPattern(DateUtils.dd_MM_yyyy)));
-
+		ordenCompra.setTipoDespacho(dto.getTipoDespacho());
+		ordenCompra.setEmpresaTransporte(transporte);
+		ordenCompra.setDomicilioEnvio(domicilio);
+		ordenCompra.setMediosEnvio(mediosEnvio);
+		
 		ordenCompra.setArchivo(oca);
 
 		// Por cada pieza
@@ -133,6 +151,14 @@ public class OrdenCompraEPServiceImpl extends CRUDAuditableEPBaseService<Long, O
 	protected OrdenCompraDTO convertToDto(OrdenCompra entity) {
 		OrdenCompraDTO dto = super.convertToDto(entity);
 		dto.setCliente(entity.getCliente().getNombre());
+		
+		dto.setIdCliente(entity.getCliente() != null ? entity.getCliente().getId() : null);
+		
+		dto.setIdEmpresaTransporte(entity.getEmpresaTransporte() != null ? entity.getEmpresaTransporte().getId() : null);
+		dto.setTipoDespacho(entity.getTipoDespacho());
+		dto.setMediosEnvio(StringUtils.isNotBlank(entity.getMediosEnvio()) ? Arrays.asList(entity.getMediosEnvio().split(",")) :  new ArrayList<String>());
+		dto.setIdDomicilioEnvio(entity.getDomicilioEnvio() != null ? entity.getDomicilioEnvio().getId() : null);
+		
 		dto.getDetalle().forEach(x -> {
 			Pieza pieza = entity.getDetalle().stream().filter(p->p.getPieza().getId().equals(x.getIdPieza())).findAny().get().getPieza();
 			x.setPieza(pieza.getDenominacion());

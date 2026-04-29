@@ -3,6 +3,7 @@ package ar.com.avaco.nitrophyl.ws.dto;
 import java.util.ArrayList;
 import java.util.List;
 
+import ar.com.avaco.nitrophyl.domain.entities.administracion.TipoDespacho;
 import ar.com.avaco.ws.rest.dto.DTOAuditableEntity;
 
 public class OrdenCompraDTO extends DTOAuditableEntity<Long> {
@@ -20,6 +21,46 @@ public class OrdenCompraDTO extends DTOAuditableEntity<Long> {
 	private ArchivoDTO archivo;
 
 	private List<OrdenCompraDetalleDTO> detalle = new ArrayList<OrdenCompraDetalleDTO>();
+
+	private TipoDespacho tipoDespacho;
+
+	private Long idEmpresaTransporte;
+
+	private List<String> mediosEnvio;
+
+	private Long idDomicilioEnvio;
+
+	public TipoDespacho getTipoDespacho() {
+		return tipoDespacho;
+	}
+
+	public void setTipoDespacho(TipoDespacho tipoDespacho) {
+		this.tipoDespacho = tipoDespacho;
+	}
+
+	public Long getIdEmpresaTransporte() {
+		return idEmpresaTransporte;
+	}
+
+	public void setIdEmpresaTransporte(Long idEmpresaTransporte) {
+		this.idEmpresaTransporte = idEmpresaTransporte;
+	}
+
+	public List<String> getMediosEnvio() {
+		return mediosEnvio;
+	}
+
+	public void setMediosEnvio(List<String> mediosEnvio) {
+		this.mediosEnvio = mediosEnvio;
+	}
+
+	public Long getIdDomicilioEnvio() {
+		return idDomicilioEnvio;
+	}
+
+	public void setIdDomicilioEnvio(Long idDomicilioEnvio) {
+		this.idDomicilioEnvio = idDomicilioEnvio;
+	}
 
 	public void setArchivo(ArchivoDTO archivo) {
 		this.archivo = archivo;

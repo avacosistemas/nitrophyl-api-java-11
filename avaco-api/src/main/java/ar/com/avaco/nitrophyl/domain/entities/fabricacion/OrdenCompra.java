@@ -21,7 +21,10 @@ import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 
 import ar.com.avaco.nitrophyl.domain.entities.AuditableEntity;
+import ar.com.avaco.nitrophyl.domain.entities.administracion.EmpresaTransporte;
+import ar.com.avaco.nitrophyl.domain.entities.administracion.TipoDespacho;
 import ar.com.avaco.nitrophyl.domain.entities.cliente.Cliente;
+import ar.com.avaco.nitrophyl.domain.entities.cliente.ClienteDomicilio;
 
 @Entity
 @Table(name = "ORDEN_COMPRA")
@@ -57,6 +60,52 @@ public class OrdenCompra extends AuditableEntity<Long> {
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "ordenCompra", orphanRemoval = true)
 	private Set<OrdenCompraDetalle> detalle = new HashSet<OrdenCompraDetalle>();
+
+	@Enumerated(EnumType.STRING)
+	private TipoDespacho tipoDespacho;
+
+	@ManyToOne(optional = true)
+	@JoinColumn(name = "ID_EMPRESA_TRANSPORTE")
+	private EmpresaTransporte empresaTransporte;
+
+	@Column(name = "MEDIOS_ENVIO")
+	private String mediosEnvio;
+
+	@ManyToOne(optional = true)
+	@JoinColumn(name = "ID_DOMICILIO_ENVIO")
+	private ClienteDomicilio domicilioEnvio;
+
+	public TipoDespacho getTipoDespacho() {
+		return tipoDespacho;
+	}
+
+	public void setTipoDespacho(TipoDespacho tipoDespacho) {
+		this.tipoDespacho = tipoDespacho;
+	}
+
+	public EmpresaTransporte getEmpresaTransporte() {
+		return empresaTransporte;
+	}
+
+	public void setEmpresaTransporte(EmpresaTransporte empresaTransporte) {
+		this.empresaTransporte = empresaTransporte;
+	}
+
+	public String getMediosEnvio() {
+		return mediosEnvio;
+	}
+
+	public void setMediosEnvio(String mediosEnvio) {
+		this.mediosEnvio = mediosEnvio;
+	}
+
+	public ClienteDomicilio getDomicilioEnvio() {
+		return domicilioEnvio;
+	}
+
+	public void setDomicilioEnvio(ClienteDomicilio domicilioEnvio) {
+		this.domicilioEnvio = domicilioEnvio;
+	}
 
 	public Long getId() {
 		return id;
@@ -105,8 +154,8 @@ public class OrdenCompra extends AuditableEntity<Long> {
 	public void setArchivo(OrdenCompraArchivo archivo) {
 		this.archivo = archivo;
 		if (archivo != null) {
-	        archivo.setOrdenDeCompra(this);
-	    }
+			archivo.setOrdenDeCompra(this);
+		}
 	}
 
 	public Set<OrdenCompraDetalle> getDetalle() {

@@ -21,9 +21,9 @@ public class GenerateTemplates {
 	public static void main(String[] args) throws IOException {
 
 		Map<String, String> variables = new HashMap<String, String>();
-		variables.put(ENTITY, "OrdenCompraDetallePedido");
-		variables.put(ENTITY_MINUSCULA, "ordenCompraDetallePedido");
-		variables.put(PACKAGE, "fabricacion");
+		variables.put(ENTITY, "EmpresaTransporte");
+		variables.put(ENTITY_MINUSCULA, "empresaTransporte");
+		variables.put(PACKAGE, "administracion");
 
 		List<String> archivos = new ArrayList<>();
 		archivos.add("templates/Repository.txt");
