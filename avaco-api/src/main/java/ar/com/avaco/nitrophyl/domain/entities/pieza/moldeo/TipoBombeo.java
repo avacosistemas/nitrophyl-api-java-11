@@ -5,11 +5,11 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum TipoBombeo {
 	
-	AUTOMATICO("Automatico", "Obs Automatico"),
-	ESCALONADO("Escalonado", "Obs Escalonado"), 
-	ESCALONADO_SUAVE("Escalonado Suave", "Obs Escaolnado Suave"), 
-	SUAVE("Suave", "Obs Suave"), 
-	TRANSFERENCIA_GRADUAL("Transferencia Gradual", " Obs Transferencia Gradual"), 
+	AUTOMATICO("Automatico", ""),
+	ESCALONADO("Escalonado", ""), 
+	ESCALONADO_SUAVE("Escalonado Suave", ""), 
+	SUAVE("Suave", ""), 
+	TRANSFERENCIA_GRADUAL("Transferencia Gradual", ""), 
 	FONDO("A Fondo", "");
 
 	private String label;

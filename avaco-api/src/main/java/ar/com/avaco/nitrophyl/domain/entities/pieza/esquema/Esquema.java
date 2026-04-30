@@ -52,7 +52,7 @@ public class Esquema extends AuditableEntity<Long> {
 	@Type(type = "org.hibernate.type.BinaryType")
 	private byte[] imagen;
 
-	@Column(name = "POSICION")
+	@Column(name = "POSICION", insertable = false, updatable = false)
 	private Integer posicion;
 
 	public String getTitulo() {
