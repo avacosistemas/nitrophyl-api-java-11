@@ -6,6 +6,7 @@ public enum OrdenCompraEstado {
 	EN_PROCESO,
 	FINALIZADA,
 	FACTURADA,
-	ENTREGADA
+	ENTREGADA, 
+	CANCELADA
 	
 }

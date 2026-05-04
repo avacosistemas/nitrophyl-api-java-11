@@ -5,4 +5,6 @@ import ar.com.avaco.ws.rest.service.CRUDAuditableEPService;
 
 public interface OrdenCompraEPService extends CRUDAuditableEPService<Long, OrdenCompraDTO> {
 
+	void cancelar(Long id);
+
 }

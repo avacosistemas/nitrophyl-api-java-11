@@ -5,4 +5,6 @@ import ar.com.avaco.nitrophyl.domain.entities.fabricacion.OrdenCompra;
 
 public interface OrdenCompraService extends NJService<Long, OrdenCompra> {
 
+	void cancelar(Long id);
+
 }

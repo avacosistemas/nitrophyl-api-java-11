@@ -36,7 +36,8 @@ import ar.com.avaco.ws.rest.service.CRUDAuditableEPBaseService;
 
 @Transactional
 @Service("ordenCompraEPService")
-public class OrdenCompraEPServiceImpl extends CRUDAuditableEPBaseService<Long, OrdenCompraDTO, OrdenCompra, OrdenCompraService>
+public class OrdenCompraEPServiceImpl
+		extends CRUDAuditableEPBaseService<Long, OrdenCompraDTO, OrdenCompra, OrdenCompraService>
 		implements OrdenCompraEPService {
 
 	public OrdenCompraEPServiceImpl() {
@@ -45,28 +46,33 @@ public class OrdenCompraEPServiceImpl extends CRUDAuditableEPBaseService<Long, O
 
 	@Autowired
 	private PiezaClienteService piezaClienteService;
-	
+
 	@Autowired
 	private CotizacionService cotizacionService;
 
 	@Autowired
 	private PiezaService piezaService;
-	
+
 	@Override
 	public OrdenCompraDTO save(OrdenCompraDTO dto) throws BusinessException {
-		
+
 		// Armo el cliente
 		Cliente cliente = Cliente.ofId(dto.getIdCliente());
-		
+
 		// Busco el domicilio seleccionado si es que lo hay
-		ClienteDomicilio domicilio = dto.getIdDomicilioEnvio() != null ? ClienteDomicilio.ofId(dto.getIdDomicilioEnvio()) : null;
-		
+		ClienteDomicilio domicilio = dto.getIdDomicilioEnvio() != null
+				? ClienteDomicilio.ofId(dto.getIdDomicilioEnvio())
+				: null;
+
 		// Busco la empres de transporte si es que la hay
-		EmpresaTransporte transporte = dto.getIdEmpresaTransporte() != null ? EmpresaTransporte.ofId(dto.getIdEmpresaTransporte()) : null;
-		
-		String mediosEnvio = dto.getMediosEnvio() != null && dto.getMediosEnvio().isEmpty() ? String.join(",", dto.getMediosEnvio()) : null;
-		
-		
+		EmpresaTransporte transporte = dto.getIdEmpresaTransporte() != null
+				? EmpresaTransporte.ofId(dto.getIdEmpresaTransporte())
+				: null;
+
+		String mediosEnvio = dto.getMediosEnvio() != null && dto.getMediosEnvio().isEmpty()
+				? String.join(",", dto.getMediosEnvio())
+				: null;
+
 		// Armo el archivo adjunto
 		OrdenCompraArchivo oca = new OrdenCompraArchivo();
 		oca.setArchivo(dto.getArchivo().getArchivo());
@@ -82,95 +88,105 @@ public class OrdenCompraEPServiceImpl extends CRUDAuditableEPBaseService<Long, O
 		ordenCompra.setEmpresaTransporte(transporte);
 		ordenCompra.setDomicilioEnvio(domicilio);
 		ordenCompra.setMediosEnvio(mediosEnvio);
-		
+
 		ordenCompra.setArchivo(oca);
 
 		// Por cada pieza
 		for (OrdenCompraDetalleDTO detalleDTO : dto.getDetalle()) {
-			
-			
+
 			// Armo la pieza
 			Pieza pieza = piezaService.get(detalleDTO.getIdPieza());
-			
+
 			// Armo el detalle
 			OrdenCompraDetalle detalle = new OrdenCompraDetalle();
 			detalle.setOrdenCompra(ordenCompra);
 			detalle.setPieza(pieza);
-			
+
 			// Si existe una cotizacion y se usa la vigente
 			if (detalleDTO.getIdCotizacion() != null) {
 				detalle.setCotizacion(cotizacionService.get(detalleDTO.getIdCotizacion()));
 			} else {
 				// Si no existe una cotizacion o no se usa la vigente
 				// Busco si existe relacion entre la pieza y el cliente
-				PiezaCliente piezaCliente = piezaClienteService.getByPiezaCliente(dto.getIdCliente(), detalleDTO.getIdPieza());
-				
+				PiezaCliente piezaCliente = piezaClienteService.getByPiezaCliente(dto.getIdCliente(),
+						detalleDTO.getIdPieza());
+
 				// Si no existe la asociación, la creo
 				if (piezaCliente == null) {
 					piezaCliente = new PiezaCliente();
 					piezaCliente.setCliente(cliente);
 					piezaCliente.setPieza(pieza);
 				}
-				
-				// Armo la cotizacion y le seteo el valor, la fecha y la piezacliente (existente o no)
+
+				// Armo la cotizacion y le seteo el valor, la fecha y la piezacliente (existente
+				// o no)
 				Cotizacion cotizacion = new Cotizacion();
 				cotizacion.setFecha(DateUtils.toDate(detalleDTO.getFechaCotizacion(), DateUtils.dd_MM_yyyy));
 				cotizacion.setPiezaCliente(piezaCliente);
 				cotizacion.setValor(detalleDTO.getValorCotizacion());
-				
+
 				// Seteo la cotizacion existente o nueva
 				detalle.setCotizacion(cotizacion);
 
 			}
-			
+
 			// Por cada una de los pedidos
 			for (OrdenCompraDetallePedidoDTO pedidoDTO : detalleDTO.getEntregasSolicitadas()) {
-				
+
 				// Armo el pedido, seteo cantidad y fecha estimada de entrega
 				OrdenCompraDetallePedido pedido = new OrdenCompraDetallePedido();
 				pedido.setCantidad(pedidoDTO.getCantidad());
-				pedido.setFechaEntregaSolicitada(LocalDate.parse(pedidoDTO.getFechaEntregaSolicitada(), DateTimeFormatter.ofPattern(DateUtils.dd_MM_yyyy)));
+				pedido.setFechaEntregaSolicitada(LocalDate.parse(pedidoDTO.getFechaEntregaSolicitada(),
+						DateTimeFormatter.ofPattern(DateUtils.dd_MM_yyyy)));
 				pedido.setOrdenCompraDetalle(detalle);
-				
+
 				// Le agrego al detalle el pedido
 				detalle.getEntregasSolicitadas().add(pedido);
 			}
-			
+
 			// Le agrego a la orden de compra el detalle
 			ordenCompra.getDetalle().add(detalle);
 		}
 
 		// Guardo la nueva orden de compra
 		this.service.save(ordenCompra);
-		
+
 		return dto;
-		
+
 	}
-	
+
 	@Override
 	protected OrdenCompraDTO convertToDto(OrdenCompra entity) {
 		OrdenCompraDTO dto = super.convertToDto(entity);
 		dto.setCliente(entity.getCliente().getNombre());
-		
+
 		dto.setIdCliente(entity.getCliente() != null ? entity.getCliente().getId() : null);
-		
-		dto.setIdEmpresaTransporte(entity.getEmpresaTransporte() != null ? entity.getEmpresaTransporte().getId() : null);
+
+		dto.setIdEmpresaTransporte(
+				entity.getEmpresaTransporte() != null ? entity.getEmpresaTransporte().getId() : null);
 		dto.setTipoDespacho(entity.getTipoDespacho());
-		dto.setMediosEnvio(StringUtils.isNotBlank(entity.getMediosEnvio()) ? Arrays.asList(entity.getMediosEnvio().split(",")) :  new ArrayList<String>());
+		dto.setMediosEnvio(
+				StringUtils.isNotBlank(entity.getMediosEnvio()) ? Arrays.asList(entity.getMediosEnvio().split(","))
+						: new ArrayList<String>());
 		dto.setIdDomicilioEnvio(entity.getDomicilioEnvio() != null ? entity.getDomicilioEnvio().getId() : null);
-		
+
 		dto.getDetalle().forEach(x -> {
-			Pieza pieza = entity.getDetalle().stream().filter(p->p.getPieza().getId().equals(x.getIdPieza())).findAny().get().getPieza();
+			Pieza pieza = entity.getDetalle().stream().filter(p -> p.getPieza().getId().equals(x.getIdPieza()))
+					.findAny().get().getPieza();
 			x.setPieza(pieza.getDenominacion());
 		});
 		return dto;
-		
+
 	}
-	
+
 	@Override
 	@Resource(name = "ordenCompraService")
 	protected void setService(OrdenCompraService service) {
 		this.service = service;
 	}
 
+	@Override
+	public void cancelar(Long id) {
+		this.service.cancelar(id);
+	}
 }

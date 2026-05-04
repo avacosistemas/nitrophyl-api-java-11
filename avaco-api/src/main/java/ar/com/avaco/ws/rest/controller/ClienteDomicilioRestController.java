@@ -1,28 +1,36 @@
 package ar.com.avaco.ws.rest.controller;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import ar.com.avaco.commons.exception.BusinessException;
+import ar.com.avaco.nitrophyl.domain.entities.cliente.TipoContacto;
 import ar.com.avaco.nitrophyl.ws.dto.ClienteDomicilioDTO;
 import ar.com.avaco.nitrophyl.ws.service.ClienteDomicilioEPService;
 import ar.com.avaco.ws.rest.dto.JSONResponse;
 
 @RestController
-public class ClienteDomicilioRestController extends AbstractAuditableDTORestController<ClienteDomicilioDTO, Long, ClienteDomicilioEPService> {
+public class ClienteDomicilioRestController
+		extends AbstractAuditableDTORestController<ClienteDomicilioDTO, Long, ClienteDomicilioEPService> {
 
 	@RequestMapping(value = "/clienteDomicilio", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<JSONResponse> list(Long idCliente) {
+	public ResponseEntity<JSONResponse> list(@RequestParam Long idCliente,
+			@RequestParam(required = false) String tipoDomicilio) {
 		List<ClienteDomicilioDTO> listEq = this.service.listEq("cliente.id", idCliente);
+		if (StringUtils.isNotBlank(tipoDomicilio))
+			listEq = listEq.stream().filter(x -> x.getTipo().equals(TipoContacto.valueOf(tipoDomicilio))).collect(Collectors.toList());
 		return OK(listEq);
 	}
 

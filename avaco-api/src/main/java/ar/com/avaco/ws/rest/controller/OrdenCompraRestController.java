@@ -20,11 +20,13 @@ import ar.com.avaco.nitrophyl.ws.service.filter.OrdenCompraFilterDTO;
 import ar.com.avaco.ws.rest.dto.JSONResponse;
 
 @RestController
-public class OrdenCompraRestController extends AbstractAuditableDTORestController<OrdenCompraDTO, Long, OrdenCompraEPService> {
+public class OrdenCompraRestController
+		extends AbstractAuditableDTORestController<OrdenCompraDTO, Long, OrdenCompraEPService> {
 
 	@RequestMapping(value = "/ordenCompra", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<JSONResponse> list(OrdenCompraFilterDTO ordenCompraFilterDTO) {
-		PageDTO<?> listFilterCount = this.service.listFilterCount(new OrdenCompraFilter(ordenCompraFilterDTO), OrdenCompraListadoDTO.class);
+		PageDTO<?> listFilterCount = this.service.listFilterCount(new OrdenCompraFilter(ordenCompraFilterDTO),
+				OrdenCompraListadoDTO.class);
 		return OK(listFilterCount);
 	}
 
@@ -38,7 +40,19 @@ public class OrdenCompraRestController extends AbstractAuditableDTORestControlle
 	public ResponseEntity<JSONResponse> get(@PathVariable Long id) throws BusinessException {
 		return super.get(id);
 	}
-	
+
+	@RequestMapping(value = "/ordenCompra/cancelar/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<JSONResponse> cancelar(@PathVariable Long id) throws BusinessException {
+		this.service.cancelar(id);
+		return OK(id);
+	}
+
+	@Override
+	@RequestMapping(value = "/ordenCompra/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<JSONResponse> delete(Long id) throws BusinessException {
+		return super.delete(id);
+	}
+
 	@Resource(name = "ordenCompraEPService")
 	public void setService(OrdenCompraEPService ordenCompraEPService) {
 		super.service = ordenCompraEPService;
