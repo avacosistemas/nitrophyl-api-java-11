@@ -32,7 +32,7 @@ import ar.com.avaco.commons.service.ContactUSService;
 @Service("contactUSService")
 public class ContactUSServiceImpl extends NJBaseService<Long, ContactUS, ContactUSRepository> implements ContactUSService {
 
-	private static final String CLASSPATH_RESOURCE_LOADER_CLASS = "classpath.resource.loader.class";
+	private static final String CLASSPATH_RESOURCE_LOADER_CLASS = "resource.loader.classpath.class";
 	private static final String CLASSPATH = "classpath";
 	private static final String CLIENT = "client";
 	private static final String ISO_8859_1 = "ISO-8859-1";

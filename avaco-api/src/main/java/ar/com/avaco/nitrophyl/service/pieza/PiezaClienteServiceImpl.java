@@ -29,7 +29,7 @@ public class PiezaClienteServiceImpl extends NJBaseService<Long, PiezaCliente, P
 	@Override
 	public PiezaCliente getByPiezaCliente(Long idCliente, Long idPieza) {
 		Optional<PiezaCliente> byPiezaAndCliente = repository.findByPiezaAndCliente(idPieza, idCliente);
-		if (!byPiezaAndCliente.isEmpty())
+		if (byPiezaAndCliente.isPresent())
 			return byPiezaAndCliente.get();
 		return null;
 	}

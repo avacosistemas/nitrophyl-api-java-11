@@ -2,6 +2,7 @@ package ar.com.avaco.nitrophyl.domain.entities.pieza.cliente;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -34,7 +35,7 @@ public class Cotizacion extends AuditableEntity<Long> {
 	@Column(name = "ID_COTIZACION", unique = true, nullable = false)
 	private Long id;
 
-	@ManyToOne
+	@ManyToOne(cascade =  CascadeType.PERSIST)
 	@JoinColumn(name = "ID_PIEZA_CLIENTE")
 	private PiezaCliente piezaCliente;
 
@@ -85,6 +86,12 @@ public class Cotizacion extends AuditableEntity<Long> {
 
 	public void setObservaciones(String observaciones) {
 		this.observaciones = observaciones;
+	}
+
+	public static Cotizacion ofId(Long idCotizacion) {
+		Cotizacion c = new Cotizacion();
+		c.setId(idCotizacion);
+		return c;
 	}
 
 }

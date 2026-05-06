@@ -9,6 +9,7 @@ import ar.com.avaco.arc.core.component.bean.repository.NJRepository;
 import ar.com.avaco.arc.core.domain.Entity;
 import ar.com.avaco.arc.core.domain.filter.AbstractFilter;
 import ar.com.avaco.commons.exception.ErrorValidationException;
+import ar.com.avaco.ws.rest.dto.DTOEntity;
 
 /**
  * Default implementation of a {@link NJService} that redirects operations to
@@ -99,10 +100,16 @@ public abstract class NJBaseService<ID extends Serializable, T extends Entity<ID
 	protected final R getRepository() {
 		return this.repository;
 	}
-	
+
 	@Override
 	public final T getDetached(ID id) {
 		return this.repository.getDetachedById(id);
 	}
-	
+
+	@Override
+	public <ID extends Serializable, D extends DTOEntity<ID>> List<D> listFilter(AbstractFilter abstractFilter,
+			Class<D> targetDTO) {
+		return this.repository.listFilter(abstractFilter, targetDTO);
+	}
+
 }

@@ -7,6 +7,7 @@ import ar.com.avaco.arc.core.domain.filter.AbstractFilter;
 import ar.com.avaco.commons.exception.BusinessException;
 import ar.com.avaco.nitrophyl.ws.dto.PageDTO;
 import ar.com.avaco.ws.rest.dto.DTOAuditableEntity;
+import ar.com.avaco.ws.rest.dto.DTOEntity;
 
 public interface CRUDAuditableEPService<ID extends Serializable, DTO extends DTOAuditableEntity<ID>> {
 
@@ -27,7 +28,10 @@ public interface CRUDAuditableEPService<ID extends Serializable, DTO extends DTO
 	List<DTO> listPattern(String field, String pattern);
 
 	PageDTO<DTO> listFilterCount(AbstractFilter abstractFilter);
-	
+
 	List<DTO> listEq(String field, Object value);
+
+	<ID extends Serializable, D extends DTOEntity<ID>> PageDTO<D> listFilterCount(AbstractFilter abstractFilter,
+			Class<D> targetDTO);
 
 }

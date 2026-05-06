@@ -3,6 +3,7 @@
  */
 package ar.com.avaco.ws.rest.security.service.impl;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -10,8 +11,10 @@ import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
 
+import ar.com.avaco.arc.core.domain.filter.AbstractFilter;
 import ar.com.avaco.arc.sec.domain.Permiso;
 import ar.com.avaco.arc.sec.service.PermisoService;
+import ar.com.avaco.ws.rest.dto.DTOEntity;
 import ar.com.avaco.ws.rest.security.dto.Permission;
 import ar.com.avaco.ws.rest.security.service.PermissionService;
 import ar.com.avaco.ws.rest.service.AbstractConvertService;
@@ -22,12 +25,14 @@ import ar.com.avaco.ws.rest.service.AbstractConvertService;
  */
 @Transactional
 @Service("permissionService")
-public class PermissionServiceImpl extends AbstractConvertService<Permission, Long, Permiso> implements PermissionService{
-	
+public class PermissionServiceImpl extends AbstractConvertService<Permission, Long, Permiso>
+		implements PermissionService {
+
 	public Permission convertToDto(Permiso permiso) {
-		return new Permission(permiso.getId(), permiso.getCodigo(), permiso.getDescripcion(), permiso.getAuthority() != null );
+		return new Permission(permiso.getId(), permiso.getCodigo(), permiso.getDescripcion(),
+				permiso.getAuthority() != null);
 	}
-	
+
 	@Resource(name = "permisoService")
 	public void setPermisoService(PermisoService permisoService) {
 		this.service = permisoService;
@@ -48,6 +53,13 @@ public class PermissionServiceImpl extends AbstractConvertService<Permission, Lo
 
 	@Override
 	public List<Permission> listEqField(String field, Object pattern) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public <ID extends Serializable, D extends DTOEntity<ID>> List<D> listFilter(AbstractFilter abstractFilter,
+			Class<D> targetDTO) {
 		// TODO Auto-generated method stub
 		return null;
 	}

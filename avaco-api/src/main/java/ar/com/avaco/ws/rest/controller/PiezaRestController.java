@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import ar.com.avaco.nitrophyl.ws.dto.PageDTO;
+import ar.com.avaco.nitrophyl.ws.dto.PiezaComboDTO;
 import ar.com.avaco.nitrophyl.ws.dto.PiezaCreacionDTO;
 import ar.com.avaco.nitrophyl.ws.dto.PiezaDTO;
 import ar.com.avaco.nitrophyl.ws.dto.PiezaEdicionDTO;
@@ -22,6 +23,7 @@ import ar.com.avaco.nitrophyl.ws.dto.PiezaFilterDTO;
 import ar.com.avaco.nitrophyl.ws.dto.PiezaPUTDTO;
 import ar.com.avaco.nitrophyl.ws.dto.PiezaGrillaDTO;
 import ar.com.avaco.nitrophyl.ws.service.PiezaEPService;
+import ar.com.avaco.nitrophyl.ws.service.filter.PiezaFilter;
 import ar.com.avaco.ws.rest.dto.JSONResponse;
 
 @RestController
@@ -43,6 +45,15 @@ public class PiezaRestController extends AbstractAuditableDTORestController<Piez
 		return new ResponseEntity<JSONResponse>(response, HttpStatus.OK);
 	}
 
+	@RequestMapping(value = "/pieza/combo", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<JSONResponse> listombo(@RequestParam(required = false) String nombre, @RequestParam(required = false) Long idCliente) {
+		List<PiezaComboDTO> list = this.service.listCombo(nombre, idCliente);
+		JSONResponse response = new JSONResponse();
+		response.setData(list);
+		response.setStatus(JSONResponse.OK);
+		return new ResponseEntity<JSONResponse>(response, HttpStatus.OK);
+	}
+	
 	@RequestMapping(value = "/pieza/{idPieza}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<JSONResponse> getByIdEdicion(@PathVariable Long idPieza) {
 		PiezaEdicionDTO pieza = this.service.getByIdEdicion(idPieza);

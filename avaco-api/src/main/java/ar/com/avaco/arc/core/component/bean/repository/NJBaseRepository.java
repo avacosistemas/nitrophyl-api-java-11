@@ -2,6 +2,7 @@ package ar.com.avaco.arc.core.component.bean.repository;
 
 import java.io.Serializable;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Method;
 import java.util.Iterator;
 import java.util.List;
 
@@ -16,17 +17,20 @@ import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Disjunction;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
+import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.internal.CriteriaImpl;
 import org.hibernate.internal.CriteriaImpl.Subcriteria;
 import org.hibernate.sql.JoinType;
+import org.hibernate.transform.Transformers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;
 import org.springframework.util.StringUtils;
 
 import ar.com.avaco.arc.core.domain.filter.AbstractFilter;
 import ar.com.avaco.arc.core.domain.filter.FilterData;
+import ar.com.avaco.ws.rest.dto.DTOEntity;
 
 public class NJBaseRepository<ID extends Serializable, E extends ar.com.avaco.arc.core.domain.Entity<ID>>
 		extends SimpleJpaRepository<E, ID> implements NJRepository<ID, E> {
@@ -54,6 +58,44 @@ public class NJBaseRepository<ID extends Serializable, E extends ar.com.avaco.ar
 			criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 		}
 		return criteria.list();
+	}
+
+	@Override
+	@SuppressWarnings("unchecked")
+	public <ID extends Serializable, D extends DTOEntity<ID>> List<D> listFilter(AbstractFilter filter,
+			Class<D> dtoClass) {
+
+		Criteria criteria = getCurrentSession().createCriteria(getHandledClass());
+
+		applyFilters(criteria, filter);
+		applyPagination(criteria, filter);
+		applyOrdering(criteria, filter);
+
+		ProjectionList projections = resolveProjection(dtoClass);
+
+		if (projections != null) {
+			criteria.setProjection(projections);
+			criteria.setResultTransformer(Transformers.aliasToBean(dtoClass));
+		} else if (Boolean.TRUE.equals(filter.getDistinctRootEntity())) {
+			criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
+		}
+
+		return criteria.list();
+	}
+
+	private ProjectionList resolveProjection(Class<?> dtoClass) {
+
+		try {
+			Object dtoInstance = dtoClass.getDeclaredConstructor().newInstance();
+	        Method method = dtoClass.getMethod("getProjections");
+	        return (ProjectionList) method.invoke(dtoInstance);
+		} catch (NoSuchMethodException e) {
+			e.printStackTrace();
+			return null;
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new RuntimeException("Error resolving DTO projection: " + dtoClass.getName(), e);
+		}
 	}
 
 	protected Class<E> getHandledClass() {

@@ -3,18 +3,17 @@ package ar.com.avaco.commons.domain;
 import javax.persistence.Column;
 import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.GenericGenerator;
 
 import ar.com.avaco.arc.core.domain.Entity;
 
 @javax.persistence.Entity
 @Table(name="WORD")
-@SequenceGenerator(name = "WORD_SEQ", sequenceName = "WORD_SEQ", allocationSize = 1)
 public class Word extends Entity<Long> {
 	
 	/**
@@ -23,7 +22,11 @@ public class Word extends Entity<Long> {
 	private static final long serialVersionUID = 8420587604061094816L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "WORD_SEQ")
+	@GeneratedValue(generator = "WORD_SEQ")
+	@GenericGenerator(name = "WORD_SEQ", strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator", parameters = {
+			@org.hibernate.annotations.Parameter(name = "sequence_name", value = "WORD_SEQ"),
+			@org.hibernate.annotations.Parameter(name = "initial_value", value = "1"),
+			@org.hibernate.annotations.Parameter(name = "increment_size", value = "1") })
 	@Column(name = "ID_WORD")
     private Long id;
 	

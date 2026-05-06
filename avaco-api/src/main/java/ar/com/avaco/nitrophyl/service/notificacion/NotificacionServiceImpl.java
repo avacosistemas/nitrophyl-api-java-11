@@ -23,7 +23,7 @@ import ar.com.avaco.utils.DateUtils;
 @Service("notificacionService")
 public class NotificacionServiceImpl implements NotificacionService {
 
-	private static final String CLASSPATH_RESOURCE_LOADER_CLASS = "classpath.resource.loader.class";
+	private static final String CLASSPATH_RESOURCE_LOADER_CLASS = "resource.loader.classpath.class";
 	private static final String CLASSPATH = "classpath";
 	private static final String ISO_8859_1 = "ISO-8859-1";
 

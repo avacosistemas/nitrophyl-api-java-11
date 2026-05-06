@@ -8,17 +8,16 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.GenericGenerator;
 
 /**
  * Un Perfil representa una agrupacin de Permisos contenido por un RolCompania.
@@ -28,14 +27,17 @@ import org.hibernate.annotations.FetchMode;
  */
 @Entity
 @Table(name = "SEG_PERFIL")
-@SequenceGenerator(name = "SEG_PERFIL_SEQ", sequenceName = "SEG_PERFIL_SEQ", allocationSize = 1)
 public class Perfil extends ar.com.avaco.arc.core.domain.Entity<Long> {
 
 	/** */
 	private static final long serialVersionUID = -5085142355499582872L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEG_PERFIL_SEQ")
+	@GeneratedValue(generator = "SEG_PERFIL_SEQ")
+	@GenericGenerator(name = "SEG_PERFIL_SEQ", strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator", parameters = {
+			@org.hibernate.annotations.Parameter(name = "sequence_name", value = "SEG_PERFIL_SEQ"),
+			@org.hibernate.annotations.Parameter(name = "initial_value", value = "1"),
+			@org.hibernate.annotations.Parameter(name = "increment_size", value = "1") })
 	@Column(name  = "ID_SEG_PERFIL")
 	private Long id;
 

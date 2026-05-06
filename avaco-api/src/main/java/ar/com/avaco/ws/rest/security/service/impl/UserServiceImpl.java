@@ -3,6 +3,7 @@
  */
 package ar.com.avaco.ws.rest.security.service.impl;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -14,11 +15,13 @@ import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
 
+import ar.com.avaco.arc.core.domain.filter.AbstractFilter;
 import ar.com.avaco.arc.sec.domain.Acceso;
 import ar.com.avaco.arc.sec.domain.Perfil;
 import ar.com.avaco.arc.sec.domain.Usuario;
 import ar.com.avaco.arc.sec.service.UsuarioService;
 import ar.com.avaco.commons.exception.ErrorValidationException;
+import ar.com.avaco.ws.rest.dto.DTOEntity;
 import ar.com.avaco.ws.rest.security.dto.Profile;
 import ar.com.avaco.ws.rest.security.dto.UpdatePasswordDTO;
 import ar.com.avaco.ws.rest.security.dto.User;
@@ -127,6 +130,13 @@ public class UserServiceImpl extends AbstractConvertService<User, Long, Usuario>
 	@Override
 	public User getByUsername(String username) {
 		return convertToDto(getService().findByUsername(username));
+	}
+
+	@Override
+	public <ID extends Serializable, D extends DTOEntity<ID>> List<D> listFilter(AbstractFilter abstractFilter,
+			Class<D> targetDTO) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

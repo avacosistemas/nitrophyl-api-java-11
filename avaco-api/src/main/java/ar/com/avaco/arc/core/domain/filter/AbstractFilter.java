@@ -3,6 +3,8 @@ package ar.com.avaco.arc.core.domain.filter;
 import java.util.ArrayList;
 import java.util.List;
 
+import ar.com.avaco.nitrophyl.ws.dto.SortPageDTO;
+
 public abstract class AbstractFilter {
 
 	protected List<List<FilterData>> orFilterData = new ArrayList<List<FilterData>>();
@@ -25,6 +27,14 @@ public abstract class AbstractFilter {
 		this.first = first;
 		this.asc = asc;
 		this.idx = idx;
+	}
+	
+	public AbstractFilter(SortPageDTO spdto) {
+		super();
+		this.rows = spdto.getRows();
+		this.first = spdto.getFirst();
+		this.asc = spdto.getAsc();
+		this.idx = spdto.getIdx();
 	}
 
 	public AbstractFilter() {

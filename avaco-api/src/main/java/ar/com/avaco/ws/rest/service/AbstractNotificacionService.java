@@ -14,7 +14,7 @@ import ar.com.avaco.arc.core.service.MailSenderSMTPService;
 
 public abstract class AbstractNotificacionService {
 
-	protected static final String CLASSPATH_RESOURCE_LOADER_CLASS = "classpath.resource.loader.class";
+	protected static final String CLASSPATH_RESOURCE_LOADER_CLASS = "resource.loader.classpath.class";
 	protected static final String CLASSPATH = "classpath";
 	protected static final String ISO_8859_1 = "ISO-8859-1";
 	

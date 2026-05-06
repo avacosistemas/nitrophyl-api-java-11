@@ -10,7 +10,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
@@ -21,7 +20,6 @@ import ar.com.avaco.nitrophyl.domain.entities.molde.PlanoClasificacion;
 
 @Entity
 @Table(name = "PIEZA_PLANO")
-@SequenceGenerator(name = "PIEZA_PLANO_SEQ", sequenceName = "PIEZA_PLANO_SEQ", allocationSize = 1)
 public class PiezaPlano extends AuditableEntity<Long> {
 
 	private static final long serialVersionUID = 6238103037912066925L;

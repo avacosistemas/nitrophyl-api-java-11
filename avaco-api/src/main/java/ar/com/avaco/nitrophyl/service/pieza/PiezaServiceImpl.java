@@ -14,6 +14,7 @@ import ar.com.avaco.nitrophyl.domain.entities.pieza.Proceso;
 import ar.com.avaco.nitrophyl.domain.entities.pieza.Terminacion;
 import ar.com.avaco.nitrophyl.domain.entities.pieza.moldeo.Vulcanizacion;
 import ar.com.avaco.nitrophyl.repository.pieza.PiezaRepository;
+import ar.com.avaco.nitrophyl.ws.dto.PiezaComboDTO;
 import ar.com.avaco.nitrophyl.ws.dto.PiezaFilterDTO;
 import ar.com.avaco.nitrophyl.ws.dto.PiezaGrillaDTO;
 
@@ -107,6 +108,11 @@ public class PiezaServiceImpl extends NJBaseService<Long, Pieza, PiezaRepository
 	@Override
 	public boolean existsByFormula(Long idFormula) {
 		return this.repository.existsByDetalleFormulaFormulaId(idFormula);
+	}
+
+	@Override
+	public List<PiezaComboDTO> listCombo(String nombre, Long idCliente) {
+		return this.repository.listPiezasCombo(nombre, idCliente);
 	}
 
 }
