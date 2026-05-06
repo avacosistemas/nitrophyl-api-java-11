@@ -62,6 +62,7 @@ public class OrdenCompra extends AuditableEntity<Long> {
 	private Set<OrdenCompraDetalle> detalle = new HashSet<OrdenCompraDetalle>();
 
 	@Enumerated(EnumType.STRING)
+	@Column(name = "TIPO_DESPACHO")
 	private TipoDespacho tipoDespacho;
 
 	@ManyToOne(optional = true)

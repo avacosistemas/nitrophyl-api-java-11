@@ -69,7 +69,7 @@ public class OrdenCompraEPServiceImpl
 				? EmpresaTransporte.ofId(dto.getIdEmpresaTransporte())
 				: null;
 
-		String mediosEnvio = dto.getMediosEnvio() != null && dto.getMediosEnvio().isEmpty()
+		String mediosEnvio = dto.getMediosEnvio() != null && !dto.getMediosEnvio().isEmpty()
 				? String.join(",", dto.getMediosEnvio())
 				: null;
 
@@ -158,16 +158,14 @@ public class OrdenCompraEPServiceImpl
 	@Override
 	protected OrdenCompraDTO convertToDto(OrdenCompra entity) {
 		OrdenCompraDTO dto = super.convertToDto(entity);
+		
 		dto.setCliente(entity.getCliente().getNombre());
 
 		dto.setIdCliente(entity.getCliente() != null ? entity.getCliente().getId() : null);
 
-		dto.setIdEmpresaTransporte(
-				entity.getEmpresaTransporte() != null ? entity.getEmpresaTransporte().getId() : null);
+		dto.setIdEmpresaTransporte(entity.getEmpresaTransporte() != null ? entity.getEmpresaTransporte().getId() : null);
 		dto.setTipoDespacho(entity.getTipoDespacho());
-		dto.setMediosEnvio(
-				StringUtils.isNotBlank(entity.getMediosEnvio()) ? Arrays.asList(entity.getMediosEnvio().split(","))
-						: new ArrayList<String>());
+		dto.setMediosEnvio(StringUtils.isNotBlank(entity.getMediosEnvio()) ? Arrays.asList(entity.getMediosEnvio().split(",")) : new ArrayList<String>());
 		dto.setIdDomicilioEnvio(entity.getDomicilioEnvio() != null ? entity.getDomicilioEnvio().getId() : null);
 
 		dto.getDetalle().forEach(x -> {
@@ -175,6 +173,7 @@ public class OrdenCompraEPServiceImpl
 					.findAny().get().getPieza();
 			x.setPieza(pieza.getDenominacion());
 		});
+		
 		return dto;
 
 	}

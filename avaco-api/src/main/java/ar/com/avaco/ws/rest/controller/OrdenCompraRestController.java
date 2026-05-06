@@ -49,10 +49,16 @@ public class OrdenCompraRestController
 
 	@Override
 	@RequestMapping(value = "/ordenCompra/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<JSONResponse> delete(Long id) throws BusinessException {
+	public ResponseEntity<JSONResponse> delete(@PathVariable Long id) throws BusinessException {
 		return super.delete(id);
 	}
 
+	@Override
+	@RequestMapping(value = "/ordenCompra/{id}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<JSONResponse> update(Long id, OrdenCompraDTO dto) throws BusinessException {
+		return super.update(id, dto);
+	}
+	
 	@Resource(name = "ordenCompraEPService")
 	public void setService(OrdenCompraEPService ordenCompraEPService) {
 		super.service = ordenCompraEPService;
