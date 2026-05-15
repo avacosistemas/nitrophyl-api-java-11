@@ -1,5 +1,6 @@
 package ar.com.avaco.nitrophyl.ws.dto;
 
+import ar.com.avaco.nitrophyl.domain.entities.molde.TipoDimension;
 import ar.com.avaco.ws.rest.dto.DTOAuditableEntity;
 
 public class PiezaDimensionDTO extends DTOAuditableEntity<Long> {
@@ -8,7 +9,7 @@ public class PiezaDimensionDTO extends DTOAuditableEntity<Long> {
 
 	private Long idPieza;
 
-	private String tipo;
+	private TipoDimension tipo;
 
 	private Double valor;
 
@@ -36,11 +37,11 @@ public class PiezaDimensionDTO extends DTOAuditableEntity<Long> {
 		this.id = id;
 	}
 
-	public String getTipo() {
+	public TipoDimension getTipo() {
 		return tipo;
 	}
 
-	public void setTipo(String tipo) {
+	public void setTipo(TipoDimension tipo) {
 		this.tipo = tipo;
 	}
 

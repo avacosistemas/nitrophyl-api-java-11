@@ -11,6 +11,9 @@ public class ClienteDTO extends DTOEntity<Long> {
 	private String codigoPostal;
 	private String localidad;
 	private String provincia;
+
+	private PaisDTO paisDTO;
+
 	private String email;
 	private String webSite;
 	private String cuit;
@@ -154,6 +157,14 @@ public class ClienteDTO extends DTOEntity<Long> {
 
 	public void setEmpresa(String empresa) {
 		this.empresa = empresa;
+	}
+
+	public PaisDTO getPaisDTO() {
+		return paisDTO;
+	}
+
+	public void setPaisDTO(PaisDTO paisDTO) {
+		this.paisDTO = paisDTO;
 	}
 
 }

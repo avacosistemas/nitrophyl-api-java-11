@@ -1,7 +1,7 @@
 /**
  * 
  */
-package ar.com.avaco.commons.service.impl;
+package ar.com.avaco.commons.service;
 
 import javax.annotation.Resource;
 
@@ -11,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 import ar.com.avaco.arc.core.component.bean.service.NJBaseService;
 import ar.com.avaco.commons.domain.Word;
 import ar.com.avaco.commons.repository.WordRepository;
-import ar.com.avaco.commons.service.WordService;
 
 /**
  * @author avaco

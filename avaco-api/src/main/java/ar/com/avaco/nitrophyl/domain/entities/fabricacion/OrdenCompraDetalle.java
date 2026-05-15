@@ -46,7 +46,7 @@ public class OrdenCompraDetalle extends AuditableEntity<Long> {
 	@JoinColumn(name = "ID_PIEZA", nullable = false)
 	private Pieza pieza;
 
-	@ManyToOne(cascade = CascadeType.PERSIST)
+	@ManyToOne(cascade = { CascadeType.MERGE, CascadeType.PERSIST })
 	@JoinColumn(name = "ID_COTIZACION", nullable = false)
 	private Cotizacion cotizacion;
 

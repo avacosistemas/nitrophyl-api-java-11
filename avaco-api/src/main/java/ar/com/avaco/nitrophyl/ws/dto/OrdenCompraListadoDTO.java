@@ -22,16 +22,18 @@ public class OrdenCompraListadoDTO extends DTOEntity<Long> {
 
 	private OrdenCompraEstado estado;
 
+	private String observaciones;
+
 	@Override
 	public ProjectionList getProjections() {
-		return Projections.projectionList()
-				.add(Projections.property("id"), "id")
+		return Projections.projectionList().add(Projections.property("id"), "id")
 				.add(Projections.property("cliente.id"), "idCliente")
 				.add(Projections.property("cliente.nombre"), "cliente")
 				.add(Projections.property("comprobante"), "comprobante")
 				.add(Projections.sqlProjection("to_char(FECHA, 'DD/MM/YYYY') as fecha", new String[] { "fecha" },
 						new Type[] { StandardBasicTypes.STRING }))
-				.add(Projections.property("estado"), "estado");
+				.add(Projections.property("estado"), "estado")
+				.add(Projections.property("observaciones"), "observaciones");
 	}
 
 	public OrdenCompraEstado getEstado() {
@@ -80,6 +82,14 @@ public class OrdenCompraListadoDTO extends DTOEntity<Long> {
 
 	public void setFecha(String fecha) {
 		this.fecha = fecha;
+	}
+
+	public String getObservaciones() {
+		return observaciones;
+	}
+
+	public void setObservaciones(String observaciones) {
+		this.observaciones = observaciones;
 	}
 
 }

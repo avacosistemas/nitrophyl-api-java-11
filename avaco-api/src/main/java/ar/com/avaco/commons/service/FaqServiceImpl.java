@@ -1,7 +1,7 @@
 /**
  * 
  */
-package ar.com.avaco.commons.service.impl;
+package ar.com.avaco.commons.service;
 
 import java.util.List;
 
@@ -13,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 import ar.com.avaco.arc.core.component.bean.service.NJBaseService;
 import ar.com.avaco.commons.domain.Faq;
 import ar.com.avaco.commons.repository.FaqRepository;
-import ar.com.avaco.commons.service.FaqService;
 
 /**
  * @author avaco

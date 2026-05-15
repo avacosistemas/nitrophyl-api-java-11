@@ -1,7 +1,7 @@
 /**
  * 
  */
-package ar.com.avaco.commons.service.impl;
+package ar.com.avaco.commons.service;
 
 import java.io.StringWriter;
 import java.util.Date;
@@ -22,7 +22,6 @@ import ar.com.avaco.arc.core.component.bean.service.NJBaseService;
 import ar.com.avaco.arc.core.service.MailSenderSMTPService;
 import ar.com.avaco.commons.domain.ContactUS;
 import ar.com.avaco.commons.repository.ContactUSRepository;
-import ar.com.avaco.commons.service.ContactUSService;
 
 /**
  * @author avaco

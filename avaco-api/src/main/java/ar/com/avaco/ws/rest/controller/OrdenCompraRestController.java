@@ -1,5 +1,7 @@
 package ar.com.avaco.ws.rest.controller;
 
+import java.util.Map;
+
 import javax.annotation.Resource;
 
 import org.springframework.http.MediaType;
@@ -41,9 +43,9 @@ public class OrdenCompraRestController
 		return super.get(id);
 	}
 
-	@RequestMapping(value = "/ordenCompra/cancelar/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<JSONResponse> cancelar(@PathVariable Long id) throws BusinessException {
-		this.service.cancelar(id);
+	@RequestMapping(value = "/ordenCompra/cancelar/{id}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<JSONResponse> cancelar(@PathVariable Long id, @RequestBody Map<String, String> body) throws BusinessException {
+		this.service.cancelar(id, body.get("observaciones"));
 		return OK(id);
 	}
 
@@ -55,7 +57,7 @@ public class OrdenCompraRestController
 
 	@Override
 	@RequestMapping(value = "/ordenCompra/{id}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<JSONResponse> update(Long id, OrdenCompraDTO dto) throws BusinessException {
+	public ResponseEntity<JSONResponse> update(@PathVariable Long id, @RequestBody OrdenCompraDTO dto) throws BusinessException {
 		return super.update(id, dto);
 	}
 	

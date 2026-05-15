@@ -20,7 +20,7 @@ public interface PiezaRepository extends NJRepository<Long, Pieza>, PiezaReposit
 	@Query("UPDATE Pieza p SET p.faltantes = ?2 where p.id = ?1")
 	void actualizarFaltantes(Long idPieza, String faltantes);
 
-	@Query("SELECT DISTINCT new ar.com.avaco.nitrophyl.ws.dto.PiezaComboDTO(p.id, p.denominacion) "
+	@Query("SELECT DISTINCT new ar.com.avaco.nitrophyl.ws.dto.PiezaComboDTO(p.id, p.denominacion, p.detalleFormula.formula.nombre) "
 			+ "FROM Pieza p "
 			+ "LEFT JOIN p.clientes pc " 
 			+ "WHERE p.vigente = true "

@@ -22,10 +22,12 @@ public class OrdenCompraServiceImpl extends NJBaseService<Long, OrdenCompra, Ord
 	}
 
 	@Override
-	public void cancelar(Long id) {
+	public void cancelar(Long id, String motivo) {
 		OrdenCompra ordenCompra = this.get(id);
-		if (ordenCompra.getEstado().equals(OrdenCompraEstado.PENDIENTE))
+		if (ordenCompra.getEstado().equals(OrdenCompraEstado.PENDIENTE)) {
 			ordenCompra.setEstado(OrdenCompraEstado.CANCELADA);
+			ordenCompra.setObservaciones(motivo);
+		}
 		else
 			throw new ErrorValidationException("Para cancelar la OC debe estar en estado Pendiente");
 	}

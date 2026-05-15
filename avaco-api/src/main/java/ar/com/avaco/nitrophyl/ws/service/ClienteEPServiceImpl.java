@@ -5,11 +5,13 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import ar.com.avaco.arc.core.domain.filter.AbstractFilter;
 import ar.com.avaco.commons.exception.BusinessException;
 import ar.com.avaco.commons.exception.ErrorValidationException;
+import ar.com.avaco.nitrophyl.domain.entities.administracion.Pais;
 import ar.com.avaco.nitrophyl.domain.entities.cliente.Cliente;
 import ar.com.avaco.nitrophyl.domain.entities.cliente.Contacto;
 import ar.com.avaco.nitrophyl.domain.entities.cliente.EmpresaCliente;
@@ -17,6 +19,7 @@ import ar.com.avaco.nitrophyl.domain.entities.cliente.Provincia;
 import ar.com.avaco.nitrophyl.service.cliente.ClienteService;
 import ar.com.avaco.nitrophyl.ws.dto.ClienteDTO;
 import ar.com.avaco.nitrophyl.ws.dto.ContactoDTO;
+import ar.com.avaco.nitrophyl.ws.dto.PaisDTO;
 import ar.com.avaco.ws.rest.service.CRUDEPBaseService;
 
 @Service("clienteEPService")
@@ -113,7 +116,15 @@ public class ClienteEPServiceImpl extends CRUDEPBaseService<Long, ClienteDTO, Cl
 			clienteDTO.setDomicilio(entity.getDomicilio());
 			clienteDTO.setCodigoPostal(entity.getCodigoPostal());
 			clienteDTO.setLocalidad(entity.getLocalidad());
-			clienteDTO.setProvincia(entity.getProvincia().name());
+			if (entity.getProvincia() != null)
+				clienteDTO.setProvincia(entity.getProvincia().name());
+			
+			PaisDTO paisDTO = new PaisDTO();
+			paisDTO.setId(entity.getPais().getId());
+			paisDTO.setNombre(entity.getPais().getNombre());
+			
+			clienteDTO.setPaisDTO(paisDTO);
+			
 			clienteDTO.setEmail(entity.getEmail());
 			clienteDTO.setWebSite(entity.getWebSite());
 			clienteDTO.setCuit(entity.getCuit());
@@ -154,7 +165,15 @@ public class ClienteEPServiceImpl extends CRUDEPBaseService<Long, ClienteDTO, Cl
 		cliente.setDomicilio(dto.getDomicilio());
 		cliente.setCodigoPostal(dto.getCodigoPostal());
 		cliente.setLocalidad(dto.getLocalidad());
-		cliente.setProvincia(Provincia.valueOf(dto.getProvincia()));
+		if (StringUtils.isNotBlank(dto.getProvincia()))
+			cliente.setProvincia(Provincia.valueOf(dto.getProvincia()));
+		
+		Pais pais = new Pais();
+		pais.setId(dto.getPaisDTO().getId());
+		pais.setNombre(dto.getPaisDTO().getNombre());
+		
+		cliente.setPais(pais);
+		
 		cliente.setEmail(dto.getEmail());
 		cliente.setWebSite(dto.getWebSite());
 		cliente.setCUIT(dto.getCuit());

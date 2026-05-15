@@ -76,6 +76,9 @@ public class OrdenCompra extends AuditableEntity<Long> {
 	@JoinColumn(name = "ID_DOMICILIO_ENVIO")
 	private ClienteDomicilio domicilioEnvio;
 
+	@Column(name = "OBSERVACIONES")
+	private String observaciones;
+
 	public TipoDespacho getTipoDespacho() {
 		return tipoDespacho;
 	}
@@ -165,6 +168,14 @@ public class OrdenCompra extends AuditableEntity<Long> {
 
 	public void setDetalle(Set<OrdenCompraDetalle> detalle) {
 		this.detalle = detalle;
+	}
+
+	public String getObservaciones() {
+		return observaciones;
+	}
+
+	public void setObservaciones(String observaciones) {
+		this.observaciones = observaciones;
 	}
 
 }

@@ -3,6 +3,7 @@ package ar.com.avaco.nitrophyl.domain.entities.cliente;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -11,10 +12,14 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
+
+import ar.com.avaco.nitrophyl.domain.entities.administracion.Pais;
 
 /**
  * @author el betazo
@@ -76,6 +81,10 @@ public class Cliente extends ar.com.avaco.arc.core.domain.Entity<Long> {
 	 */
 	@Column(name = "LOCALIDAD")
 	private String localidad;
+
+	@ManyToOne(cascade = { CascadeType.ALL })
+	@JoinColumn(name = "ID_PAIS")
+	private Pais pais;
 
 	/**
 	 * Provincia.
@@ -263,6 +272,14 @@ public class Cliente extends ar.com.avaco.arc.core.domain.Entity<Long> {
 
 	public void setEmpresa(EmpresaCliente empresa) {
 		this.empresa = empresa;
+	}
+
+	public Pais getPais() {
+		return pais;
+	}
+
+	public void setPais(Pais pais) {
+		this.pais = pais;
 	}
 
 	public static Cliente ofId(Long idCliente) {

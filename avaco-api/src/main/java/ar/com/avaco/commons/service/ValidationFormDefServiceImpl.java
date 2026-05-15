@@ -1,4 +1,4 @@
-package ar.com.avaco.commons.service.impl;
+package ar.com.avaco.commons.service;
 
 import java.lang.reflect.Field;
 import java.text.DateFormat;
@@ -23,7 +23,6 @@ import ar.com.avaco.commons.domain.FormDef;
 import ar.com.avaco.commons.domain.OptionField;
 import ar.com.avaco.commons.domain.ValidationField;
 import ar.com.avaco.commons.exception.ErrorValidationException;
-import ar.com.avaco.commons.service.ValidationFormDefService;
 
 @Transactional
 @Service("validationFormDefService")

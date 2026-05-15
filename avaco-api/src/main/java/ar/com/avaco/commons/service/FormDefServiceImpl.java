@@ -1,4 +1,4 @@
-package ar.com.avaco.commons.service.impl;
+package ar.com.avaco.commons.service;
 
 import java.util.List;
 
@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import ar.com.avaco.commons.domain.FieldDef;
 import ar.com.avaco.commons.domain.FormDef;
-import ar.com.avaco.commons.service.FormDefService;
 
 @Transactional
 @Service("formDefService")

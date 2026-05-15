@@ -2,7 +2,7 @@ package ar.com.avaco.nitrophyl.domain.entities.administracion;
 
 public enum TipoDespacho {
 
-	RETIRO_CLIENTE("Retira el cliente"), RETIRA_EMPRESA("Retira empresa de transporte"), ENVIO("Se envia");
+	RETIRO_CLIENTE("Retira el cliente"), RETIRO_TRANSPORTE("Retira empresa de transporte"), ENVIO("Se envia");
 
 	private String label;
 

@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import javax.annotation.Resource;
 import javax.transaction.Transactional;
@@ -156,24 +157,144 @@ public class OrdenCompraEPServiceImpl
 	}
 
 	@Override
+	public OrdenCompraDTO update(OrdenCompraDTO dto) throws BusinessException {
+
+		// Obtengo la OC
+		OrdenCompra ordenCompra = this.service.get(dto.getId());
+
+		// Armo el cliente
+		Cliente cliente = Cliente.ofId(dto.getIdCliente());
+
+		// Busco el domicilio seleccionado si es que lo hay
+		ClienteDomicilio domicilio = dto.getIdDomicilioEnvio() != null
+				? ClienteDomicilio.ofId(dto.getIdDomicilioEnvio())
+				: null;
+
+		// Busco la empres de transporte si es que la hay
+		EmpresaTransporte transporte = dto.getIdEmpresaTransporte() != null
+				? EmpresaTransporte.ofId(dto.getIdEmpresaTransporte())
+				: null;
+
+		String mediosEnvio = dto.getMediosEnvio() != null && !dto.getMediosEnvio().isEmpty()
+				? String.join(",", dto.getMediosEnvio())
+				: null;
+
+
+		// Armo la orden de compra
+		ordenCompra.setCliente(cliente);
+		ordenCompra.setComprobante(dto.getComprobante());
+		ordenCompra.setEstado(OrdenCompraEstado.PENDIENTE);
+		ordenCompra.setFecha(LocalDate.parse(dto.getFecha(), DateTimeFormatter.ofPattern(DateUtils.dd_MM_yyyy)));
+		ordenCompra.setTipoDespacho(dto.getTipoDespacho());
+		ordenCompra.setEmpresaTransporte(transporte);
+		ordenCompra.setDomicilioEnvio(domicilio);
+		ordenCompra.setMediosEnvio(mediosEnvio);
+
+		// Si viene un archivo nuevo entonces lo piso, sino dejo el actual.
+		if (dto.getArchivo() != null && dto.getArchivo().getArchivo() != null && dto.getArchivo().getNombre() != null) {
+			// Armo el archivo adjunto
+			OrdenCompraArchivo oca = ordenCompra.getArchivo() == null ? new OrdenCompraArchivo() : ordenCompra.getArchivo();
+			oca.setArchivo(dto.getArchivo().getArchivo());
+			oca.setNombre(dto.getArchivo().getNombre());
+			ordenCompra.setArchivo(oca);
+		}
+
+		List<OrdenCompraDetalle> detalles = new ArrayList<OrdenCompraDetalle>();
+		
+		// Por cada pieza
+		for (OrdenCompraDetalleDTO detalleDTO : dto.getDetalle()) {
+			
+			// Armo la pieza
+			Pieza pieza = piezaService.get(detalleDTO.getIdPieza());
+
+			// Armo el detalle
+			OrdenCompraDetalle detalle = new OrdenCompraDetalle();
+			
+			// Seteo el id del detalle, sea null o tenga id.
+			detalle.setId(detalleDTO.getId());
+			detalle.setOrdenCompra(ordenCompra);
+			detalle.setPieza(pieza);
+
+			// Si existe una cotizacion y se usa la vigente
+			if (detalleDTO.getIdCotizacion() != null) {
+				detalle.setCotizacion(cotizacionService.get(detalleDTO.getIdCotizacion()));
+			} else {
+				// Si no existe una cotizacion o no se usa la vigente
+				// Busco si existe relacion entre la pieza y el cliente
+				PiezaCliente piezaCliente = piezaClienteService.getByPiezaCliente(dto.getIdCliente(),
+						detalleDTO.getIdPieza());
+
+				// Si no existe la asociación, la creo
+				if (piezaCliente == null) {
+					piezaCliente = new PiezaCliente();
+					piezaCliente.setCliente(cliente);
+					piezaCliente.setPieza(pieza);
+				}
+
+				// Armo la cotizacion y le seteo el valor, la fecha y la piezacliente (existente
+				// o no)
+				Cotizacion cotizacion = new Cotizacion();
+				cotizacion.setFecha(DateUtils.toDate(detalleDTO.getFechaCotizacion(), DateUtils.dd_MM_yyyy));
+				cotizacion.setPiezaCliente(piezaCliente);
+				cotizacion.setValor(detalleDTO.getValorCotizacion());
+
+				// Seteo la cotizacion existente o nueva
+				detalle.setCotizacion(cotizacion);
+
+			}
+
+			// Por cada una de los pedidos
+			for (OrdenCompraDetallePedidoDTO pedidoDTO : detalleDTO.getEntregasSolicitadas()) {
+
+				// Armo el pedido, seteo cantidad y fecha estimada de entrega
+				OrdenCompraDetallePedido pedido = new OrdenCompraDetallePedido();
+				pedido.setCantidad(pedidoDTO.getCantidad());
+				pedido.setFechaEntregaSolicitada(LocalDate.parse(pedidoDTO.getFechaEntregaSolicitada(),
+						DateTimeFormatter.ofPattern(DateUtils.dd_MM_yyyy)));
+				pedido.setOrdenCompraDetalle(detalle);
+
+				// Le agrego al detalle el pedido
+				detalle.getEntregasSolicitadas().add(pedido);
+			}
+
+			// Agrego el detalle a una lista aparte
+			detalles.add(detalle);
+			
+		}
+
+		// Limpio del detalle actual
+		ordenCompra.getDetalle().clear();
+		
+		// Agrego todo el detalle complet
+		ordenCompra.getDetalle().addAll(detalles);
+
+		this.service.update(ordenCompra);
+		
+		return dto;
+	}
+
+	@Override
 	protected OrdenCompraDTO convertToDto(OrdenCompra entity) {
 		OrdenCompraDTO dto = super.convertToDto(entity);
-		
+
 		dto.setCliente(entity.getCliente().getNombre());
 
 		dto.setIdCliente(entity.getCliente() != null ? entity.getCliente().getId() : null);
 
-		dto.setIdEmpresaTransporte(entity.getEmpresaTransporte() != null ? entity.getEmpresaTransporte().getId() : null);
+		dto.setIdEmpresaTransporte(
+				entity.getEmpresaTransporte() != null ? entity.getEmpresaTransporte().getId() : null);
 		dto.setTipoDespacho(entity.getTipoDespacho());
-		dto.setMediosEnvio(StringUtils.isNotBlank(entity.getMediosEnvio()) ? Arrays.asList(entity.getMediosEnvio().split(",")) : new ArrayList<String>());
+		dto.setMediosEnvio(
+				StringUtils.isNotBlank(entity.getMediosEnvio()) ? Arrays.asList(entity.getMediosEnvio().split(","))
+						: new ArrayList<String>());
 		dto.setIdDomicilioEnvio(entity.getDomicilioEnvio() != null ? entity.getDomicilioEnvio().getId() : null);
 
 		dto.getDetalle().forEach(x -> {
 			Pieza pieza = entity.getDetalle().stream().filter(p -> p.getPieza().getId().equals(x.getIdPieza()))
 					.findAny().get().getPieza();
-			x.setPieza(pieza.getDenominacion());
+			x.setPieza(pieza.getDenominacion() + " (" + pieza.getDetalleFormula().getFormula().getNombre() + ")");
 		});
-		
+
 		return dto;
 
 	}
@@ -185,7 +306,7 @@ public class OrdenCompraEPServiceImpl
 	}
 
 	@Override
-	public void cancelar(Long id) {
-		this.service.cancelar(id);
+	public void cancelar(Long id, String motivo) {
+		this.service.cancelar(id, motivo);
 	}
 }

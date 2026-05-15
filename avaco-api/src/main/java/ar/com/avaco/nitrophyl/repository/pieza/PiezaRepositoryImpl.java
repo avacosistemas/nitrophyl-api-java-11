@@ -55,8 +55,8 @@ public class PiezaRepositoryImpl extends NJBaseRepository<Long, Pieza> implement
 				" left join cliente cli on cli.id_cliente = pc.id_cliente " +
 				" where 1 = 1 ";
 		
-		if (filtro.getSoloVigentes() != null && filtro.getSoloVigentes().booleanValue())
-			query += " and p.vigente = true ";
+		if (filtro.getSoloVigentes() != null)
+			query += " and p.vigente = " +  filtro.getSoloVigentes();
 		
 		if (StringUtils.isNotBlank(filtro.getNombre()))
 			query += " and ( upper(p.denominacion) like '%" + filtro.getNombre() 
