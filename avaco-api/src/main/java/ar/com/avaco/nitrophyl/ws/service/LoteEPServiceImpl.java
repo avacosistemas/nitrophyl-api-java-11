@@ -45,7 +45,7 @@ import ar.com.avaco.nitrophyl.ws.dto.ReporteEnsayoLotePorMaquinaDTO;
 import ar.com.avaco.nitrophyl.ws.dto.ReporteEnsayoLotePorMaquinaFilterDTO;
 import ar.com.avaco.nitrophyl.ws.dto.ReporteResultadoEnsayoDTO;
 import ar.com.avaco.utils.DateUtils;
-import ar.com.avaco.ws.rest.informe.InformeBuilder;
+import ar.com.avaco.ws.rest.informe.InformeCalidadBuilder;
 import ar.com.avaco.ws.rest.service.CRUDEPBaseService;
 
 @Service("loteEPService")
@@ -179,7 +179,7 @@ public class LoteEPServiceImpl extends CRUDEPBaseService<Long, LoteDTO, Lote, Lo
 			throws BusinessException {
 		Lote lote = this.service.getLoteCompleto(idLote);
 		Cliente cliente = clienteService.getCliente(idCliente);
-		InformeBuilder ib = new InformeBuilder();
+		InformeCalidadBuilder ib = new InformeCalidadBuilder();
 		ArchivoDTO adto = new ArchivoDTO();
 		try {
 			adto = ib.generarReporte(lote, reporteLoteConfigClienteService, cliente, observacionesInforme);

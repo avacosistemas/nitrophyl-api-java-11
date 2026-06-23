@@ -10,7 +10,7 @@ import org.apache.commons.lang3.StringUtils;
 import ar.com.avaco.arc.core.domain.filter.AbstractFilter;
 import ar.com.avaco.arc.core.domain.filter.FilterData;
 import ar.com.avaco.arc.core.domain.filter.FilterDataType;
-import ar.com.avaco.nitrophyl.domain.entities.fabricacion.OrdenCompraEstado;
+import ar.com.avaco.nitrophyl.domain.entities.fabricacion.EstadoOrdenCompra;
 import ar.com.avaco.utils.DateUtils;
 
 public class OrdenCompraFilter extends AbstractFilter {
@@ -61,7 +61,7 @@ public class OrdenCompraFilter extends AbstractFilter {
 		}
 
 		if (StringUtils.isNotBlank(estado)) {
-			filters.add(new FilterData("estado", OrdenCompraEstado.valueOf(estado), FilterDataType.EQUALS));
+			filters.add(new FilterData("estado", EstadoOrdenCompra.valueOf(estado), FilterDataType.EQUALS));
 		}
 		
 		return filters;

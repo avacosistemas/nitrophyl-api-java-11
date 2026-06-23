@@ -7,4 +7,6 @@ public interface OrdenCompraEPService extends CRUDAuditableEPService<Long, Orden
 
 	void cancelar(Long id, String motivo);
 
+	void generarOrdenFabrica(Long idOC);
+
 }

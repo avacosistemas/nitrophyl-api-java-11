@@ -17,15 +17,16 @@ import ar.com.avaco.commons.exception.BusinessException;
 import ar.com.avaco.nitrophyl.domain.entities.administracion.EmpresaTransporte;
 import ar.com.avaco.nitrophyl.domain.entities.cliente.Cliente;
 import ar.com.avaco.nitrophyl.domain.entities.cliente.ClienteDomicilio;
+import ar.com.avaco.nitrophyl.domain.entities.fabricacion.EstadoOrdenCompra;
 import ar.com.avaco.nitrophyl.domain.entities.fabricacion.OrdenCompra;
 import ar.com.avaco.nitrophyl.domain.entities.fabricacion.OrdenCompraArchivo;
 import ar.com.avaco.nitrophyl.domain.entities.fabricacion.OrdenCompraDetalle;
 import ar.com.avaco.nitrophyl.domain.entities.fabricacion.OrdenCompraDetallePedido;
-import ar.com.avaco.nitrophyl.domain.entities.fabricacion.OrdenCompraEstado;
 import ar.com.avaco.nitrophyl.domain.entities.pieza.Pieza;
 import ar.com.avaco.nitrophyl.domain.entities.pieza.cliente.Cotizacion;
 import ar.com.avaco.nitrophyl.domain.entities.pieza.cliente.PiezaCliente;
 import ar.com.avaco.nitrophyl.service.fabricacion.OrdenCompraService;
+import ar.com.avaco.nitrophyl.service.fabricacion.OrdenFabricacionService;
 import ar.com.avaco.nitrophyl.service.pieza.CotizacionService;
 import ar.com.avaco.nitrophyl.service.pieza.PiezaClienteService;
 import ar.com.avaco.nitrophyl.service.pieza.PiezaService;
@@ -54,6 +55,17 @@ public class OrdenCompraEPServiceImpl
 	@Autowired
 	private PiezaService piezaService;
 
+	@Autowired
+	private OrdenFabricacionService ordenFabricacionService;
+
+	@Override
+	public void generarOrdenFabrica(Long idOC) {
+		OrdenCompra ordenCompra = this.service.get(idOC);
+		ordenFabricacionService.generarOrdenes(ordenCompra.getDetalle());
+		ordenCompra.setEstado(EstadoOrdenCompra.PENDIENTE);
+		this.service.update(ordenCompra);
+	}
+	
 	@Override
 	public OrdenCompraDTO save(OrdenCompraDTO dto) throws BusinessException {
 
@@ -83,12 +95,20 @@ public class OrdenCompraEPServiceImpl
 		OrdenCompra ordenCompra = new OrdenCompra();
 		ordenCompra.setCliente(cliente);
 		ordenCompra.setComprobante(dto.getComprobante());
-		ordenCompra.setEstado(OrdenCompraEstado.PENDIENTE);
+		
+		if (dto.getGenerarOrdenFabrica()) {
+			ordenCompra.setEstado(EstadoOrdenCompra.PENDIENTE);
+		} else {
+			ordenCompra.setEstado(EstadoOrdenCompra.INGRESADA);
+		}
+		
 		ordenCompra.setFecha(LocalDate.parse(dto.getFecha(), DateTimeFormatter.ofPattern(DateUtils.dd_MM_yyyy)));
 		ordenCompra.setTipoDespacho(dto.getTipoDespacho());
 		ordenCompra.setEmpresaTransporte(transporte);
 		ordenCompra.setDomicilioEnvio(domicilio);
 		ordenCompra.setMediosEnvio(mediosEnvio);
+		
+		ordenCompra.setObservaciones(dto.getObservaciones());
 
 		ordenCompra.setArchivo(oca);
 
@@ -152,6 +172,10 @@ public class OrdenCompraEPServiceImpl
 		// Guardo la nueva orden de compra
 		this.service.save(ordenCompra);
 
+		if (dto.getGenerarOrdenFabrica()) {
+			ordenFabricacionService.generarOrdenes(ordenCompra.getDetalle());
+		}
+		
 		return dto;
 
 	}
@@ -183,7 +207,13 @@ public class OrdenCompraEPServiceImpl
 		// Armo la orden de compra
 		ordenCompra.setCliente(cliente);
 		ordenCompra.setComprobante(dto.getComprobante());
-		ordenCompra.setEstado(OrdenCompraEstado.PENDIENTE);
+		
+		if (dto.getGenerarOrdenFabrica()) {
+			ordenCompra.setEstado(EstadoOrdenCompra.PENDIENTE);
+		} else {
+			ordenCompra.setEstado(EstadoOrdenCompra.INGRESADA);
+		}
+		
 		ordenCompra.setFecha(LocalDate.parse(dto.getFecha(), DateTimeFormatter.ofPattern(DateUtils.dd_MM_yyyy)));
 		ordenCompra.setTipoDespacho(dto.getTipoDespacho());
 		ordenCompra.setEmpresaTransporte(transporte);
@@ -269,6 +299,10 @@ public class OrdenCompraEPServiceImpl
 		ordenCompra.getDetalle().addAll(detalles);
 
 		this.service.update(ordenCompra);
+		
+		if (dto.getGenerarOrdenFabrica()) {
+			ordenFabricacionService.generarOrdenes(ordenCompra.getDetalle());
+		}
 		
 		return dto;
 	}

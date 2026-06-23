@@ -1,7 +1,8 @@
 package ar.com.avaco.nitrophyl.domain.entities.fabricacion;
 
-public enum OrdenCompraEstado {
+public enum EstadoOrdenCompra {
 
+	INGRESADA,
 	PENDIENTE,
 	EN_PROCESO,
 	FINALIZADA,

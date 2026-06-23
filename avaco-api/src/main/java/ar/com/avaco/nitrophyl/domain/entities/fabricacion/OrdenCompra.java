@@ -47,7 +47,7 @@ public class OrdenCompra extends AuditableEntity<Long> {
 
 	@Column(name = "ESTADO")
 	@Enumerated(EnumType.STRING)
-	private OrdenCompraEstado estado;
+	private EstadoOrdenCompra estado;
 
 	@Column(name = "COMPROBANTE")
 	private String comprobante;
@@ -135,11 +135,11 @@ public class OrdenCompra extends AuditableEntity<Long> {
 		this.fecha = fecha;
 	}
 
-	public OrdenCompraEstado getEstado() {
+	public EstadoOrdenCompra getEstado() {
 		return estado;
 	}
 
-	public void setEstado(OrdenCompraEstado estado) {
+	public void setEstado(EstadoOrdenCompra estado) {
 		this.estado = estado;
 	}
 

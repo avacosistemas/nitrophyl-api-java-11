@@ -6,13 +6,19 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import ar.com.avaco.nitrophyl.domain.entities.AuditableEntity;
+
 @Entity
 @Table(name = "MAQUINA_FABRICA")
-public class MaquinaFabrica {
+public class MaquinaFabrica extends AuditableEntity<Long> {
+
+	private static final long serialVersionUID = -7495791419883480910L;
 
 	@Id
 	@GeneratedValue(generator = "MAQUINA_FABRICA_SEQ")
@@ -30,8 +36,9 @@ public class MaquinaFabrica {
 	@Column(name = "TIPO", nullable = false)
 	private TipoMaquinaFabrica tipo;
 
-	@Column(name = "SECCION")
-	private String seccion;
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "ID_SECTOR")
+	private SectorFabrica sector;
 
 	public Long getId() {
 		return id;
@@ -57,12 +64,18 @@ public class MaquinaFabrica {
 		this.tipo = tipo;
 	}
 
-	public String getSeccion() {
-		return seccion;
+	public SectorFabrica getSector() {
+		return sector;
 	}
 
-	public void setSeccion(String seccion) {
-		this.seccion = seccion;
+	public void setSector(SectorFabrica sector) {
+		this.sector = sector;
+	}
+
+	public static MaquinaFabrica ofId(Long idMaquina) {
+		MaquinaFabrica mf = new MaquinaFabrica();
+		mf.setId(idMaquina);
+		return mf;
 	}
 
 }

@@ -11,6 +11,10 @@ import java.util.Date;
 
 public class DateUtils {
 
+	public static SimpleDateFormat dateFormat = (SimpleDateFormat) DateFormat.getInstance();
+	
+	public static DateTimeFormatter DATE_TIME_FORMATTER_DD_MM_YYYY = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+	
 	/**
 	 * dd/MM/yyyy
 	 */
@@ -46,7 +50,6 @@ public class DateUtils {
 	}
 
 	public static Date toDate(String dia, String pattern) {
-		SimpleDateFormat dateFormat = (SimpleDateFormat) DateFormat.getInstance();
 		dateFormat.applyPattern(pattern);
 		try {
 			return dateFormat.parse(dia);
@@ -86,7 +89,6 @@ public class DateUtils {
 
 	public static String toString(Date fecha, String pattern) {
 		if (fecha != null) {
-			SimpleDateFormat dateFormat = (SimpleDateFormat) DateFormat.getInstance();
 			dateFormat.applyPattern(pattern);
 			return dateFormat.format(fecha);
 		}
@@ -94,7 +96,7 @@ public class DateUtils {
 	}
 
 	public static String toString(LocalDate fecha) {
-		SimpleDateFormat dateFormat = (SimpleDateFormat) DateFormat.getInstance();
+		if (fecha == null) return null;
 		dateFormat.applyPattern(yyyyMMdd);
 		return dateFormat.format(fecha);
 	}

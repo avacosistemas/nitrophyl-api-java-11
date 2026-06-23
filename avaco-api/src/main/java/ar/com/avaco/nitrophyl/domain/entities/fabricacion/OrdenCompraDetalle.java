@@ -24,9 +24,6 @@ import ar.com.avaco.nitrophyl.domain.entities.pieza.cliente.Cotizacion;
 @Table(name = "ORDEN_COMPRA_DETALLE")
 public class OrdenCompraDetalle extends AuditableEntity<Long> {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 8702524794147610427L;
 
 	@Id

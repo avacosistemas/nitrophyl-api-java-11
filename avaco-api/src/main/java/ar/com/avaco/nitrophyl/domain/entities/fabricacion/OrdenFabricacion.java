@@ -1,6 +1,6 @@
 package ar.com.avaco.nitrophyl.domain.entities.fabricacion;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -19,9 +19,10 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 
+import ar.com.avaco.arc.sec.domain.Usuario;
 import ar.com.avaco.nitrophyl.domain.entities.AuditableEntity;
-import ar.com.avaco.nitrophyl.domain.entities.cliente.Cliente;
 
 @Entity
 @Table(name = "ORDEN_FABRICACION", uniqueConstraints = {
@@ -33,42 +34,46 @@ public class OrdenFabricacion extends AuditableEntity<Long> {
 	@Id
 	@GeneratedValue(generator = "ORDEN_FABRICACION_SEQ")
 	@GenericGenerator(name = "ORDEN_FABRICACION_SEQ", strategy = "org.hibernate.id.enhanced.SequenceStyleGenerator", parameters = {
-			@org.hibernate.annotations.Parameter(name = "sequence_name", value = "ORDEN_FABRICACION_SEQ"),
-			@org.hibernate.annotations.Parameter(name = "initial_value", value = "1"),
-			@org.hibernate.annotations.Parameter(name = "increment_size", value = "1") })
+			@Parameter(name = "sequence_name", value = "ORDEN_FABRICACION_SEQ"),
+			@Parameter(name = "initial_value", value = "1"), @Parameter(name = "increment_size", value = "1") })
 	@Column(name = "ID_ORDEN_FABRICACION", unique = true, nullable = false)
 	private Long id;
 
 	@Column(name = "FECHA")
-	private Date fecha;
+	private LocalDate fecha;
 
 	// numero y anio combinados son unique.
 	@Column(name = "NUMERO", nullable = false, updatable = false)
 	private Long numero;
 
 	@Column(name = "ANIO", nullable = false, updatable = false)
-	private Long anio;
+	private Integer anio;
 
-	// Solo permitir seleccionar las que esten en estado pendiente o asignacion
-	// parcial
-	// Debe filtrarse solo las del cliente seleccionado. Puede ser null si la orden
-	// es interna
+	/**
+	 * Cada orden de fabricacion esta asociado a un item de entrega de la OC.
+	 */
 	@ManyToOne
-	@JoinColumn(name = "ID_ORDEN_COMPRA", nullable = false)
-	private OrdenCompra ordenCompra;
+	@JoinColumn(name = "ID_OC_DET_PEDIDO", nullable = false)
+	private OrdenCompraDetallePedido ordenCompraDetalle;
 
-	// Si el cliente es null, entonces es interna propia de nitro
-	@ManyToOne
-	@JoinColumn(name = "ID_CLIENTE", nullable = false)
-	private Cliente cliente;
-
-	// Revisar los demás estados. llegar solo hasta pendiente asignacion
 	@Enumerated(EnumType.STRING)
 	@Column(name = "ESTADO")
 	private EstadoOrdenFabricacion estado;
 
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "ordenFabricacion", orphanRemoval = true)
-	private Set<OrdenFabricacionDetalle> detalle = new HashSet<OrdenFabricacionDetalle>();
+	private Set<OrdenFabricacionEntrega> entregas = new HashSet<OrdenFabricacionEntrega>();
+
+	@ManyToOne
+	@JoinColumn(name = "ID_SEC_FAB", nullable = true)
+	private SectorFabrica sector;
+
+	@ManyToOne
+	@JoinColumn(name = "ID_MAQ_FAB", nullable = true)
+	private MaquinaFabrica maquina;
+
+	@ManyToOne
+	@JoinColumn(name = "ID_OPERARIO")
+	private Usuario operario;
 
 	public Long getId() {
 		return id;
@@ -78,11 +83,11 @@ public class OrdenFabricacion extends AuditableEntity<Long> {
 		this.id = id;
 	}
 
-	public Date getFecha() {
+	public LocalDate getFecha() {
 		return fecha;
 	}
 
-	public void setFecha(Date fecha) {
+	public void setFecha(LocalDate fecha) {
 		this.fecha = fecha;
 	}
 
@@ -94,28 +99,12 @@ public class OrdenFabricacion extends AuditableEntity<Long> {
 		this.numero = numero;
 	}
 
-	public Long getAnio() {
-		return anio;
+	public OrdenCompraDetallePedido getOrdenCompraDetalle() {
+		return ordenCompraDetalle;
 	}
 
-	public void setAnio(Long anio) {
-		this.anio = anio;
-	}
-
-	public OrdenCompra getOrdenCompra() {
-		return ordenCompra;
-	}
-
-	public void setOrdenCompra(OrdenCompra ordenCompra) {
-		this.ordenCompra = ordenCompra;
-	}
-
-	public Cliente getCliente() {
-		return cliente;
-	}
-
-	public void setCliente(Cliente cliente) {
-		this.cliente = cliente;
+	public void setOrdenCompraDetalle(OrdenCompraDetallePedido ordenCompraDetalle) {
+		this.ordenCompraDetalle = ordenCompraDetalle;
 	}
 
 	public EstadoOrdenFabricacion getEstado() {
@@ -126,12 +115,44 @@ public class OrdenFabricacion extends AuditableEntity<Long> {
 		this.estado = estado;
 	}
 
-	public Set<OrdenFabricacionDetalle> getDetalle() {
-		return detalle;
+	public Set<OrdenFabricacionEntrega> getEntregas() {
+		return entregas;
 	}
 
-	public void setDetalle(Set<OrdenFabricacionDetalle> detalle) {
-		this.detalle = detalle;
+	public void setEntregas(Set<OrdenFabricacionEntrega> entregas) {
+		this.entregas = entregas;
+	}
+
+	public SectorFabrica getSector() {
+		return sector;
+	}
+
+	public void setSector(SectorFabrica sector) {
+		this.sector = sector;
+	}
+
+	public MaquinaFabrica getMaquina() {
+		return maquina;
+	}
+
+	public void setMaquina(MaquinaFabrica maquina) {
+		this.maquina = maquina;
+	}
+
+	public Usuario getOperario() {
+		return operario;
+	}
+
+	public void setOperario(Usuario operario) {
+		this.operario = operario;
+	}
+
+	public Integer getAnio() {
+		return anio;
+	}
+
+	public void setAnio(Integer anio) {
+		this.anio = anio;
 	}
 
 }

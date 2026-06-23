@@ -43,8 +43,15 @@ public class OrdenCompraRestController
 		return super.get(id);
 	}
 
+	@RequestMapping(value = "/ordenCompra/generarOrdenFabrica/{id}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<JSONResponse> generarOrdenFabrica(@PathVariable Long id) throws BusinessException {
+		this.service.generarOrdenFabrica(id);
+		return OK(true);
+	}
+
 	@RequestMapping(value = "/ordenCompra/cancelar/{id}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<JSONResponse> cancelar(@PathVariable Long id, @RequestBody Map<String, String> body) throws BusinessException {
+	public ResponseEntity<JSONResponse> cancelar(@PathVariable Long id, @RequestBody Map<String, String> body)
+			throws BusinessException {
 		this.service.cancelar(id, body.get("observaciones"));
 		return OK(id);
 	}
@@ -57,10 +64,11 @@ public class OrdenCompraRestController
 
 	@Override
 	@RequestMapping(value = "/ordenCompra/{id}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<JSONResponse> update(@PathVariable Long id, @RequestBody OrdenCompraDTO dto) throws BusinessException {
+	public ResponseEntity<JSONResponse> update(@PathVariable Long id, @RequestBody OrdenCompraDTO dto)
+			throws BusinessException {
 		return super.update(id, dto);
 	}
-	
+
 	@Resource(name = "ordenCompraEPService")
 	public void setService(OrdenCompraEPService ordenCompraEPService) {
 		super.service = ordenCompraEPService;

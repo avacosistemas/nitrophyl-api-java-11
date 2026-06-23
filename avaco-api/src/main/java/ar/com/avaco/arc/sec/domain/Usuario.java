@@ -466,4 +466,10 @@ public class Usuario extends ar.com.avaco.arc.core.domain.Entity<Long> implement
 	public void setImpersonables(Set<Usuario> impersonables) {
 		this.impersonables = impersonables;
 	}
+
+	public static Usuario ofId(Long idUsuario) {
+		Usuario usuario = new Usuario();
+		usuario.setId(idUsuario);
+		return usuario;
+	}
 }

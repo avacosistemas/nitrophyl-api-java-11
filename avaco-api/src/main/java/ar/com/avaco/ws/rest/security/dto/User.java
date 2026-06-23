@@ -111,4 +111,9 @@ public class User extends Entity<Long> implements Serializable{
 		this.enabled = enabled;
 	}
 	
+	public String getNombreApellido() {
+		return this.name + " " + this.lastname;
+	}
+
+	
 }

@@ -46,14 +46,15 @@ public class PiezaRestController extends AbstractAuditableDTORestController<Piez
 	}
 
 	@RequestMapping(value = "/pieza/combo", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<JSONResponse> listombo(@RequestParam(required = false) String nombre, @RequestParam(required = false) Long idCliente) {
+	public ResponseEntity<JSONResponse> listombo(@RequestParam(required = false) String nombre,
+			@RequestParam(required = false) Long idCliente) {
 		List<PiezaComboDTO> list = this.service.listCombo(nombre, idCliente);
 		JSONResponse response = new JSONResponse();
 		response.setData(list);
 		response.setStatus(JSONResponse.OK);
 		return new ResponseEntity<JSONResponse>(response, HttpStatus.OK);
 	}
-	
+
 	@RequestMapping(value = "/pieza/{idPieza}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<JSONResponse> getByIdEdicion(@PathVariable Long idPieza) {
 		PiezaEdicionDTO pieza = this.service.getByIdEdicion(idPieza);
@@ -84,6 +85,11 @@ public class PiezaRestController extends AbstractAuditableDTORestController<Piez
 	@RequestMapping(value = "/pieza/{idPieza}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<JSONResponse> update(@PathVariable Long idPieza, @RequestBody PiezaPUTDTO piezaFormula) {
 		this.service.update(idPieza, piezaFormula);
+		return returnOK();
+	}
+
+	@RequestMapping(value = "/pieza/controles", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<JSONResponse> listControles(@RequestParam Long idPieza) {
 		return returnOK();
 	}
 

@@ -77,30 +77,6 @@ public class Pieza extends AuditableEntity<Long> {
 	@Column(name = "FALTANTES", insertable = false, updatable = false)
 	private String faltantes;
 
-	public String getFaltantes() {
-		return faltantes;
-	}
-
-	public void setFaltantes(String faltantes) {
-		this.faltantes = faltantes;
-	}
-
-	public Integer getCantidadInsumos() {
-		return cantidadInsumos;
-	}
-
-	public void setCantidadInsumos(Integer cantidadInsumos) {
-		this.cantidadInsumos = cantidadInsumos;
-	}
-
-	public Boolean getRequiereInsumos() {
-		return requiereInsumos;
-	}
-
-	public void setRequiereInsumos(Boolean requiereInsumos) {
-		this.requiereInsumos = requiereInsumos;
-	}
-
 	/**
 	 * Tipo de pieza.
 	 */
@@ -363,6 +339,30 @@ public class Pieza extends AuditableEntity<Long> {
 
 	public void setClientes(Set<PiezaCliente> clientes) {
 		this.clientes = clientes;
+	}
+
+	public String getFaltantes() {
+		return faltantes;
+	}
+
+	public void setFaltantes(String faltantes) {
+		this.faltantes = faltantes;
+	}
+
+	public Integer getCantidadInsumos() {
+		return cantidadInsumos;
+	}
+
+	public void setCantidadInsumos(Integer cantidadInsumos) {
+		this.cantidadInsumos = cantidadInsumos;
+	}
+
+	public Boolean getRequiereInsumos() {
+		return requiereInsumos;
+	}
+
+	public void setRequiereInsumos(Boolean requiereInsumos) {
+		this.requiereInsumos = requiereInsumos;
 	}
 
 }

@@ -5,7 +5,7 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.type.StandardBasicTypes;
 import org.hibernate.type.Type;
 
-import ar.com.avaco.nitrophyl.domain.entities.fabricacion.OrdenCompraEstado;
+import ar.com.avaco.nitrophyl.domain.entities.fabricacion.EstadoOrdenCompra;
 import ar.com.avaco.ws.rest.dto.DTOEntity;
 
 public class OrdenCompraListadoDTO extends DTOEntity<Long> {
@@ -20,7 +20,7 @@ public class OrdenCompraListadoDTO extends DTOEntity<Long> {
 
 	private String fecha;
 
-	private OrdenCompraEstado estado;
+	private EstadoOrdenCompra estado;
 
 	private String observaciones;
 
@@ -36,11 +36,11 @@ public class OrdenCompraListadoDTO extends DTOEntity<Long> {
 				.add(Projections.property("observaciones"), "observaciones");
 	}
 
-	public OrdenCompraEstado getEstado() {
+	public EstadoOrdenCompra getEstado() {
 		return estado;
 	}
 
-	public void setEstado(OrdenCompraEstado estado) {
+	public void setEstado(EstadoOrdenCompra estado) {
 		this.estado = estado;
 	}
 

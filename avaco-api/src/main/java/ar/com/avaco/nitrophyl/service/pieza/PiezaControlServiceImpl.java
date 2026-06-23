@@ -16,6 +16,7 @@ import ar.com.avaco.nitrophyl.domain.entities.pieza.Pieza;
 import ar.com.avaco.nitrophyl.domain.entities.pieza.PiezaControl;
 import ar.com.avaco.nitrophyl.domain.entities.pieza.PiezaDimension;
 import ar.com.avaco.nitrophyl.domain.entities.pieza.TipoControl;
+import ar.com.avaco.nitrophyl.domain.entities.pieza.UnidadDureza;
 import ar.com.avaco.nitrophyl.domain.entities.pieza.insumo.InsumoTratadoObservacionControl;
 import ar.com.avaco.nitrophyl.repository.pieza.PiezaControlRepository;
 
@@ -42,13 +43,23 @@ public class PiezaControlServiceImpl extends NJBaseService<Long, PiezaControl, P
 				.collect(Collectors.toList());
 
 		List<PiezaControl> controlesDimensiones = pieza.getDimensiones().stream().filter(PiezaDimension::getControlar)
-				.map(pd -> new PiezaControl(pd.getTipo() + " - " + pd.getObservaciones(), pd.getPieza(),
-						TipoControl.MEDIDA))
+				.map(pd -> new PiezaControl(pd.getTipo() + " - " + pd.getValor() + " (" + pd.getMinimo() + " / "
+						+ pd.getMaximo() + ") - " + pd.getObservaciones(), pd.getPieza(), TipoControl.MEDIDA))
 				.collect(Collectors.toList());
 
+		Double durezaMaxima = pieza.getDetalleFormula().getFormula().getDurezaMaxima();
+		Double durezaMinima = pieza.getDetalleFormula().getFormula().getDurezaMinima();
+		UnidadDureza unidadDureza = pieza.getDetalleFormula().getFormula().getUnidadDureza();
+
+		PiezaControl durezaControl = new PiezaControl();
+		durezaControl.setTipo(TipoControl.DUREZA);
+		durezaControl.setControl(durezaMinima + " - " + durezaMaxima + " (" + unidadDureza.name() + ")");
+
 		List<PiezaControl> controles = new ArrayList<PiezaControl>();
+
 		controles.addAll(controlesInsumos);
 		controles.addAll(controlesDimensiones);
+		controles.add(durezaControl);
 
 		return controles;
 

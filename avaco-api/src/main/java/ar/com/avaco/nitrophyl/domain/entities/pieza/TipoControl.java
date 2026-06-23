@@ -2,7 +2,7 @@ package ar.com.avaco.nitrophyl.domain.entities.pieza;
 
 public enum TipoControl {
 
-	INSUMO("Insumos"), MEDIDA("Medidas"), GENERAL("General");
+	INSUMO("Insumos"), MEDIDA("Medidas"), GENERAL("General"), DUREZA("Dureza");
 
 	private String label;
 
