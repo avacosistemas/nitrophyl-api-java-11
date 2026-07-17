@@ -1,7 +1,9 @@
 package ar.com.avaco.nitrophyl.ws.dto.ordenfabricacion;
 
+import java.util.Date;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.AllArgsConstructor;
@@ -43,7 +45,14 @@ public class ItemOrdenTrabajoDTO {
 	private String ubicacion;
 
 	private String pc;
+	
+	private String identficacion;
 
+	private Double cotizacion;
+	
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
+	private Date fechaCotizacion;
+	
 	@JsonProperty("observaciones_item")
 	private String observacionesItem;
 

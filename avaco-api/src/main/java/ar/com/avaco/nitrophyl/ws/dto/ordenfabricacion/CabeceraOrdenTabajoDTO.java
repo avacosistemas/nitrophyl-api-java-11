@@ -1,7 +1,10 @@
 package ar.com.avaco.nitrophyl.ws.dto.ordenfabricacion;
 
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import ar.com.avaco.nitrophyl.domain.entities.administracion.TipoDespacho;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -23,6 +26,8 @@ public class CabeceraOrdenTabajoDTO {
 
     private String prensa;
 
+    private String sector;
+
     @JsonProperty("fecha_emision")
     private String fechaEmision;
 
@@ -30,5 +35,17 @@ public class CabeceraOrdenTabajoDTO {
     private String fechaEntrega;
 
     private String observaciones;
+    
+    private String telefonoCliente;
+    
+    private String emailCliente;
+    
+	private TipoDespacho tipoDespacho;
+
+	private String empresaTransporte;
+
+	private List<String> mediosEnvio;
+
+	private String domicilioEnvio;
 
 }

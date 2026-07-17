@@ -8,6 +8,7 @@ public enum EstadoOrdenCompra {
 	FINALIZADA,
 	FACTURADA,
 	ENTREGADA, 
-	CANCELADA
+	CANCELADA, 
+	FABRICADA
 	
 }

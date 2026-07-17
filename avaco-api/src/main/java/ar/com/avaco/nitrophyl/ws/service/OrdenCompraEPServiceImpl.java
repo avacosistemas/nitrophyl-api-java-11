@@ -219,6 +219,8 @@ public class OrdenCompraEPServiceImpl
 		ordenCompra.setEmpresaTransporte(transporte);
 		ordenCompra.setDomicilioEnvio(domicilio);
 		ordenCompra.setMediosEnvio(mediosEnvio);
+		
+		ordenCompra.setObservaciones(dto.getObservaciones());
 
 		// Si viene un archivo nuevo entonces lo piso, sino dejo el actual.
 		if (dto.getArchivo() != null && dto.getArchivo().getArchivo() != null && dto.getArchivo().getNombre() != null) {

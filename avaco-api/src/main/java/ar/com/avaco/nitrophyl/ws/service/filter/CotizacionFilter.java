@@ -7,15 +7,23 @@ import ar.com.avaco.arc.core.domain.filter.AbstractFilter;
 import ar.com.avaco.arc.core.domain.filter.FilterData;
 import ar.com.avaco.arc.core.domain.filter.FilterDataType;
 import ar.com.avaco.nitrophyl.ws.dto.CotizacionFilterDTO;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
+
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode(callSuper = false)
 public class CotizacionFilter extends AbstractFilter {
 
 	private Long idPieza;
 
 	private Long idCliente;
-
-	public CotizacionFilter() {
-	}
 
 	public CotizacionFilter(CotizacionFilterDTO filter) {
 		super(filter.getRows(), filter.getFirst(), filter.getAsc(), filter.getIdx());
