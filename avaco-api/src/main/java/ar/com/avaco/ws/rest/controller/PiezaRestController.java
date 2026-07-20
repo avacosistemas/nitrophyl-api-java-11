@@ -23,7 +23,6 @@ import ar.com.avaco.nitrophyl.ws.dto.PiezaFilterDTO;
 import ar.com.avaco.nitrophyl.ws.dto.PiezaPUTDTO;
 import ar.com.avaco.nitrophyl.ws.dto.PiezaGrillaDTO;
 import ar.com.avaco.nitrophyl.ws.service.PiezaEPService;
-import ar.com.avaco.nitrophyl.ws.service.filter.PiezaFilter;
 import ar.com.avaco.ws.rest.dto.JSONResponse;
 
 @RestController

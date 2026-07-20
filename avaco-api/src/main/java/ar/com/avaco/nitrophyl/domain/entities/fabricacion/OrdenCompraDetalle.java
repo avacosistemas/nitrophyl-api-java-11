@@ -50,6 +50,12 @@ public class OrdenCompraDetalle extends AuditableEntity<Long> {
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "ordenCompraDetalle", orphanRemoval = true)
 	private Set<OrdenCompraDetallePedido> entregasSolicitadas = new HashSet<OrdenCompraDetallePedido>();
 
+	@Column(name = "DESCUENTO")
+	private Double descuento;
+
+	@Column(name = "OBSERVACION")
+	private String observacion;
+
 	public Long getId() {
 		return id;
 	}
@@ -88,6 +94,22 @@ public class OrdenCompraDetalle extends AuditableEntity<Long> {
 
 	public void setEntregasSolicitadas(Set<OrdenCompraDetallePedido> entregasSolicitadas) {
 		this.entregasSolicitadas = entregasSolicitadas;
+	}
+
+	public Double getDescuento() {
+		return descuento;
+	}
+
+	public void setDescuento(Double descuento) {
+		this.descuento = descuento;
+	}
+
+	public String getObservacion() {
+		return observacion;
+	}
+
+	public void setObservacion(String observacion) {
+		this.observacion = observacion;
 	}
 
 }

@@ -1,9 +1,7 @@
 package ar.com.avaco.nitrophyl.ws.service;
 
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -14,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ar.com.avaco.arc.sec.domain.Usuario;
-import ar.com.avaco.nitrophyl.domain.entities.administracion.TipoDespacho;
 import ar.com.avaco.nitrophyl.domain.entities.cliente.Cliente;
 import ar.com.avaco.nitrophyl.domain.entities.fabricacion.EstadoOrdenCompra;
 import ar.com.avaco.nitrophyl.domain.entities.fabricacion.EstadoOrdenFabricacion;
@@ -32,10 +29,8 @@ import ar.com.avaco.nitrophyl.domain.entities.pieza.PiezaPlano;
 import ar.com.avaco.nitrophyl.domain.entities.pieza.cliente.Cotizacion;
 import ar.com.avaco.nitrophyl.service.fabricacion.OrdenCompraService;
 import ar.com.avaco.nitrophyl.service.fabricacion.OrdenFabricacionService;
-import ar.com.avaco.nitrophyl.service.pieza.CotizacionService;
+import ar.com.avaco.nitrophyl.service.lote.LoteService;
 import ar.com.avaco.nitrophyl.service.pieza.PiezaControlService;
-import ar.com.avaco.nitrophyl.ws.dto.CotizacionDTO;
-import ar.com.avaco.nitrophyl.ws.dto.CotizacionFilterDTO;
 import ar.com.avaco.nitrophyl.ws.dto.ListadoOrdenFabricacionDTO;
 import ar.com.avaco.nitrophyl.ws.dto.OrdenFabricacionAsignacionDTO;
 import ar.com.avaco.nitrophyl.ws.dto.OrdenFabricacionDTO;
@@ -64,6 +59,9 @@ public class OrdenFabricacionEPServiceImpl
 
 	@Autowired
 	private PiezaControlService piezaControlService;
+	
+	@Autowired
+	private LoteService loteService;
 	
 	@Override
 	@Resource(name = "ordenFabricacionService")
@@ -104,7 +102,9 @@ public class OrdenFabricacionEPServiceImpl
 		OrdenFabricacionEntrega ofe = new OrdenFabricacionEntrega();
 		ofe.setCantidad(entrega.getCantidad());
 		ofe.setFecha(entrega.getFecha());
-		ofe.setLote(Lote.ofId(entrega.getIdLote()));
+		
+		entrega.getIdLote().forEach(idlote -> ofe.getLotes().add(loteService.get(idlote)));
+		
 		ofe.setOperario(Usuario.ofId(entrega.getIdUsuario()));
 		return ofe;
 	}
@@ -213,9 +213,18 @@ public class OrdenFabricacionEPServiceImpl
 		String plano = piezaPlano.getCodigo() + "/" + piezaPlano.getRevision();
 		String ubicacion = moldePieza.getUbicacion();
 		String identificacion = piezaOC.getProceso().getTerminacion().getIdentificacion();
-
+		String observacionPieza = ordenFabricacion.getOrdenCompraDetalle().getOrdenCompraDetalle().getObservacion();
+		
 		Cotizacion vigente = ordenFabricacion.getOrdenCompraDetalle().getOrdenCompraDetalle().getCotizacion();
 		
+		Double descuento = ordenFabricacion.getOrdenCompraDetalle().getOrdenCompraDetalle().getDescuento();
+		String descuentoString = null;
+		String descuentoValorString = null;
+		if (descuento != null) {
+			descuentoString = descuento.toString();
+			Double valor = vigente.getValor() - (vigente.getValor() * descuento / 100D);
+			descuentoValorString = valor.toString();
+		}
 		
 		ItemOrdenTrabajoDTO item = ItemOrdenTrabajoDTO.builder()
 				.identficacion(identificacion)
@@ -226,9 +235,11 @@ public class OrdenFabricacionEPServiceImpl
 				.idItem(1L)
 				.material(material)
 				.matriz(molde)
-				.observacionesItem("")
 				.pc(postCura)
 				.planoRev(plano)
+				.observacion(observacionPieza)
+				.descuento(descuentoString)
+				.precioDescuento(descuentoValorString)
 				.titulo(pieza)
 				.ubicacion(ubicacion)
 				.cotizacion(vigente.getValor())

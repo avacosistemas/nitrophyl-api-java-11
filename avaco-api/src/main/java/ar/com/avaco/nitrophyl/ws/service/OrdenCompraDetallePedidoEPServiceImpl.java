@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import ar.com.avaco.nitrophyl.domain.entities.fabricacion.OrdenCompraDetallePedido;
 import ar.com.avaco.nitrophyl.service.fabricacion.OrdenCompraDetallePedidoService;
 import ar.com.avaco.nitrophyl.ws.dto.OrdenCompraDetallePedidoDTO;
-import ar.com.avaco.nitrophyl.ws.service.OrdenCompraDetallePedidoEPService;
 import ar.com.avaco.ws.rest.service.CRUDAuditableEPBaseService;
 
 @Service("ordenCompraDetallePedidoEPService")

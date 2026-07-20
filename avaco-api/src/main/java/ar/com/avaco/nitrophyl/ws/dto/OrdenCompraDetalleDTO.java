@@ -21,6 +21,26 @@ public class OrdenCompraDetalleDTO extends DTOAuditableEntity<Long> {
 
 	private List<OrdenCompraDetallePedidoDTO> entregasSolicitadas = new ArrayList<OrdenCompraDetallePedidoDTO>();
 
+	private Double descuento;
+
+	private String observacion;
+
+	public String getObservacion() {
+		return observacion;
+	}
+
+	public void setObservacion(String observacion) {
+		this.observacion = observacion;
+	}
+
+	public Double getDescuento() {
+		return descuento;
+	}
+
+	public void setDescuento(Double descuento) {
+		this.descuento = descuento;
+	}
+
 	public Long getId() {
 		return id;
 	}
