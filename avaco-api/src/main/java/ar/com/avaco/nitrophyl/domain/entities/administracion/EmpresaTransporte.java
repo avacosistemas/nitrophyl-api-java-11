@@ -9,7 +9,6 @@ import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 
 import ar.com.avaco.nitrophyl.domain.entities.AuditableEntity;
-import ar.com.avaco.nitrophyl.domain.entities.cliente.ClienteDomicilio;
 
 @Entity
 @Table(name = "EMPRESA_TRANSPORTE")

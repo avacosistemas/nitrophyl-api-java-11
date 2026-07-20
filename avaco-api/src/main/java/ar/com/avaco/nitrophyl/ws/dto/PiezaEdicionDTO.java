@@ -7,8 +7,6 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.Column;
-
 import ar.com.avaco.ws.rest.dto.DTOEntity;
 
 public class PiezaEdicionDTO extends DTOEntity<Long> {

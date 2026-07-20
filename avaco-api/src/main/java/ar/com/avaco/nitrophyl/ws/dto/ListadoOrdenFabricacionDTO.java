@@ -1,9 +1,5 @@
 package ar.com.avaco.nitrophyl.ws.dto;
 
-import java.time.LocalDate;
-import java.util.Date;
-
-import ar.com.avaco.ws.rest.dto.DTOAuditableEntity;
 import ar.com.avaco.ws.rest.dto.DTOEntity;
 
 public class ListadoOrdenFabricacionDTO extends DTOEntity<Long> {

@@ -2,16 +2,12 @@ package ar.com.avaco.nitrophyl.ws.service.filter;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
 import org.apache.commons.lang3.StringUtils;
 
 import ar.com.avaco.arc.core.domain.filter.AbstractFilter;
 import ar.com.avaco.arc.core.domain.filter.FilterData;
 import ar.com.avaco.arc.core.domain.filter.FilterDataType;
 import ar.com.avaco.nitrophyl.ws.dto.EmpresaTransporteFilterDTO;
-import ar.com.avaco.nitrophyl.ws.dto.PiezaFilterDTO;
 
 public class EmpresaTransporteFilter extends AbstractFilter {
 

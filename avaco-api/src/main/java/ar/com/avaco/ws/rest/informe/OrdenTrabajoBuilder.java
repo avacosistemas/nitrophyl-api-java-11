@@ -1,50 +1,19 @@
 package ar.com.avaco.ws.rest.informe;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.util.Calendar;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import org.apache.commons.lang3.StringUtils;
-
-import com.itextpdf.text.BadElementException;
-import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
-import com.itextpdf.text.FontFactory;
-import com.itextpdf.text.Image;
 import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
-import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 
-import ar.com.avaco.commons.exception.ErrorValidationException;
-import ar.com.avaco.nitrophyl.domain.entities.cliente.Cliente;
-import ar.com.avaco.nitrophyl.domain.entities.formula.ConfiguracionPrueba;
-import ar.com.avaco.nitrophyl.domain.entities.formula.ConfiguracionPruebaCondicion;
-import ar.com.avaco.nitrophyl.domain.entities.formula.RevisionParametros;
-import ar.com.avaco.nitrophyl.domain.entities.lote.Ensayo;
-import ar.com.avaco.nitrophyl.domain.entities.lote.EnsayoResultado;
-import ar.com.avaco.nitrophyl.domain.entities.lote.Lote;
-import ar.com.avaco.nitrophyl.domain.entities.reporte.ReporteLoteConfiguracionCliente;
-import ar.com.avaco.nitrophyl.service.reporte.ReporteLoteConfiguracionClienteService;
 import ar.com.avaco.nitrophyl.ws.dto.ArchivoDTO;
-import ar.com.avaco.utils.DateUtils;
-import ar.com.avaco.ws.rest.informe.PDFUtils.RoundRectangle;
 
 public class OrdenTrabajoBuilder {
 

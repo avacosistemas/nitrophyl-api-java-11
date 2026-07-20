@@ -38,6 +38,14 @@ public class ItemOrdenTrabajoDTO {
 	@JsonProperty("plano_rev")
 	private String planoRev;
 
+	@JsonProperty("observaciones_item")
+	private String observacion;
+	
+	private String descuento;
+	
+	@JsonProperty("precio_descuento")
+	private String precioDescuento;
+	
 	private String matriz;
 
 	private String identificacion;
@@ -53,9 +61,6 @@ public class ItemOrdenTrabajoDTO {
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
 	private Date fechaCotizacion;
 	
-	@JsonProperty("observaciones_item")
-	private String observacionesItem;
-
 	@JsonProperty("control_calidad")
 	private List<ControlCalidadDTO> controlCalidad;
 

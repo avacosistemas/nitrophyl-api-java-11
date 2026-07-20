@@ -1,6 +1,8 @@
 package ar.com.avaco.nitrophyl.ws.dto;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -11,7 +13,7 @@ public class OrdenFabricacionEntregaDTO {
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
 	private LocalDate fecha;
 
-	private Long idLote;
+	private List<Long> idLote = new ArrayList<Long>();
 
 	private Long idUsuario;
 
@@ -31,20 +33,20 @@ public class OrdenFabricacionEntregaDTO {
 		this.fecha = fecha;
 	}
 
-	public Long getIdLote() {
-		return idLote;
-	}
-
-	public void setIdLote(Long idLote) {
-		this.idLote = idLote;
-	}
-
 	public Long getIdUsuario() {
 		return idUsuario;
 	}
 
 	public void setIdUsuario(Long idUsuario) {
 		this.idUsuario = idUsuario;
+	}
+
+	public List<Long> getIdLote() {
+		return idLote;
+	}
+
+	public void setIdLote(List<Long> idLote) {
+		this.idLote = idLote;
 	}
 
 }

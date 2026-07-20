@@ -19,7 +19,6 @@ import ar.com.avaco.nitrophyl.ws.dto.CotizacionFilterDTO;
 import ar.com.avaco.nitrophyl.ws.dto.PageDTO;
 import ar.com.avaco.nitrophyl.ws.service.CotizacionEPService;
 import ar.com.avaco.nitrophyl.ws.service.filter.CotizacionFilter;
-import ar.com.avaco.nitrophyl.ws.service.filter.PiezaFilter;
 import ar.com.avaco.ws.rest.dto.JSONResponse;
 
 @RestController

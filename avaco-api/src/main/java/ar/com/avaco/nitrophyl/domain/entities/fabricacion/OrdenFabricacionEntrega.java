@@ -1,12 +1,17 @@
 package ar.com.avaco.nitrophyl.domain.entities.fabricacion;
 
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -41,9 +46,9 @@ public class OrdenFabricacionEntrega extends AuditableEntity<Long> {
 	@Column(name = "FECHA")
 	private LocalDate fecha;
 
-	@ManyToOne(optional = false)
-	@JoinColumn(name = "ID_LOTE")
-	private Lote lote;
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name = "ORDEN_FABRICACION_ENTREGA_LOTE", joinColumns = @JoinColumn(name = "ID_ORDEN_FAB_ENT", referencedColumnName = "ID_ORDEN_FAB_ENT"), inverseJoinColumns = @JoinColumn(name = "ID_LOTE", referencedColumnName = "ID_LOTE"))
+	private Set<Lote> lotes = new HashSet<Lote>();
 
 	@ManyToOne(optional = false)
 	@JoinColumn(name = "ID_OPERARIO")
@@ -81,12 +86,12 @@ public class OrdenFabricacionEntrega extends AuditableEntity<Long> {
 		this.fecha = fecha;
 	}
 
-	public Lote getLote() {
-		return lote;
+	public Set<Lote> getLotes() {
+		return lotes;
 	}
 
-	public void setLote(Lote lote) {
-		this.lote = lote;
+	public void setLotes(Set<Lote> lotes) {
+		this.lotes = lotes;
 	}
 
 	public Usuario getOperario() {
