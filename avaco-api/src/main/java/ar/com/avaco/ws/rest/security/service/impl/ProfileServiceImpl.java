@@ -96,5 +96,11 @@ public class ProfileServiceImpl extends AbstractConvertService<Profile, Long, Pe
 		return null;
 	}
 
+	@Override
+	public boolean exists(Long id) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 
 }

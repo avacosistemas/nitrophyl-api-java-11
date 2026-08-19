@@ -1,5 +1,6 @@
 package ar.com.avaco.nitrophyl.service.fabricacion;
 
+import java.util.List;
 import java.util.Set;
 
 import ar.com.avaco.arc.core.component.bean.service.NJService;
@@ -16,5 +17,7 @@ public interface OrdenFabricacionService extends NJService<Long, OrdenFabricacio
 	PageDTO<ListadoOrdenFabricacionDTO> listFilterCountCustom(OrdenFabricacionFilterDTO ordenFabricacionFilterDTO);
 
 	boolean hayPendientes(Long idOrdenFabricacion);
+
+	List<OrdenFabricacion> listByIds(List<Long> ids);
 
 }

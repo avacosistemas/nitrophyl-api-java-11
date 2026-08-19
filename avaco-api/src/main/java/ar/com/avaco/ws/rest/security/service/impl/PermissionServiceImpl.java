@@ -64,4 +64,10 @@ public class PermissionServiceImpl extends AbstractConvertService<Permission, Lo
 		return null;
 	}
 
+	@Override
+	public boolean exists(Long id) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

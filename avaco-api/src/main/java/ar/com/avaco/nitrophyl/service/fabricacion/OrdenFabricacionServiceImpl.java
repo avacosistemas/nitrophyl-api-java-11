@@ -63,4 +63,9 @@ public class OrdenFabricacionServiceImpl extends NJBaseService<Long, OrdenFabric
 		return this.repository.listFilterCount(ordenFabricacionFilterDTO);
 	}
 
+	@Override
+	public List<OrdenFabricacion> listByIds(List<Long> ids) {
+		return this.repository.findAllById(ids);
+	}
+
 }

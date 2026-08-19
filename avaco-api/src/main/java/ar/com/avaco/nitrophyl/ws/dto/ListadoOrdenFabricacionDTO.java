@@ -40,8 +40,14 @@ public class ListadoOrdenFabricacionDTO extends DTOEntity<Long> {
 
 	private String formulaNombre;
 
-	
-	
+	private Long idSeccion;
+
+	private String seccionNombre;
+
+	private Long idMaquina;
+
+	private String maquinaNombre;
+
 	/**
 	 * Se utiliza para la paginación cuando se consulta con COUNT(*) OVER().
 	 */
@@ -207,6 +213,38 @@ public class ListadoOrdenFabricacionDTO extends DTOEntity<Long> {
 	@Override
 	public Long getId() {
 		return idOrdenFabricacion;
+	}
+
+	public Long getIdSeccion() {
+		return idSeccion;
+	}
+
+	public void setIdSeccion(Long idSeccion) {
+		this.idSeccion = idSeccion;
+	}
+
+	public String getSeccionNombre() {
+		return seccionNombre;
+	}
+
+	public void setSeccionNombre(String seccionNombre) {
+		this.seccionNombre = seccionNombre;
+	}
+
+	public Long getIdMaquina() {
+		return idMaquina;
+	}
+
+	public void setIdMaquina(Long idMaquina) {
+		this.idMaquina = idMaquina;
+	}
+
+	public String getMaquinaNombre() {
+		return maquinaNombre;
+	}
+
+	public void setMaquinaNombre(String maquinaNombre) {
+		this.maquinaNombre = maquinaNombre;
 	}
 
 }

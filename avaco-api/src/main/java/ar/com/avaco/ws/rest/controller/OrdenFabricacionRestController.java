@@ -1,5 +1,8 @@
 package ar.com.avaco.ws.rest.controller;
 
+import java.util.List;
+import java.util.Map;
+
 import javax.annotation.Resource;
 
 import org.springframework.http.MediaType;
@@ -17,6 +20,7 @@ import ar.com.avaco.nitrophyl.ws.dto.OrdenFabricacionEntregaDTO;
 import ar.com.avaco.nitrophyl.ws.dto.OrdenFabricacionFilterDTO;
 import ar.com.avaco.nitrophyl.ws.dto.PageDTO;
 import ar.com.avaco.nitrophyl.ws.dto.ordenfabricacion.OrdenTrabajoResponseDTO;
+import ar.com.avaco.nitrophyl.ws.dto.ordenfabricacion.OrdenTrabajoResumenDTO;
 import ar.com.avaco.nitrophyl.ws.service.OrdenFabricacionEPService;
 import ar.com.avaco.ws.rest.dto.JSONResponse;
 
@@ -55,7 +59,15 @@ public class OrdenFabricacionRestController
 		OrdenTrabajoResponseDTO ot = this.service.generarOrdenTrabajo(idOrdenFabricacion);
 		return returnOK(ot);
 	}
-	
+
+	@RequestMapping(value = "/ordenFabricacion/ordenTrabajo/resumen", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<JSONResponse> generarResumenOrdenesTrabajo(@RequestBody Map<String, List<Long>> body)
+			throws Exception {
+		List<Long> ids = body.get("ids");
+		Map<String, List<OrdenTrabajoResumenDTO>> resumen = this.service.generarResumen(ids);
+		return returnOK(resumen);
+	}
+
 	@Resource(name = "ordenFabricacionEPService")
 	public void setService(OrdenFabricacionEPService ordenFabricacionEPService) {
 		super.service = ordenFabricacionEPService;

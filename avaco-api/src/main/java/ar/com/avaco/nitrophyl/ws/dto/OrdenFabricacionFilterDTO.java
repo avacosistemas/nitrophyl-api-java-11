@@ -1,6 +1,7 @@
 package ar.com.avaco.nitrophyl.ws.dto;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -39,5 +40,11 @@ public class OrdenFabricacionFilterDTO extends SortPageDTO {
 	private Integer numeroOF;
 
 	private Integer anioOF;
+	
+	private List<Long> ids;
+	
+	private Long idSeccion;
+	
+	private Long idMaquina;
 
 }

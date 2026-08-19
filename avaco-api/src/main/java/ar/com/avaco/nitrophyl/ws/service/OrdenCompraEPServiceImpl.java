@@ -124,6 +124,7 @@ public class OrdenCompraEPServiceImpl
 			detalle.setPieza(pieza);
 
 			detalle.setDescuento(detalleDTO.getDescuento());
+			detalle.setObservacionDescuento(detalleDTO.getObservacionDescuento());
 			detalle.setObservacion(detalleDTO.getObservacion());
 			
 			// Si existe una cotizacion y se usa la vigente
@@ -251,6 +252,8 @@ public class OrdenCompraEPServiceImpl
 			detalle.setPieza(pieza);
 			
 			detalle.setObservacion(detalleDTO.getObservacion());
+			
+			detalle.setObservacionDescuento(detalleDTO.getObservacionDescuento());
 			detalle.setDescuento(detalleDTO.getDescuento());
 
 			// Si existe una cotizacion y se usa la vigente

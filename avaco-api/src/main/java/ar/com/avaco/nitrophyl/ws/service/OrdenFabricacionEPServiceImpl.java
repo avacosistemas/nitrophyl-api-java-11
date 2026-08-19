@@ -2,7 +2,9 @@ package ar.com.avaco.nitrophyl.ws.service;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.transaction.Transactional;
@@ -17,11 +19,11 @@ import ar.com.avaco.nitrophyl.domain.entities.fabricacion.EstadoOrdenCompra;
 import ar.com.avaco.nitrophyl.domain.entities.fabricacion.EstadoOrdenFabricacion;
 import ar.com.avaco.nitrophyl.domain.entities.fabricacion.MaquinaFabrica;
 import ar.com.avaco.nitrophyl.domain.entities.fabricacion.OrdenCompra;
+import ar.com.avaco.nitrophyl.domain.entities.fabricacion.OrdenCompraDetallePedido;
 import ar.com.avaco.nitrophyl.domain.entities.fabricacion.OrdenFabricacion;
 import ar.com.avaco.nitrophyl.domain.entities.fabricacion.OrdenFabricacionEntrega;
 import ar.com.avaco.nitrophyl.domain.entities.fabricacion.SectorFabrica;
 import ar.com.avaco.nitrophyl.domain.entities.formula.Formula;
-import ar.com.avaco.nitrophyl.domain.entities.lote.Lote;
 import ar.com.avaco.nitrophyl.domain.entities.molde.Molde;
 import ar.com.avaco.nitrophyl.domain.entities.pieza.Pieza;
 import ar.com.avaco.nitrophyl.domain.entities.pieza.PiezaControl;
@@ -41,6 +43,7 @@ import ar.com.avaco.nitrophyl.ws.dto.ordenfabricacion.CabeceraOrdenTabajoDTO;
 import ar.com.avaco.nitrophyl.ws.dto.ordenfabricacion.ControlCalidadDTO;
 import ar.com.avaco.nitrophyl.ws.dto.ordenfabricacion.ItemOrdenTrabajoDTO;
 import ar.com.avaco.nitrophyl.ws.dto.ordenfabricacion.OrdenTrabajoResponseDTO;
+import ar.com.avaco.nitrophyl.ws.dto.ordenfabricacion.OrdenTrabajoResumenDTO;
 import ar.com.avaco.utils.DateUtils;
 import ar.com.avaco.ws.rest.service.CRUDAuditableEPBaseService;
 
@@ -163,8 +166,7 @@ public class OrdenFabricacionEPServiceImpl
 		String cliente = clienteOF.getNombre();
 		String fechaEmision = ordenFabricacion.getFecha().format(DateUtils.DATE_TIME_FORMATTER_DD_MM_YYYY);
 		String fechaEntrega = ordenFabricacion.getOrdenCompraDetalle().getFechaEntregaSolicitada().format(DateUtils.DATE_TIME_FORMATTER_DD_MM_YYYY);
-		String numeroOT = StringUtils.leftPad(ordenFabricacion.getNumero().toString(), 3, "0") + "/" + ordenFabricacion.getAnio();
-		String observaciones = oc.getObservaciones();
+		String numeroOT = ordenFabricacion.getNumeroOT();		String observaciones = oc.getObservaciones();
 		String ordenCompra = oc.getComprobante();
 		String prensa = ordenFabricacion.getMaquina() != null ? ordenFabricacion.getMaquina().getNombre() : "";
 		List<String> mediosEnvio = StringUtils.isNotBlank(oc.getMediosEnvio()) ? Arrays.asList(oc.getMediosEnvio().split(","))
@@ -217,6 +219,7 @@ public class OrdenFabricacionEPServiceImpl
 		
 		Cotizacion vigente = ordenFabricacion.getOrdenCompraDetalle().getOrdenCompraDetalle().getCotizacion();
 		
+		String observacionDescuento= ordenFabricacion.getOrdenCompraDetalle().getOrdenCompraDetalle().getObservacionDescuento();
 		Double descuento = ordenFabricacion.getOrdenCompraDetalle().getOrdenCompraDetalle().getDescuento();
 		String descuentoString = null;
 		String descuentoValorString = null;
@@ -240,6 +243,7 @@ public class OrdenFabricacionEPServiceImpl
 				.observacion(observacionPieza)
 				.descuento(descuentoString)
 				.precioDescuento(descuentoValorString)
+				.observacionDescuento(observacionDescuento)
 				.titulo(pieza)
 				.ubicacion(ubicacion)
 				.cotizacion(vigente.getValor())
@@ -252,6 +256,42 @@ public class OrdenFabricacionEPServiceImpl
 		OrdenTrabajoResponseDTO ot = OrdenTrabajoResponseDTO.builder().cabecera(cabecera).items(itemsOT).build();
 		
 		return ot;
+		
+	}
+
+	@Override
+	public Map<String, List<OrdenTrabajoResumenDTO>> generarResumen(List<Long> ids) {
+		List<OrdenFabricacion> ordenes = this.service.listByIds(ids);
+		Map<String, List<OrdenTrabajoResumenDTO>> resumenes = new HashMap<String, List<OrdenTrabajoResumenDTO>>();
+		
+		
+		ordenes.forEach(o -> {
+			
+			String cliente = o.getOrdenCompraDetalle().getOrdenCompraDetalle().getOrdenCompra().getCliente().getNombre();		
+			
+			List<OrdenTrabajoResumenDTO> listaPorCliente = resumenes.get(cliente);
+			if (listaPorCliente == null) listaPorCliente = new ArrayList<OrdenTrabajoResumenDTO>();
+			
+			Integer cantidadFabricada = o.getEntregas().stream().mapToInt(OrdenFabricacionEntrega::getCantidad).sum();
+			
+			OrdenCompraDetallePedido detalle = o.getOrdenCompraDetalle();
+			Pieza pieza = detalle.getOrdenCompraDetalle().getPieza();
+			OrdenTrabajoResumenDTO resumen = OrdenTrabajoResumenDTO.builder()
+					.cantidadFabricada(cantidadFabricada)
+					.cantidadTotal(detalle.getCantidad())
+					.fechaEntrega(DateUtils.toString(detalle.getFechaEntregaSolicitada(), "dd/MM/yyyy"))
+					.formula(pieza.getDetalleFormula().getFormula().getNombre())
+					.hp(pieza.getProceso().getHojaProceso())
+					.maquina(o.getMaquina() != null ? o.getMaquina().getNombre() : "")
+					.numeroOt(o.getNumeroOT())
+					.ordenCompra(o.getOrdenCompraDetalle().getOrdenCompraDetalle().getOrdenCompra().getComprobante())
+					.pieza(pieza.getDenominacion())
+					.sector(o.getSector() != null ? o.getSector().getNombre() : "")
+					.build();
+			listaPorCliente.add(resumen);
+			resumenes.put(cliente, listaPorCliente);
+		});
+		return resumenes;
 		
 	}
 }

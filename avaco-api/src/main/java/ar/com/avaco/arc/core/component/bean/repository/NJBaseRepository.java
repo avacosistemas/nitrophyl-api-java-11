@@ -2,12 +2,18 @@ package ar.com.avaco.arc.core.component.bean.repository;
 
 import java.io.Serializable;
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Iterator;
 import java.util.List;
 
 import javax.persistence.Embeddable;
+import javax.persistence.Embedded;
 import javax.persistence.EntityManager;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 import org.hibernate.Criteria;
 import org.hibernate.NullPrecedence;
@@ -19,6 +25,7 @@ import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.ProjectionList;
 import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.PropertyProjection;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.internal.CriteriaImpl;
 import org.hibernate.internal.CriteriaImpl.Subcriteria;
@@ -71,7 +78,7 @@ public class NJBaseRepository<ID extends Serializable, E extends ar.com.avaco.ar
 		applyPagination(criteria, filter);
 		applyOrdering(criteria, filter);
 
-		ProjectionList projections = resolveProjection(dtoClass);
+		ProjectionList projections = resolveProjection(dtoClass, criteria);
 
 		if (projections != null) {
 			criteria.setProjection(projections);
@@ -83,15 +90,58 @@ public class NJBaseRepository<ID extends Serializable, E extends ar.com.avaco.ar
 		return criteria.list();
 	}
 
-	private ProjectionList resolveProjection(Class<?> dtoClass) {
+	private ProjectionList resolveProjection(Class<?> dtoClass, Criteria criteria) {
 
 		try {
 			Object dtoInstance = dtoClass.getDeclaredConstructor().newInstance();
-	        Method method = dtoClass.getMethod("getProjections");
-	        return (ProjectionList) method.invoke(dtoInstance);
+			Method method = dtoClass.getMethod("getProjections");
+			ProjectionList pl = (ProjectionList) method.invoke(dtoInstance);
+
+			Field field = ProjectionList.class.getDeclaredField("elements");
+			field.setAccessible(true);
+
+			List<?> projections = (List<?>) field.get(pl);
+
+			for (Object projection : projections) {
+
+				try {
+
+					Field projField = projection.getClass().getDeclaredField("projection");
+					projField.setAccessible(true);
+
+					Object innerProjection = projField.get(projection);
+
+					if (innerProjection instanceof PropertyProjection) {
+
+						Field propertyNameField = PropertyProjection.class.getDeclaredField("propertyName");
+
+						propertyNameField.setAccessible(true);
+
+						String propertyName = (String) propertyNameField.get(innerProjection);
+
+						// Crear aliases necesarios
+						containsAlias(criteria, propertyName);
+
+						// Reemplazar el path original por el aliasado
+						String aliasedProperty = getAliasedProperty(propertyName);
+
+						propertyNameField.set(innerProjection, aliasedProperty);
+
+					}
+
+				} catch (NoSuchFieldException e) {
+					// SQLProjection, AggregateProjection,
+					// CountProjection, etc.
+					continue;
+				}
+			}
+
+			return pl;
+
 		} catch (NoSuchMethodException e) {
 			e.printStackTrace();
 			return null;
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			throw new RuntimeException("Error resolving DTO projection: " + dtoClass.getName(), e);
@@ -153,15 +203,24 @@ public class NJBaseRepository<ID extends Serializable, E extends ar.com.avaco.ar
 	}
 
 	private String getAliasedProperty(String property) {
-		String[] prop = property.split("\\.");
-		StringBuilder field = new StringBuilder();
-		for (int i = 0; i < prop.length; i++) {
-			if (i != 0 && i == prop.length - 1) {
-				field.append(".");
-			}
-			field.append(prop[i]);
+
+		if (!property.contains(".")) {
+			return property;
 		}
-		return field.toString();
+
+		String[] prop = property.split("\\.");
+
+		if (prop.length == 2) {
+			return property;
+		}
+
+		StringBuilder alias = new StringBuilder();
+
+		for (int i = 0; i < prop.length - 1; i++) {
+			alias.append(prop[i]);
+		}
+
+		return alias.toString() + "." + prop[prop.length - 1];
 	}
 
 	protected void applyFilters(Criteria criteria, AbstractFilter abstractFilter) {
@@ -243,34 +302,85 @@ public class NJBaseRepository<ID extends Serializable, E extends ar.com.avaco.ar
 	}
 
 	private Criteria containsAlias(Criteria criteria, String property) {
-		if (!isPropertyEmbeddable(property) && property.contains(".")) {
-			String[] prop = property.split("\\.");
-			CriteriaImpl ci = (CriteriaImpl) criteria;
 
-			for (int i = 0; i < prop.length - 1; i++) {
-				StringBuilder associationPath = new StringBuilder();
-				StringBuilder alias = new StringBuilder();
+		if (!property.contains(".")) {
+			return criteria;
+		}
 
-				for (int j = 0; j <= i; j++) {
-					associationPath.append(prop[j]);
-					if (j != i)
-						associationPath.append(".");
-					alias.append(prop[j]);
-				}
+		CriteriaImpl ci = (CriteriaImpl) criteria;
+
+		String[] prop = property.split("\\.");
+
+		Class<?> currentClass = getHandledClass();
+
+		String currentPath = "";
+
+		for (int i = 0; i < prop.length - 1; i++) {
+
+			String fieldName = prop[i];
+
+			Field field = findField(currentClass, fieldName);
+
+			if (field == null) {
+				return criteria;
+			}
+
+			boolean association = field.isAnnotationPresent(ManyToOne.class)
+					|| field.isAnnotationPresent(OneToOne.class) || field.isAnnotationPresent(OneToMany.class)
+					|| field.isAnnotationPresent(ManyToMany.class);
+
+			boolean embedded = field.isAnnotationPresent(Embedded.class);
+
+			if (currentPath.isEmpty()) {
+				currentPath = fieldName;
+			} else {
+				currentPath += "." + fieldName;
+			}
+
+			if (association) {
+
+				String alias = currentPath.replace(".", "");
 
 				Iterator<Subcriteria> it = ci.iterateSubcriteria();
+
 				boolean found = false;
+
 				while (it.hasNext() && !found) {
 					Subcriteria next = it.next();
-					found = next.getAlias().equals(alias.toString());
+					found = alias.equals(next.getAlias());
 				}
 
 				if (!found) {
-					criteria.createAlias(associationPath.toString(), alias.toString(), JoinType.LEFT_OUTER_JOIN);
+					criteria.createAlias(currentPath, alias, JoinType.LEFT_OUTER_JOIN);
 				}
 			}
+
+			currentClass = field.getType();
+
+			if (embedded) {
+				continue;
+			}
 		}
+
 		return criteria;
+	}
+
+	private Field findField(Class<?> clazz, String fieldName) {
+
+		Class<?> current = clazz;
+
+		while (current != null && current != Object.class) {
+
+			try {
+				Field field = current.getDeclaredField(fieldName);
+				field.setAccessible(true);
+				return field;
+			} catch (NoSuchFieldException e) {
+				current = current.getSuperclass();
+			}
+		}
+
+		return null;
 	}
 
 	public Session getCurrentSession() {

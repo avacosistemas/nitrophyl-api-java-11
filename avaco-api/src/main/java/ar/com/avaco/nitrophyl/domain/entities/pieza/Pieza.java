@@ -169,6 +169,9 @@ public class Pieza extends AuditableEntity<Long> {
 	@Column(name = "OBSERVACIONES_REVISION")
 	private String observacionesRevision;
 
+	@OneToOne(mappedBy = "pieza", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+	private PiezaStock stock;
+
 	public static Pieza ofId(Long id) {
 		Pieza pieza = new Pieza();
 		pieza.setId(id);

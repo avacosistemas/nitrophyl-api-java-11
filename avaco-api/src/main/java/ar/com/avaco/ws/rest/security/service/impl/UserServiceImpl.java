@@ -139,4 +139,10 @@ public class UserServiceImpl extends AbstractConvertService<User, Long, Usuario>
 		return null;
 	}
 
+	@Override
+	public boolean exists(Long id) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

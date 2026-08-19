@@ -23,6 +23,8 @@ public class OrdenCompraDetalleDTO extends DTOAuditableEntity<Long> {
 
 	private Double descuento;
 
+	private String observacionDescuento;
+
 	private String observacion;
 
 	public String getObservacion() {
@@ -95,6 +97,14 @@ public class OrdenCompraDetalleDTO extends DTOAuditableEntity<Long> {
 
 	public void setEntregasSolicitadas(List<OrdenCompraDetallePedidoDTO> entregasSolicitadas) {
 		this.entregasSolicitadas = entregasSolicitadas;
+	}
+
+	public String getObservacionDescuento() {
+		return observacionDescuento;
+	}
+
+	public void setObservacionDescuento(String observacionDescuento) {
+		this.observacionDescuento = observacionDescuento;
 	}
 
 }

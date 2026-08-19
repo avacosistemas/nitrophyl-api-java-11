@@ -49,6 +49,8 @@ public interface NJService<ID extends Serializable, T extends Entity<ID>> {
 	 */
 	T get(ID id);
 
+	boolean exists(ID id);
+	
 	/**
 	 * Lists all the {@link Entity Entities} on the {@link NJRepository}.
 	 * 

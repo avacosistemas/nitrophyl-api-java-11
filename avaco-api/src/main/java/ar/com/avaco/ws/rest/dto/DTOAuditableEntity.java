@@ -3,16 +3,25 @@ package ar.com.avaco.ws.rest.dto;
 import java.io.Serializable;
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import ar.com.avaco.nitrophyl.domain.entities.AuditableEntity;
 
 public abstract class DTOAuditableEntity<ID extends Serializable> extends DTOEntity<ID> {
 
+	@JsonInclude(JsonInclude.Include.NON_NULL)
 	private String usuarioCreacion;
-
+	
+	@JsonInclude(JsonInclude.Include.NON_NULL)
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
 	private Date fechaCreacion;
 
+	@JsonInclude(JsonInclude.Include.NON_NULL)
 	private String usuarioActualizacion;
 
+	@JsonInclude(JsonInclude.Include.NON_NULL)
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
 	private Date fechaActualizacion;
 
 	public DTOAuditableEntity() {

@@ -42,6 +42,8 @@ public class ItemOrdenTrabajoDTO {
 	private String observacion;
 	
 	private String descuento;
+
+	private String observacionDescuento;
 	
 	@JsonProperty("precio_descuento")
 	private String precioDescuento;

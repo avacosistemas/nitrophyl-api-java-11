@@ -16,8 +16,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
@@ -75,6 +77,11 @@ public class OrdenFabricacion extends AuditableEntity<Long> {
 	@JoinColumn(name = "ID_OPERARIO")
 	private Usuario operario;
 
+	@Transient
+	public String getNumeroOT() {
+		return StringUtils.leftPad(this.getNumero().toString(), 3, "0") + "/" + this.getAnio();
+	}
+	
 	public Long getId() {
 		return id;
 	}

@@ -58,6 +58,10 @@ public abstract class NJBaseService<ID extends Serializable, T extends Entity<ID
 		return getRepository().findById(id).orElseThrow();
 	}
 
+	public boolean exists(ID id) {
+		return getRepository().existsById(id);
+	}
+
 	/**
 	 * @see NJService#list()
 	 */

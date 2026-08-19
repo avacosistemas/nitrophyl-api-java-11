@@ -65,6 +65,7 @@ public class PiezaClienteEPServiceImpl
 			cdto.setIdPieza(dto.getIdPieza());
 			cdto.setObservaciones(dto.getObservacionesCotizacion());
 			cdto.setValor(dto.getCotizacion());
+			cdto.setFecha(dto.getFechaCotizacion());
 			this.cotizacionEPService.save(cdto);
 		}
 		return save;

@@ -61,5 +61,11 @@ public class RoleServiceImpl extends AbstractConvertService<Role, Long, Rol> imp
 		return null;
 	}
 
+	@Override
+	public boolean exists(Long id) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 
 }

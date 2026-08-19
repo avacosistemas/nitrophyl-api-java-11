@@ -64,10 +64,16 @@ public class OrdenFabricacionRepositoryImpl extends NJBaseRepository<Long, Orden
 		sql.append("     v.pieza_codigo, ");
 		sql.append("     v.id_formula, ");
 		sql.append("     v.formula_nombre, ");
+		sql.append("     v.id_seccion_fabrica, ");
+		sql.append("     v.seccion_nombre, ");
+		sql.append("     v.id_maquina_fabrica, ");
+		sql.append("     v.maquina_nombre, ");
 		sql.append("     v.total_fabricado, ");
 		sql.append("     v.saldo, ");
 		sql.append("     COUNT(*) OVER() AS total_registros ");
+
 		sql.append(" FROM vw_seguimiento_fabricacion v ");
+
 		sql.append(" WHERE 1 = 1 ");
 
 		Map<String, Object> params = new HashMap<>();
@@ -82,15 +88,31 @@ public class OrdenFabricacionRepositoryImpl extends NJBaseRepository<Long, Orden
 			params.put("idPieza", filter.getIdPieza());
 		}
 
+		if (filter.getIdSeccion() != null) {
+			sql.append(" AND v.id_seccion_fabrica = :idSeccion ");
+			params.put("idSeccion", filter.getIdSeccion());
+		}
+
+		if (filter.getIdMaquina() != null) {
+			sql.append(" AND v.id_maquina_fabrica = :idMaquina ");
+			params.put("idMaquina", filter.getIdMaquina());
+		}
+
 		if (filter.getFechaDesde() != null || filter.getFechaHasta() != null) {
+
 			String tipoFecha = "";
+
 			if (StringUtils.isNotBlank(filter.getTipoFecha())) {
-				if (filter.getTipoFecha().equals("CREACION_OC"))
+
+				if (filter.getTipoFecha().equals("CREACION_OC")) {
 					tipoFecha = "v.fecha_oc";
-				else if (filter.getTipoFecha().equals("CREACION_OF"))
+
+				} else if (filter.getTipoFecha().equals("CREACION_OF")) {
 					tipoFecha = "v.fecha_of";
-				else
+
+				} else {
 					tipoFecha = "v.fecha_entrega_solicitada";
+				}
 			}
 
 			if (filter.getFechaDesde() != null) {
@@ -102,7 +124,6 @@ public class OrdenFabricacionRepositoryImpl extends NJBaseRepository<Long, Orden
 				sql.append(" AND " + tipoFecha + " <= :fechaHasta ");
 				params.put("fechaHasta", filter.getFechaHasta());
 			}
-
 		}
 
 		if (filter.getAnioOF() != null) {
@@ -114,16 +135,17 @@ public class OrdenFabricacionRepositoryImpl extends NJBaseRepository<Long, Orden
 			sql.append(" AND v.numero = :numero ");
 			params.put("numero", filter.getNumeroOF());
 		}
-		
+
 		if (filter.getEstado() != null) {
 			sql.append(" AND v.estado_of = :estadoOF ");
 			params.put("estadoOF", filter.getEstado().name());
 		}
 
 		if (filter.getIdx() != null && filter.getAsc() != null) {
+
 			sql.append(" ORDER BY ");
 			sql.append(filter.getIdx());
-			sql.append(" ");
+
 			if (filter.getAsc()) {
 				sql.append(" ASC ");
 			} else {
@@ -178,14 +200,23 @@ public class OrdenFabricacionRepositoryImpl extends NJBaseRepository<Long, Orden
 
 			dto.setFormulaNombre((String) r[15]);
 
-			dto.setTotalFabricado(((Number) r[16]).intValue());
+			dto.setIdSeccion(r[16] != null ? ((Number) r[16]).longValue() : null);
 
-			dto.setSaldo(((Number) r[17]).intValue());
+			dto.setSeccionNombre((String) r[17]);
 
-			dto.setTotalRegistros(((Number) r[18]).longValue());
+			dto.setIdMaquina(r[18] != null ? ((Number) r[18]).longValue() : null);
+
+			dto.setMaquinaNombre((String) r[19]);
+
+			dto.setTotalFabricado(((Number) r[20]).intValue());
+
+			dto.setSaldo(((Number) r[21]).intValue());
+
+			dto.setTotalRegistros(((Number) r[22]).longValue());
 
 			result.add(dto);
 		}
+
 		long totalRegistros = 0;
 
 		if (!result.isEmpty()) {
