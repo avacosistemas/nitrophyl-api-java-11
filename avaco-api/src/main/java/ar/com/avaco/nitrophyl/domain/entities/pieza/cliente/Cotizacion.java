@@ -35,7 +35,7 @@ public class Cotizacion extends AuditableEntity<Long> {
 	@Column(name = "ID_COTIZACION", unique = true, nullable = false)
 	private Long id;
 
-	@ManyToOne(cascade =  CascadeType.PERSIST)
+	@ManyToOne(cascade = { CascadeType.MERGE })
 	@JoinColumn(name = "ID_PIEZA_CLIENTE")
 	private PiezaCliente piezaCliente;
 

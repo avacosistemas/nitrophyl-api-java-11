@@ -47,6 +47,13 @@ public class OrdenFabricacionRestController
 		return returnOK();
 	}
 
+	@RequestMapping(value = "/ordenFabricacion/reordenar/{idOrdenFabricacion}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<JSONResponse> asignar(@PathVariable Long idOrdenFabricacion,
+			Integer nuevaPosicion) {
+		this.service.reordenar(idOrdenFabricacion, nuevaPosicion);
+		return returnOK();
+	}
+
 	@RequestMapping(value = "/ordenFabricacion/registrarEntrega/{idOrdenFabricacion}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<JSONResponse> registrarEntrega(@PathVariable Long idOrdenFabricacion,
 			@RequestBody OrdenFabricacionEntregaDTO entrega) {

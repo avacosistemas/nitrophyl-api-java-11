@@ -20,4 +20,10 @@ public interface OrdenFabricacionService extends NJService<Long, OrdenFabricacio
 
 	List<OrdenFabricacion> listByIds(List<Long> ids);
 
+	void reordenar(Long idOrdenFabricacion, Integer nuevaPosicion);
+
+	Integer obtenerUltimaPosicion(Long idSector, Long idMaquina);
+
+	void reordenarGrupo(Long idSector, Long idMaquina, Long idOrdenFabricacion);
+
 }

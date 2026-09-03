@@ -68,4 +68,66 @@ public class OrdenFabricacionServiceImpl extends NJBaseService<Long, OrdenFabric
 		return this.repository.findAllById(ids);
 	}
 
+	@Override
+	public void reordenar(Long idOrdenFabricacion, Integer nuevaPosicion) {
+		OrdenFabricacion orden = this.repository.findById(idOrdenFabricacion).get();
+
+		Integer posicionActual = orden.getPosicion();
+
+		if (posicionActual.equals(nuevaPosicion)) {
+			return;
+		}
+
+		Long idSector = orden.getSector().getId();
+		Long idMaquina = orden.getMaquina() != null ? orden.getMaquina().getId() : null;
+
+		List<OrdenFabricacion> ordenes;
+
+		if (idMaquina != null) {
+			ordenes = this.repository.findBySectorIdAndMaquinaIdOrderByPosicionAsc(idSector, idMaquina);
+		} else {
+			ordenes = this.repository.findBySectorIdAndMaquinaIsNullOrderByPosicionAsc(idSector);
+		}
+
+		// Sacamos la orden que estamos moviendo
+		ordenes.removeIf(o -> o.getId().equals(idOrdenFabricacion));
+
+		// Insertamos en la nueva posición.
+		// Las posiciones son 1-based.
+		int indice = Math.max(0, Math.min(nuevaPosicion - 1, ordenes.size()));
+
+		ordenes.add(indice, orden);
+
+		// Reasignamos todas las posiciones
+		for (int i = 0; i < ordenes.size(); i++) {
+			ordenes.get(i).setPosicion(i + 1);
+		}
+
+		this.repository.saveAll(ordenes);
+
+	}
+
+	@Override
+	public Integer obtenerUltimaPosicion(Long idSector, Long idMaquina) {
+		if (idMaquina != null) {
+			return this.repository.obtenerUltimaPosicionConMaquina(idSector, idMaquina);
+		}
+		return this.repository.obtenerUltimaPosicionSinMaquina(idSector);
+	}
+
+	@Override
+	public void reordenarGrupo(Long idSector, Long idMaquina, Long idOrdenFabricacion) {
+		List<OrdenFabricacion> ordenes;
+		if (idMaquina != null) {
+			ordenes = this.repository.findBySectorIdAndMaquinaIdOrderByPosicionAsc(idSector, idMaquina);
+		} else {
+			ordenes = this.repository.findBySectorIdAndMaquinaIsNullOrderByPosicionAsc(idSector);
+			ordenes.removeIf(orden -> orden.getId().equals(idOrdenFabricacion));
+			for (int i = 0; i < ordenes.size(); i++) {
+				ordenes.get(i).setPosicion(i + 1);
+			}
+			this.repository.saveAll(ordenes);
+		}
+	}
+
 }

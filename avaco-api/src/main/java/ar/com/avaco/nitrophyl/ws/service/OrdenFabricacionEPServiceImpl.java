@@ -2,9 +2,11 @@ package ar.com.avaco.nitrophyl.ws.service;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import javax.annotation.Resource;
 import javax.transaction.Transactional;
@@ -38,6 +40,7 @@ import ar.com.avaco.nitrophyl.ws.dto.OrdenFabricacionAsignacionDTO;
 import ar.com.avaco.nitrophyl.ws.dto.OrdenFabricacionDTO;
 import ar.com.avaco.nitrophyl.ws.dto.OrdenFabricacionEntregaDTO;
 import ar.com.avaco.nitrophyl.ws.dto.OrdenFabricacionFilterDTO;
+import ar.com.avaco.nitrophyl.ws.dto.OrdenTrabajoEntregaDTO;
 import ar.com.avaco.nitrophyl.ws.dto.PageDTO;
 import ar.com.avaco.nitrophyl.ws.dto.ordenfabricacion.CabeceraOrdenTabajoDTO;
 import ar.com.avaco.nitrophyl.ws.dto.ordenfabricacion.ControlCalidadDTO;
@@ -84,21 +87,81 @@ public class OrdenFabricacionEPServiceImpl
 	}
 
 	@Override
+	@Transactional
 	public void asignar(Long idOrdenFabricacion, OrdenFabricacionAsignacionDTO asignacion) {
-		OrdenFabricacion ordenFabricacion = this.service.get(idOrdenFabricacion);
-		if (asignacion.getIdMaquina() != null)
-			ordenFabricacion.setMaquina(MaquinaFabrica.ofId(asignacion.getIdMaquina()));
-		if (asignacion.getIdUsuario() != null)
-			ordenFabricacion.setOperario(Usuario.ofId(asignacion.getIdUsuario()));
-		if (asignacion.getIdSector() != null)
-			ordenFabricacion.setSector(SectorFabrica.ofId(asignacion.getIdSector()));
-		ordenFabricacion.setEstado(EstadoOrdenFabricacion.EN_PROCESO);
-		this.service.update(ordenFabricacion);
 
-		OrdenCompra ordenCompra = ordenFabricacion.getOrdenCompraDetalle().getOrdenCompraDetalle().getOrdenCompra();
-		ordenCompra.setEstado(EstadoOrdenCompra.EN_PROCESO);
-		this.ordenCompraService.update(ordenCompra);
+	    OrdenFabricacion ordenFabricacion = this.service.get(idOrdenFabricacion);
 
+	    // Guardamos la asignación anterior
+	    Long idSectorAnterior = ordenFabricacion.getSector() != null
+	            ? ordenFabricacion.getSector().getId()
+	            : null;
+
+	    Long idMaquinaAnterior = ordenFabricacion.getMaquina() != null
+	            ? ordenFabricacion.getMaquina().getId()
+	            : null;
+
+	    // Aplicamos la nueva asignación
+	    if (asignacion.getIdMaquina() != null) {
+	        ordenFabricacion.setMaquina(MaquinaFabrica.ofId(asignacion.getIdMaquina()));
+	    }
+
+	    if (asignacion.getIdUsuario() != null) {
+	        ordenFabricacion.setOperario(Usuario.ofId(asignacion.getIdUsuario()));
+	    }
+
+	    if (asignacion.getIdSector() != null) {
+	        ordenFabricacion.setSector(SectorFabrica.ofId(asignacion.getIdSector()));
+	    } else {
+	    	ordenFabricacion.setSector(null);
+	    }
+
+	    // Nueva asignación
+	    Long idSectorNuevo = ordenFabricacion.getSector() != null
+	            ? ordenFabricacion.getSector().getId()
+	            : null;
+
+	    Long idMaquinaNueva = ordenFabricacion.getMaquina() != null
+	            ? ordenFabricacion.getMaquina().getId()
+	            : null;
+
+	    boolean mismaAsignacion =
+	            Objects.equals(idSectorAnterior, idSectorNuevo)
+	            && Objects.equals(idMaquinaAnterior, idMaquinaNueva);
+
+	    // Si cambió de grupo, reacomodamos el grupo anterior
+	    if (idSectorAnterior != null && !mismaAsignacion) {
+	        this.service.reordenarGrupo(
+	                idSectorAnterior,
+	                idMaquinaAnterior,
+	                idOrdenFabricacion);
+	    }
+
+	    // Primera asignación o cambio de grupo:
+	    // la OF queda al final del grupo nuevo
+	    if (idSectorAnterior == null || !mismaAsignacion) {
+
+	        Integer ultimaPosicion = this.service.obtenerUltimaPosicion(
+	                idSectorNuevo,
+	                idMaquinaNueva);
+
+	        ordenFabricacion.setPosicion(ultimaPosicion + 1);
+	    }
+
+	    ordenFabricacion.setEstado(
+	            EstadoOrdenFabricacion.EN_PROCESO);
+
+	    this.service.update(ordenFabricacion);
+
+	    OrdenCompra ordenCompra = ordenFabricacion
+	            .getOrdenCompraDetalle()
+	            .getOrdenCompraDetalle()
+	            .getOrdenCompra();
+
+	    ordenCompra.setEstado(
+	            EstadoOrdenCompra.EN_PROCESO);
+
+	    this.ordenCompraService.update(ordenCompra);
 	}
 
 	private OrdenFabricacionEntrega generarEntrega(Long idOrdenFabricacion, OrdenFabricacionEntregaDTO entrega) {
@@ -159,6 +222,20 @@ public class OrdenFabricacionEPServiceImpl
 		
 		OrdenFabricacion ordenFabricacion = this.service.get(idOrdenFabricacion);
 		
+		List<OrdenTrabajoEntregaDTO> entregas = new ArrayList<OrdenTrabajoEntregaDTO>();
+		
+		ordenFabricacion.getEntregas().forEach(entrega -> {
+			entrega.getLotes().forEach(lote -> {
+				OrdenTrabajoEntregaDTO ote = new OrdenTrabajoEntregaDTO();
+				ote.setCantidad(entrega.getCantidad());
+				ote.setFecha(entrega.getFecha());
+				ote.setLote(lote.getNroLote());
+				ote.setUsuario(entrega.getOperario().getNombreApellido());
+				entregas.add(ote);
+			});
+		});
+
+		entregas.sort(Comparator.comparing(OrdenTrabajoEntregaDTO::getFecha));
 		
 		OrdenCompra oc = ordenFabricacion.getOrdenCompraDetalle().getOrdenCompraDetalle().getOrdenCompra();
 
@@ -210,9 +287,15 @@ public class OrdenFabricacionEPServiceImpl
 		String pieza = piezaOC.getDenominacion();
 		String material = formulaPieza.getMaterial().getNombre();
 		String molde = moldePieza.getCodigo();
-		String postCura= piezaOC.getProceso().getPostCura();
-		PiezaPlano piezaPlano = piezaOC.getPlanos().iterator().next();
-		String plano = piezaPlano.getCodigo() + "/" + piezaPlano.getRevision();
+		String postCura = piezaOC.getProceso().getPostCura();
+
+		String plano = "";
+		
+		if (piezaOC.getPlanos() != null && !piezaOC.getPlanos().isEmpty()) {
+			PiezaPlano piezaPlano = piezaOC.getPlanos().iterator().next();
+			plano = piezaPlano.getCodigo() + "/" + piezaPlano.getRevision();
+		}
+		
 		String ubicacion = moldePieza.getUbicacion();
 		String identificacion = piezaOC.getProceso().getTerminacion().getIdentificacion();
 		String observacionPieza = ordenFabricacion.getOrdenCompraDetalle().getOrdenCompraDetalle().getObservacion();
@@ -248,6 +331,7 @@ public class OrdenFabricacionEPServiceImpl
 				.ubicacion(ubicacion)
 				.cotizacion(vigente.getValor())
 				.fechaCotizacion(vigente.getFecha())
+				.entregas(entregas)
 				.build();
 		List<ItemOrdenTrabajoDTO> itemsOT = new ArrayList<ItemOrdenTrabajoDTO>();
 		itemsOT.add(item);
@@ -293,5 +377,10 @@ public class OrdenFabricacionEPServiceImpl
 		});
 		return resumenes;
 		
+	}
+
+	@Override
+	public void reordenar(Long idOrdenFabricacion, Integer nuevaPosicion) {
+		this.service.reordenar(idOrdenFabricacion, nuevaPosicion);
 	}
 }

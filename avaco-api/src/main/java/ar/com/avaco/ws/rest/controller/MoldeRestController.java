@@ -222,7 +222,7 @@ public class MoldeRestController extends AbstractAuditableDTORestController<Mold
 		filter.setAsc(true);
 		filter.setIdx("codigo");
 		filter.setFirst(1);
-		filter.setRows(50);
+		filter.setRows(200);
 		PageDTO<MoldeListadoDTO> page = this.service.list(filter);
 		List<ComboDTO> combo = new ArrayList<ComboDTO>();
 		if (page.getPage() != null && !page.getPage().isEmpty())

@@ -10,7 +10,7 @@ import ar.com.avaco.nitrophyl.ws.dto.PiezaGrillaDTO;
 
 public interface PiezaService extends NJService<Long, Pieza> {
 
-	Pieza getVigenteByCodigoInterno(String codigoInterno);
+	Pieza getVigenteByCodigoInternoFormula(String codigoInterno, Long idFormula);
 
 	List<PiezaGrillaDTO> listGrilla(PiezaFilterDTO pfdto);
 

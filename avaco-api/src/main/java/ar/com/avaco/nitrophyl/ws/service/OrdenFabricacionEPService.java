@@ -27,4 +27,7 @@ public interface OrdenFabricacionEPService extends CRUDAuditableEPService<Long, 
 
 	Map<String, List<OrdenTrabajoResumenDTO>> generarResumen(List<Long> ids);
 
+	void reordenar(Long idOrdenFabricacion, Integer nuevaPosicion);
+
+
 }

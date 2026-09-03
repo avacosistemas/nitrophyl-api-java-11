@@ -10,11 +10,14 @@ public class PiezaComboDTO {
 	private String denominacion;
 
 	private String formula;
-	
-	public PiezaComboDTO(Long id, String denominacion, String formula) {
+
+	private String codigo;
+
+	public PiezaComboDTO(Long id, String denominacion, String formula, String codigo) {
 		super();
 		this.id = id;
-		this.denominacion = denominacion + " (" + formula + ")";
+		this.denominacion = denominacion;
+		this.codigo = codigo;
 		this.formula = formula;
 	}
 
@@ -41,7 +44,13 @@ public class PiezaComboDTO {
 	public void setFormula(String formula) {
 		this.formula = formula;
 	}
-	
-	
+
+	public String getCodigo() {
+		return codigo;
+	}
+
+	public void setCodigo(String codigo) {
+		this.codigo = codigo;
+	}
 
 }

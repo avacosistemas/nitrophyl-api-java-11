@@ -6,6 +6,7 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import ar.com.avaco.nitrophyl.ws.dto.OrdenTrabajoEntregaDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -65,5 +66,7 @@ public class ItemOrdenTrabajoDTO {
 	
 	@JsonProperty("control_calidad")
 	private List<ControlCalidadDTO> controlCalidad;
+	
+	private List<OrdenTrabajoEntregaDTO> entregas;
 
 }

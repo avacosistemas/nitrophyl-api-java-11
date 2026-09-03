@@ -77,11 +77,15 @@ public class OrdenFabricacion extends AuditableEntity<Long> {
 	@JoinColumn(name = "ID_OPERARIO")
 	private Usuario operario;
 
+	@Column(name = "POSICION")
+	private Integer posicion;
+
 	@Transient
 	public String getNumeroOT() {
-		return StringUtils.leftPad(this.getNumero().toString(), 3, "0") + "/" + this.getAnio();
+		return StringUtils.leftPad(this.getNumero().toString(), 3, "0") + "/"
+				+ this.getAnio().toString().substring(2, 4);
 	}
-	
+
 	public Long getId() {
 		return id;
 	}
@@ -160,6 +164,14 @@ public class OrdenFabricacion extends AuditableEntity<Long> {
 
 	public void setAnio(Integer anio) {
 		this.anio = anio;
+	}
+
+	public Integer getPosicion() {
+		return posicion;
+	}
+
+	public void setPosicion(Integer posicion) {
+		this.posicion = posicion;
 	}
 
 }

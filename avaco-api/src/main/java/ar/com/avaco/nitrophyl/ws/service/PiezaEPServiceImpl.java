@@ -89,7 +89,7 @@ public class PiezaEPServiceImpl extends CRUDAuditableEPBaseService<Long, PiezaDT
 		Pieza pieza = this.service.get(piezaId);
 
 		// Pieza vigente actual
-		Pieza piezaVigente = this.service.getVigenteByCodigoInterno(pieza.getCodigo());
+		Pieza piezaVigente = this.service.getVigenteByCodigoInternoFormula(pieza.getCodigo(), pieza.getDetalleFormula().getFormula().getId());
 
 		if (piezaVigente != null && pieza.getRevision() != piezaVigente.getRevision() + 1) {
 			// Ocurrio un error, no puede setearse como vigente una revisin que no es la
