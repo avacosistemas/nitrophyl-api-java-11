@@ -36,9 +36,9 @@ public interface OrdenFabricacionRepository
 		       "m.tipo, " +
 		       "COUNT(ofab)) " +
 		       "FROM OrdenFabricacion ofab " +
-		       "WHERE ofab.estado = 'EN_PROCESO' " +
 		       "JOIN ofab.sector s " +
 		       "LEFT JOIN ofab.maquina m " +
+		       "WHERE ofab.estado = 'EN_PROCESO' " +
 		       "GROUP BY m.id, s.id, m.nombre, s.nombre, m.tipo " +
 		       "ORDER BY s.nombre, m.nombre")
 	List<ResumenMaquinaOrdenTrabajoDTO> obtenerResumen();
