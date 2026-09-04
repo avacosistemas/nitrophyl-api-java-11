@@ -3,7 +3,9 @@ package ar.com.avaco.nitrophyl.ws.service;
 
 import java.util.List;
 
+import ar.com.avaco.commons.exception.BusinessException;
 import ar.com.avaco.nitrophyl.ws.dto.PageDTO;
+import ar.com.avaco.nitrophyl.ws.dto.PiezaBaseDTO;
 import ar.com.avaco.nitrophyl.ws.dto.PiezaComboDTO;
 import ar.com.avaco.nitrophyl.ws.dto.PiezaCreacionDTO;
 import ar.com.avaco.nitrophyl.ws.dto.PiezaDTO;
@@ -28,6 +30,8 @@ public interface PiezaEPService extends CRUDAuditableEPService<Long, PiezaDTO> {
 	void update(Long idPieza, PiezaPUTDTO piezaFormula);
 
 	List<PiezaComboDTO> listCombo(String nombre, Long idCliente);
+
+	void copiar(PiezaBaseDTO dto) throws BusinessException;
 
 
 }

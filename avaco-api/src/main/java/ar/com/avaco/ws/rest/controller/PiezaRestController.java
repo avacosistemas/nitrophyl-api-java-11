@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import ar.com.avaco.commons.exception.BusinessException;
 import ar.com.avaco.nitrophyl.ws.dto.PageDTO;
+import ar.com.avaco.nitrophyl.ws.dto.PiezaBaseDTO;
 import ar.com.avaco.nitrophyl.ws.dto.PiezaComboDTO;
 import ar.com.avaco.nitrophyl.ws.dto.PiezaCreacionDTO;
 import ar.com.avaco.nitrophyl.ws.dto.PiezaDTO;
@@ -69,8 +71,14 @@ public class PiezaRestController extends AbstractAuditableDTORestController<Piez
 		return returnOK(piezaCreacionDTO);
 	}
 
-	@RequestMapping(value = "/pieza/clonar/{idPieza}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<JSONResponse> clonar(@PathVariable Long idPieza) {
+	@RequestMapping(value = "/pieza/copiar", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<JSONResponse> copiar(@RequestBody PiezaBaseDTO dto) throws BusinessException {
+		this.service.copiar(dto);
+		return returnOK();
+	}
+
+	@RequestMapping(value = "/pieza/nuevaRevision/{idPieza}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<JSONResponse> nuevaRevision(@PathVariable Long idPieza) {
 		this.service.nuevaRevision(idPieza);
 		return returnOK();
 	}
@@ -84,11 +92,6 @@ public class PiezaRestController extends AbstractAuditableDTORestController<Piez
 	@RequestMapping(value = "/pieza/{idPieza}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<JSONResponse> update(@PathVariable Long idPieza, @RequestBody PiezaPUTDTO piezaFormula) {
 		this.service.update(idPieza, piezaFormula);
-		return returnOK();
-	}
-
-	@RequestMapping(value = "/pieza/controles", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<JSONResponse> listControles(@RequestParam Long idPieza) {
 		return returnOK();
 	}
 

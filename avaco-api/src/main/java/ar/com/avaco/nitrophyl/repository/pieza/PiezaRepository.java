@@ -37,4 +37,6 @@ public interface PiezaRepository extends NJRepository<Long, Pieza>, PiezaReposit
 		    @Param("nombre") String nombre,
 		    @Param("idCliente") Long idCliente);
 
+	boolean existsByCodigoAndDetalleFormulaFormulaId(String codigo, Long idMaterial);
+
 }

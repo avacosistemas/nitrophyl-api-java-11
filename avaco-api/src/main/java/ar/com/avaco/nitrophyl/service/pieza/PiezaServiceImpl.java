@@ -115,4 +115,9 @@ public class PiezaServiceImpl extends NJBaseService<Long, Pieza, PiezaRepository
 		return this.repository.listPiezasCombo(nombre, idCliente);
 	}
 
+	@Override
+	public boolean existsByCodigoAndDetalleFormulaFormulaId(String codigo, Long idMaterial) {
+		return this.repository.existsByCodigoAndDetalleFormulaFormulaId(codigo, idMaterial) ;
+	}
+
 }

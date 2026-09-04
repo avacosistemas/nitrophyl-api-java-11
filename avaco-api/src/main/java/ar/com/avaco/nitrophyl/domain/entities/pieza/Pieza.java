@@ -28,6 +28,11 @@ import ar.com.avaco.nitrophyl.domain.entities.AuditableEntity;
 import ar.com.avaco.nitrophyl.domain.entities.pieza.cliente.PiezaCliente;
 import ar.com.avaco.nitrophyl.domain.entities.pieza.insumo.InsumoTratado;
 import ar.com.avaco.nitrophyl.ws.dto.PiezaGrillaDTO;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 @SqlResultSetMapping(name = "PiezaGrillaDTOMapper", classes = {
 		@ConstructorResult(targetClass = PiezaGrillaDTO.class, columns = {
@@ -208,14 +213,6 @@ public class Pieza extends AuditableEntity<Long> {
 		return clonada;
 	}
 
-	public Set<PiezaEspesor> getEspesores() {
-		return espesores;
-	}
-
-	public void setEspesores(Set<PiezaEspesor> espesores) {
-		this.espesores = espesores;
-	}
-
 	public Long getId() {
 		return id;
 	}
@@ -232,6 +229,30 @@ public class Pieza extends AuditableEntity<Long> {
 		this.denominacion = denominacion;
 	}
 
+	public Boolean getRequiereInsumos() {
+		return requiereInsumos;
+	}
+
+	public void setRequiereInsumos(Boolean requiereInsumos) {
+		this.requiereInsumos = requiereInsumos;
+	}
+
+	public Integer getCantidadInsumos() {
+		return cantidadInsumos;
+	}
+
+	public void setCantidadInsumos(Integer cantidadInsumos) {
+		this.cantidadInsumos = cantidadInsumos;
+	}
+
+	public String getFaltantes() {
+		return faltantes;
+	}
+
+	public void setFaltantes(String faltantes) {
+		this.faltantes = faltantes;
+	}
+
 	public PiezaTipo getTipo() {
 		return tipo;
 	}
@@ -240,16 +261,28 @@ public class Pieza extends AuditableEntity<Long> {
 		this.tipo = tipo;
 	}
 
-	public String getObservacionesRevision() {
-		return observacionesRevision;
-	}
-
-	public void setObservacionesRevision(String observacionesRevision) {
-		this.observacionesRevision = observacionesRevision;
-	}
-
 	public Set<PiezaDimension> getDimensiones() {
 		return dimensiones;
+	}
+
+	public void setDimensiones(Set<PiezaDimension> dimensiones) {
+		this.dimensiones = dimensiones;
+	}
+
+	public String getCodigo() {
+		return codigo;
+	}
+
+	public void setCodigo(String codigo) {
+		this.codigo = codigo;
+	}
+
+	public PiezaFormula getDetalleFormula() {
+		return detalleFormula;
+	}
+
+	public void setDetalleFormula(PiezaFormula detalleFormula) {
+		this.detalleFormula = detalleFormula;
 	}
 
 	public Set<PiezaPlano> getPlanos() {
@@ -258,18 +291,6 @@ public class Pieza extends AuditableEntity<Long> {
 
 	public void setPlanos(Set<PiezaPlano> planos) {
 		this.planos = planos;
-	}
-
-	public Boolean getVigente() {
-		return vigente;
-	}
-
-	public void setVigente(Boolean vigente) {
-		this.vigente = vigente;
-	}
-
-	public void setDimensiones(Set<PiezaDimension> dimensiones) {
-		this.dimensiones = dimensiones;
 	}
 
 	public Set<InsumoTratado> getInsumos() {
@@ -288,12 +309,28 @@ public class Pieza extends AuditableEntity<Long> {
 		this.moldes = moldes;
 	}
 
+	public Set<PiezaEspesor> getEspesores() {
+		return espesores;
+	}
+
+	public void setEspesores(Set<PiezaEspesor> espesores) {
+		this.espesores = espesores;
+	}
+
 	public Proceso getProceso() {
 		return proceso;
 	}
 
 	public void setProceso(Proceso proceso) {
 		this.proceso = proceso;
+	}
+
+	public Set<PiezaCliente> getClientes() {
+		return clientes;
+	}
+
+	public void setClientes(Set<PiezaCliente> clientes) {
+		this.clientes = clientes;
 	}
 
 	public Long getRevision() {
@@ -312,6 +349,14 @@ public class Pieza extends AuditableEntity<Long> {
 		this.fechaRevision = fechaRevision;
 	}
 
+	public Boolean getVigente() {
+		return vigente;
+	}
+
+	public void setVigente(Boolean vigente) {
+		this.vigente = vigente;
+	}
+
 	public Date getFechaCreacionPiezaProceso() {
 		return fechaCreacionPiezaProceso;
 	}
@@ -320,52 +365,20 @@ public class Pieza extends AuditableEntity<Long> {
 		this.fechaCreacionPiezaProceso = fechaCreacionPiezaProceso;
 	}
 
-	public PiezaFormula getDetalleFormula() {
-		return detalleFormula;
+	public String getObservacionesRevision() {
+		return observacionesRevision;
 	}
 
-	public void setDetalleFormula(PiezaFormula detalleFormula) {
-		this.detalleFormula = detalleFormula;
+	public void setObservacionesRevision(String observacionesRevision) {
+		this.observacionesRevision = observacionesRevision;
 	}
 
-	public String getCodigo() {
-		return codigo;
+	public PiezaStock getStock() {
+		return stock;
 	}
 
-	public void setCodigo(String codigo) {
-		this.codigo = codigo;
-	}
-
-	public Set<PiezaCliente> getClientes() {
-		return clientes;
-	}
-
-	public void setClientes(Set<PiezaCliente> clientes) {
-		this.clientes = clientes;
-	}
-
-	public String getFaltantes() {
-		return faltantes;
-	}
-
-	public void setFaltantes(String faltantes) {
-		this.faltantes = faltantes;
-	}
-
-	public Integer getCantidadInsumos() {
-		return cantidadInsumos;
-	}
-
-	public void setCantidadInsumos(Integer cantidadInsumos) {
-		this.cantidadInsumos = cantidadInsumos;
-	}
-
-	public Boolean getRequiereInsumos() {
-		return requiereInsumos;
-	}
-
-	public void setRequiereInsumos(Boolean requiereInsumos) {
-		this.requiereInsumos = requiereInsumos;
+	public void setStock(PiezaStock stock) {
+		this.stock = stock;
 	}
 
 }

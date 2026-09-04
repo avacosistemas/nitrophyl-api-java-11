@@ -20,4 +20,6 @@ public interface PiezaService extends NJService<Long, Pieza> {
 
 	List<PiezaComboDTO> listCombo(String nombre, Long idCliente);
 
+	boolean existsByCodigoAndDetalleFormulaFormulaId(String codigo, Long idMaterial);
+
 }

@@ -141,6 +141,7 @@ public class OrdenCompraEPServiceImpl
 					piezaCliente = new PiezaCliente();
 					piezaCliente.setCliente(cliente);
 					piezaCliente.setPieza(pieza);
+					this.piezaClienteService.save(piezaCliente);
 				}
 
 				// Armo la cotizacion y le seteo el valor, la fecha y la piezacliente (existente
@@ -270,6 +271,7 @@ public class OrdenCompraEPServiceImpl
 					piezaCliente = new PiezaCliente();
 					piezaCliente.setCliente(cliente);
 					piezaCliente.setPieza(pieza);
+					piezaCliente = piezaClienteService.save(piezaCliente);
 				}
 
 				// Armo la cotizacion y le seteo el valor, la fecha y la piezacliente (existente
