@@ -8,6 +8,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
 import javax.transaction.Transactional;
@@ -34,6 +35,8 @@ import ar.com.avaco.nitrophyl.domain.entities.pieza.Pieza;
 import ar.com.avaco.nitrophyl.domain.entities.pieza.PiezaControl;
 import ar.com.avaco.nitrophyl.domain.entities.pieza.PiezaPlano;
 import ar.com.avaco.nitrophyl.domain.entities.pieza.cliente.Cotizacion;
+import ar.com.avaco.nitrophyl.domain.entities.pieza.insumo.Insumo;
+import ar.com.avaco.nitrophyl.domain.entities.pieza.insumo.InsumoTratado;
 import ar.com.avaco.nitrophyl.service.fabricacion.OrdenCompraService;
 import ar.com.avaco.nitrophyl.service.fabricacion.OrdenFabricacionService;
 import ar.com.avaco.nitrophyl.service.lote.LoteService;
@@ -302,10 +305,17 @@ public class OrdenFabricacionEPServiceImpl
 		Troquel troquel = piezaOC.getMoldes().iterator().next().getMolde().getTroquel();
 		String troquelNombre = troquel != null ? troquel.getNombre() : null;
 
+		String insumos = null;
+		if (piezaOC.getInsumos() != null && !piezaOC.getInsumos().isEmpty()) {
+			insumos = piezaOC.getInsumos().stream()
+					.map(it -> it.getInsumo().getNombre() + " (" + it.getInsumo().getTipo().getNombre() + ")")
+					.collect(Collectors.joining(" - "));
+		}
+
 		ItemOrdenTrabajoDTO item = ItemOrdenTrabajoDTO.builder().identficacion(identificacion).cantidadTotal(cantidad)
 				.troquel(troquelNombre).controlCalidad(controles).formula(formula).hp(hojaProceso).idItem(1L)
 				.material(material).matriz(molde).pc(postCura).planoRev(plano).observacion(observacionPieza)
-				.descuento(descuentoString).precioDescuento(descuentoValorString)
+				.insumos(insumos).descuento(descuentoString).precioDescuento(descuentoValorString)
 				.observacionDescuento(observacionDescuento).titulo(pieza).ubicacion(ubicacion)
 				.cotizacion(vigente.getValor()).fechaCotizacion(vigente.getFecha()).entregas(entregas).build();
 		List<ItemOrdenTrabajoDTO> itemsOT = new ArrayList<ItemOrdenTrabajoDTO>();

@@ -63,6 +63,8 @@ public class ItemOrdenTrabajoDTO {
 	
 	private String troquel;
 	
+	private String insumos;
+	
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd/MM/yyyy")
 	private Date fechaCotizacion;
 	
