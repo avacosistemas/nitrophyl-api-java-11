@@ -8,7 +8,7 @@ import ar.com.avaco.nitrophyl.domain.entities.molde.TipoDimension;
 public class MoldeDimensionListadoDTO {
 
 	private TipoDimension tipoDimension;
-	private Integer valor;
+	private Double valor;
 
 	public TipoDimension getTipoDimension() {
 		return tipoDimension;
@@ -18,11 +18,11 @@ public class MoldeDimensionListadoDTO {
 		this.tipoDimension = tipoDimension;
 	}
 
-	public Integer getValor() {
+	public Double getValor() {
 		return valor;
 	}
 
-	public void setValor(Integer valor) {
+	public void setValor(Double valor) {
 		this.valor = valor;
 	}
 

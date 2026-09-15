@@ -12,10 +12,10 @@ public class MoldeListadoDTO extends DTOEntity<Long> {
 	private String estado;
 	private String nombre;
 	private String ubicacion;
-	private Integer alto;
-	private Integer ancho;
-	private Integer diametro;
-	private Integer profundidad;
+	private Double alto;
+	private Double ancho;
+	private Double diametro;
+	private Double profundidad;
 	private String piezas;
 	private String ultimoRegistro;
 	private Integer totalRows;
@@ -24,8 +24,8 @@ public class MoldeListadoDTO extends DTOEntity<Long> {
 	public MoldeListadoDTO() {
 	}
 
-	public MoldeListadoDTO(Integer id, String codigo, String faltantes, String estado, String nombre, String ubicacion, Integer alto,
-			Integer ancho, Integer diametro, Integer profundidad, String piezas, String ultimoRegistro,
+	public MoldeListadoDTO(Integer id, String codigo, String faltantes, String estado, String nombre, String ubicacion, Double alto,
+			Double ancho, Double diametro, Double profundidad, String piezas, String ultimoRegistro,
 			Integer totalRows) {
 		this.id = Long.valueOf(id);
 		this.codigo = codigo;
@@ -98,35 +98,35 @@ public class MoldeListadoDTO extends DTOEntity<Long> {
 		this.id = id;
 	}
 
-	public Integer getAlto() {
+	public Double getAlto() {
 		return alto;
 	}
 
-	public void setAlto(Integer alto) {
+	public void setAlto(Double alto) {
 		this.alto = alto;
 	}
 
-	public Integer getAncho() {
+	public Double getAncho() {
 		return ancho;
 	}
 
-	public void setAncho(Integer ancho) {
+	public void setAncho(Double ancho) {
 		this.ancho = ancho;
 	}
 
-	public Integer getDiametro() {
+	public Double getDiametro() {
 		return diametro;
 	}
 
-	public void setDiametro(Integer diametro) {
+	public void setDiametro(Double diametro) {
 		this.diametro = diametro;
 	}
 
-	public Integer getProfundidad() {
+	public Double getProfundidad() {
 		return profundidad;
 	}
 
-	public void setProfundidad(Integer profundidad) {
+	public void setProfundidad(Double profundidad) {
 		this.profundidad = profundidad;
 	}
 

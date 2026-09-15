@@ -4,6 +4,7 @@ import java.util.*;
 
 import javax.annotation.Resource;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -27,12 +28,17 @@ import ar.com.avaco.nitrophyl.ws.dto.MoldePlanoDTO;
 import ar.com.avaco.nitrophyl.ws.dto.MoldePlanoListadoDTO;
 import ar.com.avaco.nitrophyl.ws.dto.MoldeRegistroDTO;
 import ar.com.avaco.nitrophyl.ws.dto.PageDTO;
+import ar.com.avaco.nitrophyl.ws.dto.TroquelDTO;
 import ar.com.avaco.nitrophyl.ws.service.MoldeEPService;
+import ar.com.avaco.nitrophyl.ws.service.TroquelEPService;
 import ar.com.avaco.ws.rest.dto.JSONResponse;
 
 @RestController
 public class MoldeRestController extends AbstractAuditableDTORestController<MoldeDTO, Long, MoldeEPService> {
 
+	@Autowired
+	private TroquelEPService troquelEPService;
+	
 	@Resource(name = "moldeEPService")
 	public void setService(MoldeEPService moldeEPService) {
 		super.service = moldeEPService;
@@ -234,4 +240,13 @@ public class MoldeRestController extends AbstractAuditableDTORestController<Mold
 		return new ResponseEntity<JSONResponse>(response, HttpStatus.OK);
 	}
 
+	@RequestMapping(value = "/molde/troquel", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<JSONResponse> listTroque() throws Exception {
+		List<TroquelDTO> list = troquelEPService.list();
+		JSONResponse response = new JSONResponse();
+		response.setData(list);
+		response.setStatus(JSONResponse.OK);
+		return new ResponseEntity<JSONResponse>(response, HttpStatus.OK);
+	}
+	
 }

@@ -3,6 +3,7 @@ package ar.com.avaco.nitrophyl.service.pieza;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.annotation.Resource;
 
@@ -15,6 +16,7 @@ import ar.com.avaco.nitrophyl.domain.entities.pieza.PiezaControl;
 import ar.com.avaco.nitrophyl.domain.entities.pieza.PiezaDimension;
 import ar.com.avaco.nitrophyl.domain.entities.pieza.TipoControl;
 import ar.com.avaco.nitrophyl.domain.entities.pieza.UnidadDureza;
+import ar.com.avaco.nitrophyl.domain.entities.pieza.insumo.InsumoTratado;
 import ar.com.avaco.nitrophyl.domain.entities.pieza.insumo.InsumoTratadoObservacionControl;
 import ar.com.avaco.nitrophyl.repository.pieza.PiezaControlRepository;
 
@@ -35,15 +37,10 @@ public class PiezaControlServiceImpl extends NJBaseService<Long, PiezaControl, P
 		Pieza pieza = this.piezaService.get(idPieza);
 
 		List<PiezaControl> controlesInsumos = pieza.getInsumos().stream().filter(i -> i.getObservaciones() != null)
-				.flatMap(i -> i.getObservaciones().stream().filter(InsumoTratadoObservacionControl::getControlar)
-						.map(o -> new PiezaControl(i.getInsumo().getNombre() + " - " + o.getObservacion(), i.getPieza(),
-								TipoControl.INSUMO)))
-				.collect(Collectors.toList());
+				.flatMap(i -> generarControlInsumo(i)).collect(Collectors.toList());
 
 		List<PiezaControl> controlesDimensiones = pieza.getDimensiones().stream().filter(PiezaDimension::getControlar)
-				.map(pd -> new PiezaControl(pd.getTipo() + " - " + pd.getValor() + " (" + pd.getMinimo() + " / "
-						+ pd.getMaximo() + ") - " + pd.getObservaciones(), pd.getPieza(), TipoControl.MEDIDA))
-				.collect(Collectors.toList());
+				.map(pd -> generarControlDimension(pd)).collect(Collectors.toList());
 
 		Double durezaMaxima = pieza.getDetalleFormula().getFormula().getDurezaMaxima();
 		Double durezaMinima = pieza.getDetalleFormula().getFormula().getDurezaMinima();
@@ -61,6 +58,27 @@ public class PiezaControlServiceImpl extends NJBaseService<Long, PiezaControl, P
 
 		return controles;
 
+	}
+
+	private Stream<PiezaControl> generarControlInsumo(InsumoTratado i) {
+		return i.getObservaciones().stream().filter(InsumoTratadoObservacionControl::getControlar).map(o -> {
+			String control = i.getInsumo().getNombre();
+			if (o.getObservacion() != null) {
+				control = control + " - " + o.getObservacion();
+			}
+			return new PiezaControl(control, i.getPieza(), TipoControl.INSUMO);
+		});
+	}
+
+	private PiezaControl generarControlDimension(PiezaDimension pd) {
+		String control = pd.getTipo() + " - " + pd.getValor();
+		if (pd.getMinimo() != null) {
+			control = control + " (" + pd.getMinimo() + " / " + pd.getMaximo() + ")";
+		}
+		if (pd.getObservaciones() != null) {
+			control = control + " - " + pd.getObservaciones();
+		}
+		return new PiezaControl(control, pd.getPieza(), TipoControl.MEDIDA);
 	}
 
 }

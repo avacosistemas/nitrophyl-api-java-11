@@ -523,15 +523,15 @@ public class PiezaEPServiceImpl extends CRUDAuditableEPBaseService<Long, PiezaDT
 
 		// Pieza terminada
 
+		Terminacion terminacion = new Terminacion();
+		terminacion.setProceso(proceso);
 		if (dto.isPiezaTerminada() && procesoBase.getTerminacion() != null) {
-			Terminacion terminacion = new Terminacion();
 			terminacion.setEmbalaje(procesoBase.getTerminacion().getEmbalaje());
 			terminacion.setIdentificacion(procesoBase.getTerminacion().getIdentificacion());
 			terminacion.setImagenTerminada(procesoBase.getTerminacion().getImagenTerminada());
-			terminacion.setProceso(proceso);
 			terminacion.setRefilado(procesoBase.getTerminacion().getRefilado());
-			proceso.setTerminacion(terminacion);
 		}
+		proceso.setTerminacion(terminacion);
 
 		// Planos
 		if (dto.isPlanos() && piezaBase.getPlanos() != null) {

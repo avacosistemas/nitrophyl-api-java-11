@@ -141,16 +141,71 @@ public class OrdenFabricacionRepositoryImpl extends NJBaseRepository<Long, Orden
 			params.put("estadoOF", filter.getEstado().name());
 		}
 
-		if (filter.getIdx() != null && filter.getAsc() != null) {
+		String orderBy = null;
 
-			sql.append(" ORDER BY ");
-			sql.append(filter.getIdx());
+		if (filter.getIdx() != null) {
 
-			if (filter.getAsc()) {
-				sql.append(" ASC ");
-			} else {
-				sql.append(" DESC ");
-			}
+		    switch (filter.getIdx()) {
+
+		    case "fecha_OC":
+		        orderBy = "v.fecha_oc";
+		        break;
+
+		    case "cliente":
+		        orderBy = "v.cliente_nombre";
+		        break;
+
+		    case "pieza":
+		        orderBy = "v.pieza_codigo";
+		        break;
+
+		    case "formula":
+		        orderBy = "v.formula_nombre";
+		        break;
+
+		    case "ocCantidad":
+		        orderBy = "v.total_solicitado";
+		        break;
+
+		    case "fecha_OF":
+		        orderBy = "v.fecha_of";
+		        break;
+
+		    case "fecha_entrega":
+		        orderBy = "v.fecha_entrega_solicitada";
+		        break;
+
+		    case "estado":
+		        orderBy = "v.estado_of";
+		        break;
+
+		    case "ofNumero":
+		        orderBy = "v.numero";
+		        break;
+
+		    case "entregadas":
+		        orderBy = "v.total_fabricado";
+		        break;
+
+		    case "saldo":
+		        orderBy = "v.saldo";
+		        break;
+
+		    default:
+		        break;
+		    }
+		}
+
+		if (orderBy != null && filter.getAsc() != null) {
+
+		    sql.append(" ORDER BY ");
+		    sql.append(orderBy);
+
+		    if (filter.getAsc()) {
+		        sql.append(" ASC ");
+		    } else {
+		        sql.append(" DESC ");
+		    }
 		}
 
 		Query query = entityManager.createNativeQuery(sql.toString());

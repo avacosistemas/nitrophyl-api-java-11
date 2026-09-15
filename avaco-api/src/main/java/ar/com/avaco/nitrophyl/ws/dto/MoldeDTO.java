@@ -25,10 +25,29 @@ public class MoldeDTO extends DTOAuditableEntity<Long> {
 	private Integer cantidadBocas;
 
 	private TipoMolde tipoMolde;
-	private Integer alto;
-	private Integer ancho;
-	private Integer profundidad;
-	private Integer diametro;
+	private Double alto;
+	private Double ancho;
+	private Double profundidad;
+	private Double diametro;
+
+	private String troquel;
+	private Long idTroquel;
+
+	public String getTroquel() {
+		return troquel;
+	}
+
+	public void setTroquel(String troquel) {
+		this.troquel = troquel;
+	}
+
+	public Long getIdTroquel() {
+		return idTroquel;
+	}
+
+	public void setIdTroquel(Long idTroquel) {
+		this.idTroquel = idTroquel;
+	}
 
 	public TipoMolde getTipoMolde() {
 		return tipoMolde;
@@ -38,35 +57,35 @@ public class MoldeDTO extends DTOAuditableEntity<Long> {
 		this.tipoMolde = tipoMolde;
 	}
 
-	public Integer getAlto() {
+	public Double getAlto() {
 		return alto;
 	}
 
-	public void setAlto(Integer alto) {
+	public void setAlto(Double alto) {
 		this.alto = alto;
 	}
 
-	public Integer getAncho() {
+	public Double getAncho() {
 		return ancho;
 	}
 
-	public void setAncho(Integer ancho) {
+	public void setAncho(Double ancho) {
 		this.ancho = ancho;
 	}
 
-	public Integer getProfundidad() {
+	public Double getProfundidad() {
 		return profundidad;
 	}
 
-	public void setProfundidad(Integer profundidad) {
+	public void setProfundidad(Double profundidad) {
 		this.profundidad = profundidad;
 	}
 
-	public Integer getDiametro() {
+	public Double getDiametro() {
 		return diametro;
 	}
 
-	public void setDiametro(Integer diametro) {
+	public void setDiametro(Double diametro) {
 		this.diametro = diametro;
 	}
 

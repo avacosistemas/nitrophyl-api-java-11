@@ -37,9 +37,9 @@ import ar.com.avaco.nitrophyl.ws.dto.MoldeListadoDTO;
 				@ColumnResult(name = "estado", type = String.class),
 				@ColumnResult(name = "nombre", type = String.class),
 				@ColumnResult(name = "ubicacion", type = String.class),
-				@ColumnResult(name = "alto", type = Integer.class), @ColumnResult(name = "ancho", type = Integer.class),
-				@ColumnResult(name = "diametro", type = Integer.class),
-				@ColumnResult(name = "profundidad", type = Integer.class),
+				@ColumnResult(name = "alto", type = Double.class), @ColumnResult(name = "ancho", type = Double.class),
+				@ColumnResult(name = "diametro", type = Double.class),
+				@ColumnResult(name = "profundidad", type = Double.class),
 				@ColumnResult(name = "piezas", type = String.class),
 				@ColumnResult(name = "ultimoRegistro", type = String.class),
 				@ColumnResult(name = "totalRows", type = Integer.class) }) })
@@ -105,6 +105,18 @@ public class Molde extends AuditableEntity<Long> {
 
 	@Column(name = "FALTANTES", insertable = false, updatable = false)
 	private String faltantes;
+
+	@ManyToOne(fetch = FetchType.EAGER, optional = true)
+	@JoinColumn(name = "ID_TROQUEL", nullable = true)
+	private Troquel troquel;
+
+	public Troquel getTroquel() {
+		return troquel;
+	}
+
+	public void setTroquel(Troquel troquel) {
+		this.troquel = troquel;
+	}
 
 	public Integer getCantidadBocas() {
 		return cantidadBocas;

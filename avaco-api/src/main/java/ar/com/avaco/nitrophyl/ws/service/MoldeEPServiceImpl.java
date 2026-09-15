@@ -8,6 +8,8 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,6 +31,7 @@ import ar.com.avaco.nitrophyl.domain.entities.molde.PlanoClasificacion;
 import ar.com.avaco.nitrophyl.domain.entities.molde.TipoDimension;
 import ar.com.avaco.nitrophyl.domain.entities.molde.TipoMolde;
 import ar.com.avaco.nitrophyl.domain.entities.molde.TipoRegistroMolde;
+import ar.com.avaco.nitrophyl.domain.entities.molde.Troquel;
 import ar.com.avaco.nitrophyl.service.cliente.ClienteService;
 import ar.com.avaco.nitrophyl.service.molde.MoldeBocaService;
 import ar.com.avaco.nitrophyl.service.molde.MoldeDimensionService;
@@ -38,6 +41,7 @@ import ar.com.avaco.nitrophyl.service.molde.MoldePlanoService;
 import ar.com.avaco.nitrophyl.service.molde.MoldeRegistroService;
 import ar.com.avaco.nitrophyl.service.molde.MoldeService;
 import ar.com.avaco.nitrophyl.service.pieza.PiezaTipoService;
+import ar.com.avaco.nitrophyl.service.produccion.TroquelService;
 import ar.com.avaco.nitrophyl.ws.dto.MoldeClienteDTO;
 import ar.com.avaco.nitrophyl.ws.dto.MoldeDTO;
 import ar.com.avaco.nitrophyl.ws.dto.MoldeDimensionListadoDTO;
@@ -87,6 +91,9 @@ public class MoldeEPServiceImpl extends CRUDAuditableEPBaseService<Long, MoldeDT
 	@Resource(name = "piezaTipoService")
 	private PiezaTipoService piezaTipoService;
 
+	@Autowired
+	private TroquelService troquelService;
+	
 	@Override
 	public MoldeDTO update(MoldeDTO dto) throws BusinessException {
 		String estadoAnterior = this.get(dto.getId()).getEstado();
@@ -121,6 +128,16 @@ public class MoldeEPServiceImpl extends CRUDAuditableEPBaseService<Long, MoldeDT
 		molde.getTiposPieza().clear();
 		dto.getPiezaTipos().forEach(x -> molde.getTiposPieza().add(piezaTipoService.get(x.getId())));
 
+		if (dto.getIdTroquel() != null) {
+		    Troquel t = troquelService.get(dto.getIdTroquel());
+		    molde.setTroquel(t);
+		} else if (StringUtils.isNotBlank(dto.getTroquel())) {
+		    Troquel t = new Troquel();
+		    t.setNombre(dto.getTroquel());
+		    t = troquelService.save(t);
+		    molde.setTroquel(t);
+		}
+		
 		return molde;
 	}
 
@@ -153,6 +170,14 @@ public class MoldeEPServiceImpl extends CRUDAuditableEPBaseService<Long, MoldeDT
 		molde.setUbicacion(dto.getUbicacion());
 		molde.setTipoMolde(dto.getTipoMolde());
 		
+		if (dto.getIdTroquel() != null) {
+			molde.setTroquel(Troquel.ofId(dto.getIdTroquel()));
+		} else if (StringUtils.isNoneBlank(dto.getTroquel())) {
+			Troquel t = Troquel.ofId(dto.getIdTroquel());
+			t.setNombre(dto.getTroquel());
+			molde.setTroquel(t);
+		}
+		
 		Cliente duenio = null;
 		if (dto.getIdClienteDuenio() != null) {
 			duenio = clienteService.get(dto.getIdClienteDuenio());
@@ -184,7 +209,12 @@ public class MoldeEPServiceImpl extends CRUDAuditableEPBaseService<Long, MoldeDT
 			moldeDto.setIdClienteDuenio(entity.getDuenio().getId());
 		}
 		
-		Map<TipoDimension, Integer> dimensiones = new HashMap<>();
+		if (entity.getTroquel() != null) {
+			moldeDto.setTroquel(entity.getTroquel().getNombre());
+			moldeDto.setIdTroquel(entity.getTroquel().getId());
+		}
+		
+		Map<TipoDimension, Double> dimensiones = new HashMap<>();
 		entity.getDimensiones().forEach(d ->
 		    dimensiones.put(d.getTipodimension(), d.getValordimension())
 		);

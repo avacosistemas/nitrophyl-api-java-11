@@ -42,13 +42,13 @@ public class MoldeDimension extends ar.com.avaco.arc.core.domain.Entity<Long> {
 	private TipoDimension tipodimension;
 
 	@Column(name = "VALORDIMENSION")
-	private Integer valordimension;
+	private Double valordimension;
 
 	public MoldeDimension() {
 		super();
 	}
 
-	public MoldeDimension(Molde molde, TipoDimension tipo, Integer valor) {
+	public MoldeDimension(Molde molde, TipoDimension tipo, Double valor) {
 		this.molde = molde;
 		this.tipodimension = tipo;
 		this.valordimension = valor;
@@ -80,11 +80,11 @@ public class MoldeDimension extends ar.com.avaco.arc.core.domain.Entity<Long> {
 		this.tipodimension = tipodimension;
 	}
 
-	public Integer getValordimension() {
+	public Double getValordimension() {
 		return valordimension;
 	}
 
-	public void setValordimension(Integer valordimension) {
+	public void setValordimension(Double valordimension) {
 		this.valordimension = valordimension;
 	}
 
